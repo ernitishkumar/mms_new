@@ -32,7 +32,7 @@
       </div>
     </center>         
     <div class="panel-body">
-      <form action="userlogincheck.jsp" method="post" name="login" id="signin" class="form-horizontal">
+      <form action="Login.jsp" method="post" name="login" id="signin" class="form-horizontal">
         <div class="form-group">
           <p align="center">
             <label for="inputEmail3" class="col-lg-2 control-label">Login Id</label>

@@ -12,7 +12,7 @@ public class UserLoginMapper {
 		try {
 			
 				userlogin.setUid(resultSet.getString(1));
-				userlogin.setUderLoginid(resultSet.getString(2));
+				userlogin.setUserLoginid(resultSet.getString(2));
 				userlogin.setUserPassword(resultSet.getString(3));
 				userlogin.setuType(resultSet.getString(4));
 				userlogin.setuName(resultSet.getString(5));

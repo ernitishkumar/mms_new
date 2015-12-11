@@ -1,5 +1,8 @@
 package mms.com.servlets;
 import mms.com.dao.UserLoginDAO;
+import mms.com.beans.ErrorBean;
+import mms.com.beans.MessageBean;
+import mms.com.beans.UserLogin;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -13,54 +16,27 @@ public class Login extends HttpServlet {
 
     protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
     throws ServletException, IOException {
-
+        System.out.println("User authentication started");
         HttpSession httpSession =httpServletRequest.getSession();
+        UserLoginDAO userLoginDAO=new UserLoginDAO();
 
         try {
             UserLogin userBean=(UserLogin)httpSession.getAttribute("userBean");
-
+            UserLogin user=userLoginDAO.getByUserID(userBean.getUserLoginid());
             if(user==null){
+                System.out.println("User authentication failed for user : "+userBean.getUserLoginid());
                 httpSession.removeAttribute("userBean");
                 ErrorBean errorBean=new ErrorBean("Invalid username/password");
                 httpServletRequest.setAttribute("errorBean",errorBean);
                 RequestDispatcher requestDispatcher=httpServletRequest.getRequestDispatcher("/index.jsp?ui=i");
                 requestDispatcher.forward(httpServletRequest,httpServletResponse);
             }else{
-                user=serverInterface.getUserByUserName(userBean.getUserName());
-                userBean.setId(user.getId());
-                userBean.setFirstName(user.getFirstName());
-                userBean.setLastName(user.getLastName());
-                userBean.setUserName(user.getUserName());
-                userBean.setPwd(user.getPassword());
-                userBean.setEmailId(user.getEMailAddress());
-                userBean.setDateOfBirth(user.getDateOfBirth());
-                userBean.setSex(user.getSex());
-                userBean.setHintQuestion(user.getHintQuestion());
-                userBean.setHintAnswer(user.getHintAnswer());
-                userBean.setCountry(user.getCountry());
-                userBean.setActivationStatus(user.getActivationStatus());
-                httpSession.setAttribute("userBean",userBean);
-
-                if(userBean.getActivationStatus().equals("A"))
-                { 
-
-                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/HomePage.jsp?ui=h");
-                }
-                else
-                {
-
-                    User user1=serverInterface.getUserByUserName(userBean.getUserName());
-
-                    user1.setActivationStatus("A");
-                    serverInterface.upDateProfile(user1);
-                    userBean.setActivationStatus("A");	  
-                    httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/EditUserProfile.jsp");
-                }
+                System.out.println("User authentication successful for user : "+userBean.getUserLoginid());
+                httpSession.setAttribute("userBean",user);
+                httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/HomePage.jsp");
             }
-        }catch(Exception e)
-        {
-            System.out.println(e);
-
+        }catch(Exception e){
+            System.out.println("Exception in class : Login method : processRequest() : "+e);
         }
     } 
 
@@ -76,7 +52,5 @@ public class Login extends HttpServlet {
     throws ServletException, IOException {
         processRequest(request, response);
     }
-
-
 
 }

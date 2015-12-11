@@ -1,4 +1,4 @@
-package com.haresh.beans;
+package mms.com.beans;
 
 import java.io.Serializable;
 
