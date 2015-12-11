@@ -3,7 +3,7 @@ package mms.com.beans;
 public class UserLogin {
 
 	private String uid; 
-	private String userLoginid; 
+	private String uderLoginid; 
 	private String userPassword; 
 	private String uType; 
 	private String uName; 
@@ -15,11 +15,11 @@ public class UserLogin {
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
-	public String getUserLoginid() {
-		return userLoginid;
+	public String getUderLoginid() {
+		return uderLoginid;
 	}
-	public void setUserLoginid(String uderLoginid) {
-		this.userLoginid = userLoginid;
+	public void setUderLoginid(String uderLoginid) {
+		this.uderLoginid = uderLoginid;
 	}
 	public String getUserPassword() {
 		return userPassword;
@@ -52,7 +52,7 @@ public class UserLogin {
 		this.status = status;
 	}
 	public String toString() {
-		return "UserLogin [uid=" + uid + ", userLoginid=" + userLoginid
+		return "UserLogin [uid=" + uid + ", uderLoginid=" + uderLoginid
 				+ ", userPassword=" + userPassword + ", uType=" + uType
 				+ ", uName=" + uName + ", uLocation=" + uLocation + ", status="
 				+ status + "]";
@@ -61,17 +61,17 @@ public class UserLogin {
 			String uType, String uName, String uLocation, String status) {
 		
 		this.uid = uid;
-		this.userLoginid = userLoginid;
+		this.uderLoginid = uderLoginid;
 		this.userPassword = userPassword;
 		this.uType = uType;
 		this.uName = uName;
 		this.uLocation = uLocation;
 		this.status = status;
 	}
-	public UserLogin(String userLoginid, String userPassword, String uType,
+	public UserLogin(String uderLoginid, String userPassword, String uType,
 			String uName, String uLocation, String status) {
 		
-		this.userLoginid = userLoginid;
+		this.uderLoginid = uderLoginid;
 		this.userPassword = userPassword;
 		this.uType = uType;
 		this.uName = uName;

@@ -13,19 +13,23 @@ import mms.com.utility.DatabaseConnection;
 public class UserLoginDAO {
 	Connection connection = DatabaseConnection.getConnection();
 	public ArrayList<UserLogin> getAll(){
-		ArrayList<UserLogin> users = new ArrayList<UserLogin>();
+		ArrayList<UserLogin> list = new ArrayList<UserLogin>();
+		UserLoginMapper map = new UserLoginMapper();
 		try {
 			PreparedStatement ps=connection.prepareStatement("select * from mms_user_login");
 			ResultSet resultSet = ps.executeQuery();
+			
 			while(resultSet.next()){
-				users.add(new UserLogin(resultSet.getString(1).trim(),resultSet.getString(2).trim(),resultSet.getString(3).trim(),resultSet.getString(4).trim(),resultSet.getString(5).trim(),resultSet.getString(6).trim(),resultSet.getString(7).trim()));
+				list.add(map.userMapper(resultSet));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("Exception in [getAll]"+e);
 		} finally{
 			
 		}
-		return users;
+		
+		return list;
 		
 	}
 	
@@ -36,13 +40,14 @@ public class UserLoginDAO {
 			PreparedStatement ps=connection.prepareStatement("select * from mms_user_login where Uloginid=?");
 			ps.setString(1, userID);
 			ResultSet resultSet = ps.executeQuery();
-			userLogin = userLoginMapper.userMapper(resultSet);
+			while(resultSet.next()){
+				userLogin = userLoginMapper.userMapper(resultSet);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally{
-			
+			System.out.println("Exception in [getByUserID]"+e);
+		} finally{	
 		}
-		
 		return userLogin;
 	}
 	
@@ -50,7 +55,7 @@ public class UserLoginDAO {
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into mms_user_login(UID,Uloginid,Upassword,Utype,Uname,Ulocation,status) VALUES(?,?,?,?,?,?,?)");
 			ps.setString(1,userlogin.getUid());
-			ps.setString(2,userlogin.getUserLoginid());
+			ps.setString(2,userlogin.getUderLoginid());
 			ps.setString(3,userlogin.getUserPassword());
 			ps.setString(4,userlogin.getuType());
 			ps.setString(5,userlogin.getuName());
@@ -59,6 +64,7 @@ public class UserLoginDAO {
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("Exception in [updateUser]"+e);
 		}
 	}
 }

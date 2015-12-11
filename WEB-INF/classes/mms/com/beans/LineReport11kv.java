@@ -609,7 +609,6 @@ public class LineReport11kv {
 		this.end_time_hr = end_time_hr;
 		this.end_time_min = end_time_min;
 	}
-	
 	public LineReport11kv() {
 	}
 	
