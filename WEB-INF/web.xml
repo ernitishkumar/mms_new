@@ -1,0 +1,21 @@
+<web-app>
+	<welcome-file-list>  
+		<welcome-file>index.jsp</welcome-file>  
+	</welcome-file-list>  
+	<servlet>
+		<servlet-name>Login</servlet-name>
+		<servlet-class>mms.com.servlets.Login</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Login</servlet-name>
+		<url-pattern>/Login</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Logout</servlet-name>
+		<servlet-class>mms.com.servlets.Logout</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Logout</servlet-name>
+		<url-pattern>/Logout</url-pattern>
+	</servlet-mapping>
+</web-app>
