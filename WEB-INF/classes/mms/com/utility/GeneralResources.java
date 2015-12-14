@@ -1,4 +1,4 @@
-package com.utility;
+package mms.com.utility;
 import java.sql.*;
 public class GeneralResources{
 	private static Connection connection;

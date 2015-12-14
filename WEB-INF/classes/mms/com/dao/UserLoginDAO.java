@@ -50,7 +50,7 @@ public class UserLoginDAO {
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into mms_user_login(UID,Uloginid,Upassword,Utype,Uname,Ulocation,status) VALUES(?,?,?,?,?,?,?)");
 			ps.setString(1,userlogin.getUid());
-			ps.setString(2,userlogin.getUderLoginid());
+			ps.setString(2,userlogin.getUserLoginid());
 			ps.setString(3,userlogin.getUserPassword());
 			ps.setString(4,userlogin.getuType());
 			ps.setString(5,userlogin.getuName());
