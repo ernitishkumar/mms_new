@@ -21,6 +21,24 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>GetDivisions</servlet-name>
+		<servlet-class>mms.com.servlets.GetDivisions</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetDivisions</servlet-name>
+		<url-pattern>/GetDivisions</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>AddEHVSSDetails</servlet-name>
+		<servlet-class>mms.com.servlets.AddEHVSSDetails</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddEHVSSDetails</servlet-name>
+		<url-pattern>/AddEHVSSDetails</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>Logout</servlet-name>
 		<servlet-class>mms.com.servlets.Logout</servlet-class>
 	</servlet>

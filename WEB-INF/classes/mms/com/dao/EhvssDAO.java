@@ -1,15 +1,15 @@
-package feeder.com.dao;
+package mms.com.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import mms.com.utility.DatabaseConnection;
-import feeder.com.beans.EHVSS;
+import mms.com.beans.EHVSS;
 
 public class EhvssDAO {
 
-	Connection connection = DatabaseConnection.getConnection();
+	Connection connection = DatabaseConnection.getConnection("mms_new");
 	public void addEHVSS(EHVSS ehvss){
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into EHVSS(code, name, location, region, circle, division) VALUES(?,?,?,?,?,?)");

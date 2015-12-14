@@ -1,11 +1,11 @@
-package feeder.com.dao;
+package mms.com.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import mms.com.utility.DatabaseConnection;
-import feeder.com.beans.KV11Feeder;
+import mms.com.beans.KV11Feeder;
 
 public class KV11FeederDAO {
 

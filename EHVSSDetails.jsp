@@ -1,9 +1,9 @@
 <html>
 <head>
 	<title>MMS - EHVSS Details</title>
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
@@ -14,6 +14,20 @@
 			}, function(response) {
 
 				var select = $('#circle');
+				select.find('option').remove();
+				$.each(response, function(index, value) {
+					$('<option>').val(value).text(value).appendTo(select);
+				});
+			});
+		});
+
+		$('#circle').change(function(event) {
+			alert("Circle Changed");
+			var circle = $("select#circle").val();
+			$.get('GetDivisions', {
+				circleName : circle
+			}, function(response) {
+				var select = $('#division');
 				select.find('option').remove();
 				$.each(response, function(index, value) {
 					$('<option>').val(value).text(value).appendTo(select);
@@ -119,6 +133,7 @@
 					</select>
 				</label>
 				<br/>
+				<br/>
 				<label>
 					<span>Select Circle</span>
 					<select name="circle" id="circle">
@@ -126,15 +141,17 @@
 					</select>
 				</label>
 				<br/>
+				<br/>
 				<label>
 					<span>Select Division</span>
 					<select name="division" id="division">
-						<option>Medium</option>
-						<option>Fast</option>
-						<option>Faster</option>
+						<option>Select Division</option>
 					</select>
 				</label>
-
+				<br/>
+				<br/>
+				<br/>
+				<br/>
 				<label>
 					<input type="submit" value="Add" />
 				</label>

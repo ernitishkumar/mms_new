@@ -1,4 +1,4 @@
-package feeder.com.beans;
+package mms.com.beans;
 
 public class KV33Feeder {
 

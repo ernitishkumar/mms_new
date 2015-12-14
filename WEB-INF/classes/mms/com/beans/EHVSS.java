@@ -1,4 +1,4 @@
-package feeder.com.beans;
+package mms.com.beans;
 
 public class EHVSS {
 
@@ -52,7 +52,7 @@ public class EHVSS {
 		this.division = division;
 	}
 	public EHVSS(String id, String name, String code, String location,
-			String region, String circle, String division) {
+		String region, String circle, String division) {
 		this.id = id;
 		this.name = name;
 		this.code = code;
@@ -62,7 +62,7 @@ public class EHVSS {
 		this.division = division;
 	}
 	public EHVSS(String name, String code, String location, String region,
-			String circle, String division) {
+		String circle, String division) {
 		this.name = name;
 		this.code = code;
 		this.location = location;

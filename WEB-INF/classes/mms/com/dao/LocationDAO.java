@@ -71,6 +71,24 @@ public class LocationDAO {
 		return locations;
 	}
 
+	public ArrayList<String> getDivisionByCircleName(String circleName){
+		ArrayList<String> locations = new ArrayList<String>();
+		try {
+			PreparedStatement ps=connection.prepareStatement("SELECT distinct(division) FROM mpeb_new.blukloaction where circle=?");
+			ps.setString(1, circleName);
+			ResultSet resultSet = ps.executeQuery();
+			while(resultSet.next()){
+				locations.add(resultSet.getString(1).trim());
+			}
+		} catch (SQLException e) {
+			System.out.println("Exception occured in Class : LocationDAO : Method : getDivisionByCircleName"+e);
+		} finally{
+			
+		}
+		System.out.println("Size of divisions for circle Name : "+circleName+"  is : "+locations.size());
+		return locations;
+	}
+
 	public void updateUser(Location location){
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into mms_user_login(sno,locationcode,region,circle,division,dc) VALUES(?,?,?,?,?,?,?)");

@@ -1,4 +1,4 @@
-package feeder.com.dao;
+package mms.com.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import mms.com.utility.DatabaseConnection;
-import feeder.com.beans.User;
+import mms.com.beans.User;
 
 public class UserDAO {
 

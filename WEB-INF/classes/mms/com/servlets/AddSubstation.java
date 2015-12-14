@@ -1,4 +1,4 @@
-package feeder.com.servlet;
+package mms.com.servlet;
 
 import java.io.IOException;
 
@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import feeder.com.beans.Substation;
-import feeder.com.dao.SubstationDAO;
+import mms.com.beans.Substation;
+import mms.com.dao.SubstationDAO;
 
 public class AddSubstation extends HttpServlet{
 

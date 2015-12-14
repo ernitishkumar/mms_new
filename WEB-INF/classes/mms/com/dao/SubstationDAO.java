@@ -1,11 +1,11 @@
-package feeder.com.dao;
+package mms.com.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import mms.com.utility.DatabaseConnection;
-import feeder.com.beans.Substation;
+import mms.com.beans.Substation;
 
 public class SubstationDAO {
 

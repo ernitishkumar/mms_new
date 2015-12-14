@@ -1,4 +1,4 @@
-package feeder.com.servlet;
+package mms.com.servlet;
 
 import java.io.IOException;
 
@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import feeder.com.beans.KV11Feeder;
-import feeder.com.dao.KV11FeederDAO;
+import mms.com.beans.KV11Feeder;
+import mms.com.dao.KV11FeederDAO;
 
 public class AddKV11Feeder extends HttpServlet{
 
