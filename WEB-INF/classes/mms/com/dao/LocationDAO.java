@@ -53,6 +53,25 @@ public class LocationDAO {
 		return location;
 	}
 	
+	public ArrayList<String> getCirclesByRegionName(String regionName){
+		ArrayList<String> locations = null;
+		try {
+			PreparedStatement ps=connection.prepareStatement("SELECT distinct(circle) FROM blukloaction b where region=");
+			ps.setString(1, regionName);
+			ResultSet resultSet = ps.executeQuery();
+			while(resultSet.next()){
+				locations.add(resultSet.getString(4).trim());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Exception occured in Class : LocationDAO : Method : getCirclesByRegionName"+e);
+		} finally{
+			
+		}
+		System.out.println("Size of Circle for region Name : "+regionName+"  is : "+locations.size());
+		return locations;
+	}
+
 	public void updateUser(Location location){
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into mms_user_login(sno,locationcode,region,circle,division,dc) VALUES(?,?,?,?,?,?,?)");

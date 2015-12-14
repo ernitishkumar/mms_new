@@ -33,7 +33,7 @@ public class Login extends HttpServlet {
             }else{
                 System.out.println("User authentication successful for user : "+userBean.getUserLoginid());
                 httpSession.setAttribute("userBean",user);
-                httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/HomePage.jsp");
+                httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/home.jsp");
             }
         }catch(Exception e){
             System.out.println("Exception in class : Login method : processRequest() : "+e);

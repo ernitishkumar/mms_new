@@ -10,6 +10,16 @@
 		<servlet-name>Login</servlet-name>
 		<url-pattern>/Login</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>GetCircles</servlet-name>
+		<servlet-class>mms.com.servlets.GetCircles</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetCircles</servlet-name>
+		<url-pattern>/GetCircles</url-pattern>
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>Logout</servlet-name>
 		<servlet-class>mms.com.servlets.Logout</servlet-class>
