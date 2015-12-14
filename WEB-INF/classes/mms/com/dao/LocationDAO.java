@@ -54,16 +54,15 @@ public class LocationDAO {
 	}
 	
 	public ArrayList<String> getCirclesByRegionName(String regionName){
-		ArrayList<String> locations = null;
+		ArrayList<String> locations = new ArrayList<String>();
 		try {
-			PreparedStatement ps=connection.prepareStatement("SELECT distinct(circle) FROM blukloaction b where region=");
+			PreparedStatement ps=connection.prepareStatement("SELECT distinct(circle) FROM blukloaction b where region=?");
 			ps.setString(1, regionName);
 			ResultSet resultSet = ps.executeQuery();
 			while(resultSet.next()){
-				locations.add(resultSet.getString(4).trim());
+				locations.add(resultSet.getString(1).trim());
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
 			System.out.println("Exception occured in Class : LocationDAO : Method : getCirclesByRegionName"+e);
 		} finally{
 			

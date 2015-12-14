@@ -5,15 +5,9 @@
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 	<script type="text/javascript">
-	$(function() {
-		$( "#region" ).selectmenu();
-		$( "#circle" ).selectmenu();
-		$( "#division" ).selectmenu();
-	});
-
+	
 	$(document).ready(function() {
 		$('#region').change(function(event) {
-			alert("Region Changed");
 			var region = $("select#region").val();
 			$.get('GetCircles', {
 				regionName : region
@@ -29,17 +23,6 @@
 	});
 	</script>
 	<style>
-	label {
-		display: block;
-		margin: 30px 0 0 0;
-	}
-	select {
-		width: 200px;
-	}
-	.overflow {
-		height: 100px;
-	}
-
 	form{
 		background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
 		background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
@@ -135,14 +118,14 @@
 						<option >UJJAIN</option>
 					</select>
 				</label>
-
+				<br/>
 				<label>
 					<span>Select Circle</span>
 					<select name="circle" id="circle">
 						<option >Select circle</option>
 					</select>
 				</label>
-
+				<br/>
 				<label>
 					<span>Select Division</span>
 					<select name="division" id="division">

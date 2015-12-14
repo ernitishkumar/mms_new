@@ -32,8 +32,7 @@ public class GetCircles extends HttpServlet {
         }catch(Exception e){
             System.out.println("Exception in class : GetCircles method : processRequest() : "+e);
         }
-        String json=null;
-        json = new Gson().toJson(locations);
+        String json = new Gson().toJson(locations);
         httpServletResponse.setContentType("application/json");
         httpServletResponse.getWriter().write(json);
     } 
