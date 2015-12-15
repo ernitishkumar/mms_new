@@ -39,6 +39,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>GetKV33FeederNames</servlet-name>
+		<servlet-class>mms.com.servlets.GetKV33FeederNames</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetKV33FeederNames</servlet-name>
+		<url-pattern>/GetKV33FeederNames</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>GetSubstationNames</servlet-name>
 		<servlet-class>mms.com.servlets.GetSubstationNames</servlet-class>
 	</servlet>
@@ -65,6 +74,26 @@
 		<servlet-name>AddKV33FeederDetails</servlet-name>
 		<url-pattern>/AddKV33FeederDetails</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>AddSubstationDetails</servlet-name>
+		<servlet-class>mms.com.servlets.AddSubstationDetails</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddSubstationDetails</servlet-name>
+		<url-pattern>/AddSubstationDetails</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>AddKV11FeederDetails</servlet-name>
+		<servlet-class>mms.com.servlets.AddKV11FeederDetails</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddKV11FeederDetails</servlet-name>
+		<url-pattern>/AddKV11FeederDetails</url-pattern>
+	</servlet-mapping>
+
+
 
 	<servlet>
 		<servlet-name>Logout</servlet-name>

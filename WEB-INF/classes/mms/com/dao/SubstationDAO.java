@@ -9,7 +9,7 @@ import mms.com.beans.Substation;
 
 public class SubstationDAO {
 
-	Connection connection = DatabaseConnection.getConnection();
+	Connection connection = DatabaseConnection.getConnection("mms_new");
 	public void addSubstation(Substation substation){
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into substation(code, name, location, region, circle, division, dc, kv33feeder_id) VALUES(?,?,?,?,?,?,?,?)");
@@ -31,7 +31,7 @@ public class SubstationDAO {
 	public ArrayList<Substation> getAll() {
 		ArrayList<Substation> substations=null;
 		try {
-			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv33feeder");
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM substation");
 			ResultSet rs=ps.executeQuery();
 			substations=new ArrayList<Substation>();
 			while(rs.next()){

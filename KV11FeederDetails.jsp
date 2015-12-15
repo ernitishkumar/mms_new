@@ -116,7 +116,7 @@
 	<div id="linkHolder" name="linkHolder" align="center">
 		<h1>Enter 11KV Feeder Details</h1>
 		<br>
-		<form action="AddKV33FeederDetails.jsp">
+		<form action="AddKV11FeederDetails.jsp">
 			<div>
 				<label>
 					<span>Select SUBSTATION Name</span>

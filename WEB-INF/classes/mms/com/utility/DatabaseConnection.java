@@ -29,7 +29,7 @@ public class DatabaseConnection {
 		Connection connection = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/"+dbName,"root","sql");	
+			connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/"+dbName,"root","kumar");	
 		} catch (SQLException exception) {
 			System.out.println("Not able to connect to the Database "+exception.getMessage());
 			exception.printStackTrace();

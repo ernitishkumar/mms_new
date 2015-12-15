@@ -7,8 +7,8 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
-		$.get('GetSubstationNames',function(response) {
-			var select = $('#substation');
+		$.get('GetKV33FeederNames',function(response) {
+			var select = $('#kv33Feeder');
 			$.each(response, function(index, value) {
 				$('<option>').val(value.id).text(value.name).appendTo(select);
 			});
@@ -41,43 +41,43 @@
 			});
 		});
 	});
-	</script>
-	<style>
-	form{
-		background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
-		background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
-		margin:auto;
-		position:relative;
-		width:550px;
-		height:auto;
-		font-family: Tahoma, Geneva, sans-serif;
-		font-size: 14px;
-		font-style: bold;
-		line-height: 24px;
-		font-weight: bold;
-		color: #09C;
-		text-decoration: none;
-		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
-		padding:10px;
-		border: 1px solid #999;
-		border: inset 1px solid #333;
-		-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	}
+</script>
+<style>
+form{
+	background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
+	background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
+	margin:auto;
+	position:relative;
+	width:550px;
+	height:auto;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 14px;
+	font-style: bold;
+	line-height: 24px;
+	font-weight: bold;
+	color: #09C;
+	text-decoration: none;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding:10px;
+	border: 1px solid #999;
+	border: inset 1px solid #333;
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
 
-	input{
-		width:375px;
-		display:block;
-		border: 1px solid #999;
-		height: 25px;
-		-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	}
-	</style>
+input{
+	width:375px;
+	display:block;
+	border: 1px solid #999;
+	height: 25px;
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+</style>
 </head>
 <body>
 	<jsp:useBean id="user" class="mms.com.beans.UserLogin" scope="session" />
@@ -116,11 +116,11 @@
 	<div id="linkHolder" name="linkHolder" align="center">
 		<h1>Enter Substation Details</h1>
 		<br>
-		<form action="AddEHVSSDetails.jsp">
+		<form action="AddSubstationDetails.jsp">
 			<div>
 				<label>
-					<span>Select Substation Name</span>
-					<select name="substation" id="substation">
+					<span>Select 33KV Feeder Name</span>
+					<select name="kv33FeederID" id="kv33Feeder">
 						<option >Select 33KV Feeder</option>
 					</select>
 				</label>
@@ -137,7 +137,7 @@
 				<label>
 					<span>Enter Substation location</span><input id="location" type="text" name="location" />
 				</label>
-
+				<br/>
 				<label>
 					<span>Select Substation Region</span>
 					<select name="region" id="region">
@@ -161,6 +161,11 @@
 					<select name="division" id="division">
 						<option>Select Division</option>
 					</select>
+				</label>
+				<br/>
+				<br/>
+				<label>
+					<span>Enter DC</span><input id="dc" type="text" name="dc" />
 				</label>
 				<br/>
 				<br/>
