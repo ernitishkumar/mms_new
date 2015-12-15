@@ -6,7 +6,7 @@ public class GeneralResources{
 		if(connection==null){
 			try{
 				Class.forName("com.mysql.jdbc.Driver");
-				connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/mpeb_new","root","kumar");
+				connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/mpeb_new","root","sql");
 			}catch(Exception e){
 				System.out.println("Exception in GeneralResources : getConnection() : "+e);
 			}

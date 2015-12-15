@@ -41,7 +41,7 @@
 		<br/>
 		<b><a href="KV33FeederDetails.jsp">Add 33 KV Feeder Details</a></b>
 		<br/>
-		<b><a href="">Add Substation Details</a></b>
+		<b><a href="Substation.jsp">Add Substation Details</a></b>
 		<br/>
 		<b><a href="">Add 11 KV Feeder Details</a></b>
 	</div>

@@ -26,4 +26,29 @@ public class KV33FeederDAO {
 			System.out.println("Exception in [updateUser]"+e);
 		}
 	}
+	public ArrayList<Substation> getAll() {
+		ArrayList<Substation> substationNames=null;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM substation");
+			ResultSet rs=ps.executeQuery();
+			substationNames=new ArrayList<Substation>();
+			while(rs.next()){
+				Substation substation = new Substation();
+				substation.setId(String.valueOf(rs.getInt(1)));
+				substation.setName(rs.getString(3).trim());
+				substation.setCode(rs.getString(2).trim());
+				substation.setLocation(rs.getString(4).trim());
+				substation.setRegion(rs.getString(5).trim());
+				substation.setCircle(rs.getString(6).trim());
+				substation.setDivision(rs.getString(7).trim());
+				substation.setDc(rs.getString(8).trim());
+				substation.setKv33FeederID(rs.getString(9).trim());
+				substationNames.add(substation);
+			}
+			System.out.println("Number of substation Locations :"+substationNames.size());
+		} catch (SQLException e) {
+			System.out.println("Exception in class : EhvssDAO : method : [get]"+e);
+		}
+		return substationNames;
+	}
 }
