@@ -2,8 +2,11 @@
 <head>
 	<title>MMS - Sustation Details</title>
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="css/guardian.css">
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/jquery.guardian-1.0.min.js"></script>
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
@@ -127,15 +130,15 @@ input{
 				<br/>
 				<br/>
 				<label>
-					<span>Enter Substation Name</span><input id="name" type="text" name="name" />
+					<span>Enter Substation Name</span><input id="name" type="text" name="name" required="true"/>
 				</label>
 
 				<label>
-					<span>Enter Substation Code</span><input id="code" type="text" name="code" />
+					<span>Enter Substation Code</span><input id="code" type="text" name="code" required="true"/>
 				</label>
 
 				<label>
-					<span>Enter Substation location</span><input id="location" type="text" name="location" />
+					<span>Enter Substation location</span><input id="location" type="text" name="location" required="true"/>
 				</label>
 				<br/>
 				<label>
@@ -165,7 +168,7 @@ input{
 				<br/>
 				<br/>
 				<label>
-					<span>Enter DC</span><input id="dc" type="text" name="dc" />
+					<span>Enter DC</span><input id="dc" type="text" name="dc" required="true"/>
 				</label>
 				<br/>
 				<br/>

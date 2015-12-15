@@ -11,12 +11,12 @@
   }
   
   function validateform(){  
-var name=document.getElementById("login");  
-if (name==null || name==""){  
-  alert("Name can't be blank");  
-  return false;  
-}
-}  
+    var name=document.getElementById("login");  
+    if (name==null || name==""){  
+      alert("Name can't be blank");  
+      return false;  
+    }
+  }  
   </script>
 </head>
 <body>
@@ -40,7 +40,7 @@ if (name==null || name==""){
       </div>
     </center>         
     <div class="panel-body">
-      <form action="Login.jsp" method="post" name="login" id="signin" class="form-horizontal" onsubmit="return validateform()">
+      <form action="Login.jsp" method="post" name="login1" id="signin" class="form-horizontal" onsubmit="return validateform()">
         <div class="form-group">
           <p align="center">
             <label for="inputEmail3" class="col-lg-2 control-label">Login Id</label>

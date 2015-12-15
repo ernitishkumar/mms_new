@@ -2,11 +2,16 @@
 <head>
 	<title>MMS - EHVSS Details</title>
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link rel="stylesheet" href="css/guardian.css">
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/jquery.guardian-1.0.min.js"></script>
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
+		$('#example').guardian();
+
 		$('#region').change(function(event) {
 			var region = $("select#region").val();
 			$.get('GetCircles', {
@@ -113,15 +118,16 @@
 		<form action="AddEHVSSDetails.jsp">
 			<div>
 				<label>
-					<span>Enter EHVSS Name</span><input id="name" type="text" name="name" />
+					<span>Enter EHVSS Name</span><input id="name" type="text" name="name" required="true"/>
+					<p class="ui-error-message" id="error-message-phone"></p>
 				</label>
 
 				<label>
-					<span>Enter EHVSS Code</span><input id="code" type="text" name="code" />
+					<span>Enter EHVSS Code</span><input id="code" type="text" name="code" required="true"/>
 				</label>
 
 				<label>
-					<span>Enter EHVSS location</span><input id="location" type="text" name="location" />
+					<span>Enter EHVSS location</span><input id="location" type="text" name="location" required="true"/>
 				</label>
 
 				<label>
