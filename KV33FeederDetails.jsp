@@ -13,14 +13,14 @@
 				$('<option>').val(value.id).text(value.name).appendTo(select);
 			});
 		});
-		alert("Hello");
-
 		$('#region').change(function(event) {
 			var region = $("select#region").val();
 			$.get('GetCircles', {
 				regionName : region
 			}, function(response) {
 				var select = $('#circle');
+				select.find('option').remove();
+				$('<option>').val("-1").text("select circle").appendTo(select);
 				$.each(response, function(index, value) {
 					$('<option>').val(value).text(value).appendTo(select);
 				});
@@ -33,6 +33,8 @@
 				circleName : circle
 			}, function(response) {
 				var select = $('#division');
+				select.find('option').remove();
+				$('<option>').val("-1").text("select division").appendTo(select);
 				$.each(response, function(index, value) {
 					$('<option>').val(value).text(value).appendTo(select);
 				});
@@ -114,15 +116,16 @@
 	<div id="linkHolder" name="linkHolder" align="center">
 		<h1>Enter 33KV Feeder Details</h1>
 		<br>
-		<form action="AddEHVSSDetails.jsp">
+		<form action="AddKV33FeederDetails.jsp">
 			<div>
 				<label>
 					<span>Select EHVSS Name</span>
-					<select name="ehvss" id="ehvss">
+					<select name="ehvssID" id="ehvss">
 						<option >Select EHVSS</option>
 					</select>
 				</label>
 				<br/>
+				
 				<br/>
 				<label>
 					<span>Enter Name</span><input id="name" type="text" name="name" />

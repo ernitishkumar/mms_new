@@ -1,15 +1,12 @@
 package mms.com.dao;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
 import mms.com.utility.DatabaseConnection;
 import mms.com.beans.KV33Feeder;
-
 public class KV33FeederDAO {
 
-	Connection connection = DatabaseConnection.getConnection();
+	Connection connection = DatabaseConnection.getConnection("mms_new");
 	public void addKV33Feeder(KV33Feeder kv33Feeder){
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into KV33Feeder(code, name, location, region, circle, division, ehvss_id) VALUES(?,?,?,?,?,?,?)");

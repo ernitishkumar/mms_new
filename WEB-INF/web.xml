@@ -37,7 +37,7 @@
 		<servlet-name>GetEhvssNames</servlet-name>
 		<url-pattern>/GetEhvssNames</url-pattern>
 	</servlet-mapping>
-	
+
 
 	<servlet>
 		<servlet-name>AddEHVSSDetails</servlet-name>
@@ -46,6 +46,15 @@
 	<servlet-mapping>
 		<servlet-name>AddEHVSSDetails</servlet-name>
 		<url-pattern>/AddEHVSSDetails</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>AddKV33FeederDetails</servlet-name>
+		<servlet-class>mms.com.servlets.AddKV33FeederDetails</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddKV33FeederDetails</servlet-name>
+		<url-pattern>/AddKV33FeederDetails</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

@@ -9,7 +9,7 @@ import mms.com.beans.KV11Feeder;
 
 public class KV11FeederDAO {
 
-	Connection connection = DatabaseConnection.getConnection();
+	Connection connection = DatabaseConnection.getConnection("mms_new");
 	public void add11KVFeeder(KV11Feeder kv11Feeder){
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into KV11FEEDER(code, name, location, region, circle, division, dc, substation_id) VALUES(?,?,?,?,?,?,?,?)");
