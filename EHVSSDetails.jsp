@@ -113,19 +113,19 @@
 		<form action="AddEHVSSDetails.jsp">
 			<div>
 				<label>
-					<span>Enter Name</span><input id="name" type="text" name="name" />
+					<span>Enter EHVSS Name</span><input id="name" type="text" name="name" />
 				</label>
 
 				<label>
-					<span>Enter Code</span><input id="code" type="text" name="code" />
+					<span>Enter EHVSS Code</span><input id="code" type="text" name="code" />
 				</label>
 
 				<label>
-					<span>Enter location</span><input id="location" type="text" name="location" />
+					<span>Enter EHVSS location</span><input id="location" type="text" name="location" />
 				</label>
 
 				<label>
-					<span>Select Region</span>
+					<span>Select EHVSS Region</span>
 					<select name="region" id="region">
 						<option >Select Region</option>
 						<option >INDORE</option>
@@ -135,7 +135,7 @@
 				<br/>
 				<br/>
 				<label>
-					<span>Select Circle</span>
+					<span>Select EHVSS Circle</span>
 					<select name="circle" id="circle">
 						<option >Select circle</option>
 					</select>
@@ -143,7 +143,7 @@
 				<br/>
 				<br/>
 				<label>
-					<span>Select Division</span>
+					<span>Select EHVSS Division</span>
 					<select name="division" id="division">
 						<option>Select Division</option>
 					</select>
@@ -151,7 +151,7 @@
 				<br/>
 				<br/>
 				<label>
-					<input type="submit" value="Add" />
+					<input type="submit" value="Add EHVSS" />
 				</label>
 
 			</div>

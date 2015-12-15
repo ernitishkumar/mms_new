@@ -12,7 +12,7 @@ public class DatabaseConnection {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			if(connection==null){
-				connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/mpeb_new","root","sql");	
+				connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/mpeb_new","root","kumar");	
 			}
 		} catch (SQLException exception) {
 			System.out.println("Not able to connect to the Database "+exception.getMessage());
