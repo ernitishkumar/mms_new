@@ -7,14 +7,20 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
+		$.get('GetEhvssNames',function(response) {
+			var select = $('#ehvss');
+			$.each(response, function(index, value) {
+				$('<option>').val(value.id).text(value.name).appendTo(select);
+			});
+		});
+		alert("Hello");
+
 		$('#region').change(function(event) {
 			var region = $("select#region").val();
 			$.get('GetCircles', {
 				regionName : region
 			}, function(response) {
-
 				var select = $('#circle');
-				
 				$.each(response, function(index, value) {
 					$('<option>').val(value).text(value).appendTo(select);
 				});
@@ -106,10 +112,18 @@
 	</table>
 	<br/>
 	<div id="linkHolder" name="linkHolder" align="center">
-		<h1>Enter EHVSS Details</h1>
+		<h1>Enter 33KV Feeder Details</h1>
 		<br>
 		<form action="AddEHVSSDetails.jsp">
 			<div>
+				<label>
+					<span>Select EHVSS Name</span>
+					<select name="ehvss" id="ehvss">
+						<option >Select EHVSS</option>
+					</select>
+				</label>
+				<br/>
+				<br/>
 				<label>
 					<span>Enter Name</span><input id="name" type="text" name="name" />
 				</label>

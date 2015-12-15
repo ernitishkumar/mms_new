@@ -39,7 +39,7 @@
 	<div id="linkHolder" name="linkHolder" align="center">
 		<b><a href="EHVSSDetails.jsp">Add EHVSS Details</a></b>
 		<br/>
-		<b><a href="">Add 33 KV Feeder Details</a></b>
+		<b><a href="KV33FeederDetails.jsp">Add 33 KV Feeder Details</a></b>
 		<br/>
 		<b><a href="">Add Substation Details</a></b>
 		<br/>
