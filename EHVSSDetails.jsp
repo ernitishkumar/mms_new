@@ -12,9 +12,9 @@
 			$.get('GetCircles', {
 				regionName : region
 			}, function(response) {
-
 				var select = $('#circle');
-				
+				select.find('option').remove();
+				$('<option>').val("-1").text("select circle").appendTo(select);
 				$.each(response, function(index, value) {
 					$('<option>').val(value).text(value).appendTo(select);
 				});
@@ -27,6 +27,8 @@
 				circleName : circle
 			}, function(response) {
 				var select = $('#division');
+				select.find('option').remove();
+				$('<option>').val("-1").text("select division").appendTo(select);
 				$.each(response, function(index, value) {
 					$('<option>').val(value).text(value).appendTo(select);
 				});
