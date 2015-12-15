@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>MMS - Sustation Details</title>
+	<title>MMS - EHVSS Details</title>
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -114,32 +114,33 @@
 	</table>
 	<br/>
 	<div id="linkHolder" name="linkHolder" align="center">
-		<h1>Enter Substation Details</h1>
+		<h1>Enter 11KV Feeder Details</h1>
 		<br>
-		<form action="AddEHVSSDetails.jsp">
+		<form action="AddKV33FeederDetails.jsp">
 			<div>
 				<label>
-					<span>Select Substation Name</span>
-					<select name="substation" id="substation">
-						<option >Select 33KV Feeder</option>
+					<span>Select SUBSTATION Name</span>
+					<select name="substationID" id="substation">
+						<option >Select substation</option>
 					</select>
 				</label>
 				<br/>
+				
 				<br/>
 				<label>
-					<span>Enter Substation Name</span><input id="name" type="text" name="name" />
+					<span>Enter 11KV Feeder Name</span><input id="name" type="text" name="name" />
 				</label>
 
 				<label>
-					<span>Enter Substation Code</span><input id="code" type="text" name="code" />
+					<span>Enter 11KV Feeder Code</span><input id="code" type="text" name="code" />
 				</label>
 
 				<label>
-					<span>Enter Substation location</span><input id="location" type="text" name="location" />
+					<span>Enter 11KV Feeder location</span><input id="location" type="text" name="location" />
 				</label>
 
 				<label>
-					<span>Select Substation Region</span>
+					<span>Select 11KV Feeder Region</span>
 					<select name="region" id="region">
 						<option >Select Region</option>
 						<option >INDORE</option>
@@ -149,7 +150,7 @@
 				<br/>
 				<br/>
 				<label>
-					<span>Select Substation Circle</span>
+					<span>Select 11KV Feeder Circle</span>
 					<select name="circle" id="circle">
 						<option >Select circle</option>
 					</select>
@@ -157,7 +158,7 @@
 				<br/>
 				<br/>
 				<label>
-					<span>Select Substation Division</span>
+					<span>Select 11KV Feeder Division</span>
 					<select name="division" id="division">
 						<option>Select Division</option>
 					</select>
@@ -165,7 +166,7 @@
 				<br/>
 				<br/>
 				<label>
-					<input type="submit" value="Add Substation" />
+					<input type="submit" value="Add 11KV Feeder" />
 				</label>
 
 			</div>

@@ -38,6 +38,15 @@
 		<url-pattern>/GetEhvssNames</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>GetSubstationNames</servlet-name>
+		<servlet-class>mms.com.servlets.GetSubstationNames</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetSubstationNames</servlet-name>
+		<url-pattern>/GetSubstationNames</url-pattern>
+	</servlet-mapping>
+
 
 	<servlet>
 		<servlet-name>AddEHVSSDetails</servlet-name>

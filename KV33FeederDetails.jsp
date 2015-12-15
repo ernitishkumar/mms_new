@@ -128,19 +128,19 @@
 				
 				<br/>
 				<label>
-					<span>Enter Name</span><input id="name" type="text" name="name" />
+					<span>Enter 33KV Feeder Name</span><input id="name" type="text" name="name" />
 				</label>
 
 				<label>
-					<span>Enter Code</span><input id="code" type="text" name="code" />
+					<span>Enter 33KV Feeder Code</span><input id="code" type="text" name="code" />
 				</label>
 
 				<label>
-					<span>Enter location</span><input id="location" type="text" name="location" />
+					<span>Enter 33KV Feeder location</span><input id="location" type="text" name="location" />
 				</label>
 
 				<label>
-					<span>Select Region</span>
+					<span>Select 33KV Feeder Region</span>
 					<select name="region" id="region">
 						<option >Select Region</option>
 						<option >INDORE</option>
@@ -150,7 +150,7 @@
 				<br/>
 				<br/>
 				<label>
-					<span>Select Circle</span>
+					<span>Select 33KV Feeder Circle</span>
 					<select name="circle" id="circle">
 						<option >Select circle</option>
 					</select>
@@ -158,7 +158,7 @@
 				<br/>
 				<br/>
 				<label>
-					<span>Select Division</span>
+					<span>Select 33KV Feeder Division</span>
 					<select name="division" id="division">
 						<option>Select Division</option>
 					</select>
@@ -166,7 +166,7 @@
 				<br/>
 				<br/>
 				<label>
-					<input type="submit" value="Add" />
+					<input type="submit" value="Add 33KV Feeder" />
 				</label>
 
 			</div>

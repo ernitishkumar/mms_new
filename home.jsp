@@ -43,7 +43,7 @@
 		<br/>
 		<b><a href="Substation.jsp">Add Substation Details</a></b>
 		<br/>
-		<b><a href="">Add 11 KV Feeder Details</a></b>
+		<b><a href="KV11FeederDetails.jsp">Add 11 KV Feeder Details</a></b>
 	</div>
 	<br/>
 	<br/>

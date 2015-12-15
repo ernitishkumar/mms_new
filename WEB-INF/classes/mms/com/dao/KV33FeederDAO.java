@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import mms.com.utility.DatabaseConnection;
 import mms.com.beans.KV33Feeder;
+import java.util.ArrayList;
+import java.sql.ResultSet;
 public class KV33FeederDAO {
 
 	Connection connection = DatabaseConnection.getConnection("mms_new");
@@ -23,29 +25,28 @@ public class KV33FeederDAO {
 			System.out.println("Exception in [updateUser]"+e);
 		}
 	}
-	public ArrayList<Substation> getAll() {
-		ArrayList<Substation> substationNames=null;
+	public ArrayList<KV33Feeder> getAll() {
+		ArrayList<KV33Feeder> kv33Feeders=null;
 		try {
-			PreparedStatement ps = connection.prepareStatement("SELECT * FROM substation");
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv33feeder");
 			ResultSet rs=ps.executeQuery();
-			substationNames=new ArrayList<Substation>();
+			kv33Feeders=new ArrayList<KV33Feeder>();
 			while(rs.next()){
-				Substation substation = new Substation();
-				substation.setId(String.valueOf(rs.getInt(1)));
-				substation.setName(rs.getString(3).trim());
-				substation.setCode(rs.getString(2).trim());
-				substation.setLocation(rs.getString(4).trim());
-				substation.setRegion(rs.getString(5).trim());
-				substation.setCircle(rs.getString(6).trim());
-				substation.setDivision(rs.getString(7).trim());
-				substation.setDc(rs.getString(8).trim());
-				substation.setKv33FeederID(rs.getString(9).trim());
-				substationNames.add(substation);
+				KV33Feeder kv33Feeder = new KV33Feeder();
+				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
+				kv33Feeder.setName(rs.getString(3).trim());
+				kv33Feeder.setCode(rs.getString(2).trim());
+				kv33Feeder.setLocation(rs.getString(4).trim());
+				kv33Feeder.setRegion(rs.getString(5).trim());
+				kv33Feeder.setCircle(rs.getString(6).trim());
+				kv33Feeder.setDivision(rs.getString(7).trim());
+				kv33Feeder.setEhvssID(rs.getString(8).trim());
+				kv33Feeders.add(kv33Feeder);
 			}
-			System.out.println("Number of substation Locations :"+substationNames.size());
+			System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
 		} catch (SQLException e) {
-			System.out.println("Exception in class : EhvssDAO : method : [get]"+e);
+			System.out.println("Exception in class : KV33FeederDAO : method : [getAll]"+e);
 		}
-		return substationNames;
+		return kv33Feeders;
 	}
 }
