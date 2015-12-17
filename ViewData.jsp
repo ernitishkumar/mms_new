@@ -13,43 +13,45 @@
         //initialize jTable
         $('#EhvssTableContainer').jtable({
             title: 'Table of EHVSS',
+            paging: true, //Enable paging
+            pageSize: 10, //Set page size (default: 10)   
             actions: {
                 listAction: 'EHVSSController?action=list',
                 createAction:'CRUDController?action=create',
                 updateAction: 'CRUDController?action=update',
                 deleteAction: 'CRUDController?action=delete'
             },
-            fields: {
+            fields:{
                 id: {
-                    key: true,
-                    list: false
-                },
-                name: {
-                    title: 'EHVSS Name',
-                    width: '30%'
-                },
-                code: {
-                    title: 'Code',
-                    width: '30%'
-                },
-                region: {
-                    title: 'Region',
-                    width: '20%'
-                },
-                circle: {
-                    title: 'Circle',
-                    width: '20%',
-                    
-                },
-                division: {
-                    title: 'Division',
-                    width: '20%',
-                    
-                }
-                
+                  title: 'EHVSS ID',
+                  key: true,
+                  list: true,
+                  create:true
+              },
+              name: {
+                title: 'EHVSS Name',
+                width: '30%'
+            },
+            code: {
+                title: 'Code',
+                width: '30%'
+            },
+            region: {
+                title: 'Region',
+                width: '20%'
+            },
+            circle: {
+                title: 'Circle',
+                width: '20%',
+
+            },
+            division: {
+                title: 'Division',
+                width: '20%',
             }
-        });
-        $('#EhvssTableContainer').jtable('load');
+        }
+    });
+$('#EhvssTableContainer').jtable('load');
 });
 </script>
 </head>
