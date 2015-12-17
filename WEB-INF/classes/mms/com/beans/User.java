@@ -3,17 +3,17 @@ package mms.com.beans;
 public class User {
 
 	private String id;
-	private String userName;
+	private String username;
 	private String password;
 	private String name;
-	public User(String id, String userName, String password, String name) {
+	public User(String id, String username, String password, String name) {
 		this.id = id;
-		this.userName = userName;
+		this.username = username;
 		this.password = password;
 		this.name = name;
 	}
-	public User(String userName, String password, String name) {
-		this.userName = userName;
+	public User(String username, String password, String name) {
+		this.username = username;
 		this.password = password;
 		this.name = name;
 	}
@@ -25,11 +25,11 @@ public class User {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;

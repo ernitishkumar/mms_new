@@ -5,84 +5,98 @@
 	<link rel="stylesheet" href="css/guardian.css">
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="js/jquery.guardian-1.0.min.js"></script>
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
 		$('#example').guardian();
 
-		$.get('GetEhvssNames',function(response) {
+		/*$.get('GetEhvssNames',function(response) {
 			var select = $('#ehvss');
 			$.each(response, function(index, value) {
-				$('<option>').val(value.id).text(value.name).appendTo(select);
+				$('<option>').val(value.id).text(value.id+" "+value.name).appendTo(select);
 			});
-		});
-		$('#region').change(function(event) {
-			var region = $("select#region").val();
-			$.get('GetCircles', {
-				regionName : region
-			}, function(response) {
-				var select = $('#circle');
-				select.find('option').remove();
-				$('<option>').val("-1").text("select circle").appendTo(select);
-				$.each(response, function(index, value) {
-					$('<option>').val(value).text(value).appendTo(select);
-				});
-			});
-		});
+});*/
 
-		$('#circle').change(function(event) {
-			var circle = $("select#circle").val();
-			$.get('GetDivisions', {
-				circleName : circle
-			}, function(response) {
-				var select = $('#division');
-				select.find('option').remove();
-				$('<option>').val("-1").text("select division").appendTo(select);
-				$.each(response, function(index, value) {
-					$('<option>').val(value).text(value).appendTo(select);
-				});
-			});
+$('#region').change(function(event) {
+	var region = $("select#region").val();
+	$.get('GetEhvssNames', {
+		regionName : region
+	}, function(response) {
+		var select = $('#ehvss');
+		select.find('option').remove();
+		$('<option>').val("-1").text("select EHVSS").appendTo(select);
+		$.each(response, function(index, value) {
+			$('<option>').val(value.id).text(value.id+" "+value.name).appendTo(select);
 		});
 	});
-	</script>
-	<style>
-	form{
-		background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
-		background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
-		margin:auto;
-		position:relative;
-		width:550px;
-		height:auto;
-		font-family: Tahoma, Geneva, sans-serif;
-		font-size: 14px;
-		font-style: bold;
-		line-height: 24px;
-		font-weight: bold;
-		color: #09C;
-		text-decoration: none;
-		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
-		padding:10px;
-		border: 1px solid #999;
-		border: inset 1px solid #333;
-		-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	}
+	$.get('GetCircles', {
+		regionName : region
+	}, function(response) {
+		var select = $('#circle');
+		select.find('option').remove();
+		$('<option>').val("-1").text("select circle").appendTo(select);
+		$.each(response, function(index, value) {
+			$('<option>').val(value).text(value).appendTo(select);
+		});
+	});
+});
 
-	input{
-		width:375px;
-		display:block;
-		border: 1px solid #999;
-		height: 25px;
-		-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	}
-	</style>
+/*$('#circle').change(function(event) {
+	var circle = $("select#circle").val();
+	$.get('GetDivisions', {
+		circleName : circle
+	}, function(response) {
+		var select = $('#division');
+		select.find('option').remove();
+		$('<option>').val("-1").text("select division").appendTo(select);
+		$.each(response, function(index, value) {
+			$('<option>').val(value).text(value).appendTo(select);
+		});
+	});
+});*/
+});
+</script>
+<style>
+form{
+	background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
+	background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
+	margin:auto;
+	position:relative;
+	width:550px;
+	height:auto;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 14px;
+	font-style: bold;
+	line-height: 24px;
+	font-weight: bold;
+	color: #09C;
+	text-decoration: none;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding:10px;
+	border: 1px solid #999;
+	border: inset 1px solid #333;
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+
+input{
+	width:375px;
+	display:block;
+	border: 1px solid #999;
+	height: 25px;
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+mark {
+	background-color: white;
+	color: red;
+}
+</style>
 </head>
 <body>
 	<jsp:useBean id="user" class="mms.com.beans.UserLogin" scope="session" />
@@ -121,8 +135,19 @@
 	<div id="linkHolder" name="linkHolder" align="center">
 		<h1>Enter 33KV Feeder Details</h1>
 		<br>
+		<h4 align="center"><mark>${errorBean.errorMessage}</mark></h4>
 		<form action="AddKV33FeederDetails.jsp">
 			<div>
+				<label>
+					<span>Select 33KV Feeder Region</span>
+					<select name="region" id="region">
+						<option >Select Region</option>
+						<option >INDORE</option>
+						<option >UJJAIN</option>
+					</select>
+				</label>
+				<br/>
+				<br/>
 				<label>
 					<span>Select EHVSS Name</span>
 					<select name="ehvssID" id="ehvss">
@@ -139,21 +164,8 @@
 				<label>
 					<span>Enter 33KV Feeder Code</span><input id="code" type="text" name="code" required="true"/>
 				</label>
-
-				<label>
-					<span>Enter 33KV Feeder location</span><input id="location" type="text" name="location" required="true"/>
-				</label>
-
-				<label>
-					<span>Select 33KV Feeder Region</span>
-					<select name="region" id="region">
-						<option >Select Region</option>
-						<option >INDORE</option>
-						<option >UJJAIN</option>
-					</select>
-				</label>
 				<br/>
-				<br/>
+				
 				<label>
 					<span>Select 33KV Feeder Circle</span>
 					<select name="circle" id="circle">
@@ -161,19 +173,22 @@
 					</select>
 				</label>
 				<br/>
-				<br/>
+				<!-- <br/>
 				<label>
 					<span>Select 33KV Feeder Division</span>
 					<select name="division" id="division">
 						<option>Select Division</option>
 					</select>
 				</label>
-				<br/>
+				<br/> -->
 				<br/>
 				<label>
 					<input type="submit" value="Add 33KV Feeder" />
 				</label>
-
+				<br/>
+				<label>
+					<input type="reset" value="Reset" />
+				</label>
 			</div>
 		</form>
 	</div>

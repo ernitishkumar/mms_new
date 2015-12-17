@@ -1,8 +1,8 @@
 package mms.com.servlets;
-import mms.com.dao.UserLoginDAO;
+import mms.com.dao.UserDAO;
 import mms.com.beans.ErrorBean;
 import mms.com.beans.MessageBean;
-import mms.com.beans.UserLogin;
+import mms.com.beans.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -18,22 +18,21 @@ public class Login extends HttpServlet {
     throws ServletException, IOException {
         System.out.println("User authentication started");
         HttpSession httpSession =httpServletRequest.getSession();
-        UserLoginDAO userLoginDAO=new UserLoginDAO();
-
+        UserDAO userDAO=new UserDAO();
         try {
-            UserLogin userBean=(UserLogin)httpSession.getAttribute("userBean");
-            UserLogin user=userLoginDAO.getByUserID(userBean.getUserLoginid());
-            if(user==null){
-                System.out.println("User authentication failed for user : "+userBean.getUserLoginid());
+            User userBean=(User)httpSession.getAttribute("userBean");
+            User user=userDAO.getByUsername(userBean.getUsername());
+            if(user!=null && userBean.getPassword().equals(user.getPassword())){
+                System.out.println("User authentication successful for user : "+userBean.getUsername());
+                httpSession.setAttribute("userBean",user);
+                httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/home.jsp");    
+            }else{
+                System.out.println("User authentication failed for user : "+userBean.getUsername());
                 httpSession.removeAttribute("userBean");
                 ErrorBean errorBean=new ErrorBean("Invalid username/password");
                 httpServletRequest.setAttribute("errorBean",errorBean);
-                RequestDispatcher requestDispatcher=httpServletRequest.getRequestDispatcher("/index.jsp?ui=i");
+                RequestDispatcher requestDispatcher=httpServletRequest.getRequestDispatcher("/index.jsp");
                 requestDispatcher.forward(httpServletRequest,httpServletResponse);
-            }else{
-                System.out.println("User authentication successful for user : "+userBean.getUserLoginid());
-                httpSession.setAttribute("userBean",user);
-                httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/home.jsp");
             }
         }catch(Exception e){
             System.out.println("Exception in class : Login method : processRequest() : "+e);

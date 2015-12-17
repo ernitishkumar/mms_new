@@ -5,14 +5,14 @@
 	<link rel="stylesheet" href="css/guardian.css">
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
 	<script src="js/jquery.guardian-1.0.min.js"></script>
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
 		$('#example').guardian();
 
-		$('#region').change(function(event) {
+		/*$('#region').change(function(event) {
 			var region = $("select#region").val();
 			$.get('GetCircles', {
 				regionName : region
@@ -38,8 +38,8 @@
 					$('<option>').val(value).text(value).appendTo(select);
 				});
 			});
-		});
-	});
+});*/
+});
 	</script>
 	<style>
 	form{
@@ -75,6 +75,11 @@
 		-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
 		-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
 		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	mark {
+		background-color: white;
+		color: red;
 	}
 	</style>
 </head>
@@ -115,6 +120,7 @@
 	<div id="linkHolder" name="linkHolder" align="center">
 		<h1>Enter EHVSS Details</h1>
 		<br>
+		<h4 align="center"><mark>${errorBean.errorMessage}</mark></h4>
 		<form action="AddEHVSSDetails.jsp">
 			<div>
 				<label>
@@ -125,11 +131,7 @@
 				<label>
 					<span>Enter EHVSS Code</span><input id="code" type="text" name="code" required="true"/>
 				</label>
-
-				<label>
-					<span>Enter EHVSS location</span><input id="location" type="text" name="location" required="true"/>
-				</label>
-
+				<br/>
 				<label>
 					<span>Select EHVSS Region</span>
 					<select name="region" id="region">
@@ -140,7 +142,8 @@
 				</label>
 				<br/>
 				<br/>
-				<label>
+
+				<!-- <label>
 					<span>Select EHVSS Circle</span>
 					<select name="circle" id="circle">
 						<option >Select circle</option>
@@ -155,9 +158,13 @@
 					</select>
 				</label>
 				<br/>
-				<br/>
+				<br/> -->
 				<label>
 					<input type="submit" value="Add EHVSS" />
+				</label>
+				<br/>
+				<label>
+					<input type="reset" value="Reset" />
 				</label>
 
 			</div>

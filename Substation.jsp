@@ -10,12 +10,6 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
-		$.get('GetKV33FeederNames',function(response) {
-			var select = $('#kv33Feeder');
-			$.each(response, function(index, value) {
-				$('<option>').val(value.id).text(value.name).appendTo(select);
-			});
-		});
 		$('#region').change(function(event) {
 			var region = $("select#region").val();
 			$.get('GetCircles', {
@@ -32,6 +26,16 @@
 
 		$('#circle').change(function(event) {
 			var circle = $("select#circle").val();
+			$.get('GetKV33FeederNames',{
+				circleName : circle
+			},function(response) {
+				var select = $('#kv33Feeder');
+				select.find('option').remove();
+				$('<option>').val("-1").text("select 33KV Feeder").appendTo(select);
+				$.each(response, function(index, value) {
+					$('<option>').val(value.id).text(value.id+" "+value.name).appendTo(select);
+				});
+			});
 			$.get('GetDivisions', {
 				circleName : circle
 			}, function(response) {
@@ -119,28 +123,9 @@ input{
 	<div id="linkHolder" name="linkHolder" align="center">
 		<h1>Enter Substation Details</h1>
 		<br>
+		<h4 align="center"><mark>${errorBean.errorMessage}</mark></h4>
 		<form action="AddSubstationDetails.jsp">
 			<div>
-				<label>
-					<span>Select 33KV Feeder Name</span>
-					<select name="kv33FeederID" id="kv33Feeder">
-						<option >Select 33KV Feeder</option>
-					</select>
-				</label>
-				<br/>
-				<br/>
-				<label>
-					<span>Enter Substation Name</span><input id="name" type="text" name="name" required="true"/>
-				</label>
-
-				<label>
-					<span>Enter Substation Code</span><input id="code" type="text" name="code" required="true"/>
-				</label>
-
-				<label>
-					<span>Enter Substation location</span><input id="location" type="text" name="location" required="true"/>
-				</label>
-				<br/>
 				<label>
 					<span>Select Substation Region</span>
 					<select name="region" id="region">
@@ -160,6 +145,28 @@ input{
 				<br/>
 				<br/>
 				<label>
+					<span>Select 33KV Feeder Name</span>
+					<select name="kv33FeederID" id="kv33Feeder">
+						<option >Select 33KV Feeder</option>
+					</select>
+				</label>
+				<br/>
+				<br/>
+				<label>
+					<span>Enter Substation Name</span><input id="name" type="text" name="name" required="true"/>
+				</label>
+
+				<label>
+					<span>Enter Substation Code</span><input id="code" type="text" name="code" required="true"/>
+				</label>
+
+				<!-- <label>
+					<span>Enter Substation location</span><input id="location" type="text" name="location" required="true"/>
+				</label> -->
+				<br/>
+				
+				<br/>
+				<label>
 					<span>Select Substation Division</span>
 					<select name="division" id="division">
 						<option>Select Division</option>
@@ -167,15 +174,18 @@ input{
 				</label>
 				<br/>
 				<br/>
-				<label>
+				<!-- <label>
 					<span>Enter DC</span><input id="dc" type="text" name="dc" required="true"/>
 				</label>
 				<br/>
-				<br/>
+				<br/> -->
 				<label>
 					<input type="submit" value="Add Substation" />
 				</label>
-
+				<br/>
+				<label>
+					<input type="reset" value="Reset" />
+				</label>
 			</div>
 		</form>
 	</div>

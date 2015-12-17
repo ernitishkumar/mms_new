@@ -20,14 +20,17 @@ public class GetEhvssNames extends HttpServlet {
     protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
     throws ServletException, IOException {
         System.out.println("Get EhvssNames Called");
-        HttpSession httpSession =httpServletRequest.getSession();
+        String regionName=httpServletRequest.getParameter("regionName");
+        System.out.println("GetEhvssNames called for Region : "+regionName);
         EhvssDAO ehvssDAO=new EhvssDAO();
-        /*String regionName=httpServletRequest.getParameter("regionName");
-        System.out.println("Getting circles for region NAME: "+regionName);*/
         ArrayList<EHVSS> locations=new ArrayList<EHVSS>();
         try {
-            locations=ehvssDAO.getAll();
-            System.out.println("EHVSS are : "+locations);
+            if(regionName==null){
+                locations=ehvssDAO.getAll();
+            }else{
+                locations=ehvssDAO.getByRegion(regionName);
+            }
+            System.out.println("EHVSS for region :"+regionName+" is : "+locations);
         }catch(Exception e){
             System.out.println("Exception in class : GetEhvssNames method : processRequest() : "+e);
         }

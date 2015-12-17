@@ -5,17 +5,11 @@
 	<link rel="stylesheet" href="css/guardian.css">
 	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="js/jquery.guardian-1.0.min.js"></script>
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
-		$.get('GetSubstationNames',function(response) {
-			var select = $('#substation');
-			$.each(response, function(index, value) {
-				$('<option>').val(value.id).text(value.name).appendTo(select);
-			});
-		});
+		
 		$('#region').change(function(event) {
 			var region = $("select#region").val();
 			$.get('GetCircles', {
@@ -43,44 +37,62 @@
 				});
 			});
 		});
-	});
-	</script>
-	<style>
-	form{
-		background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
-		background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
-		margin:auto;
-		position:relative;
-		width:550px;
-		height:auto;
-		font-family: Tahoma, Geneva, sans-serif;
-		font-size: 14px;
-		font-style: bold;
-		line-height: 24px;
-		font-weight: bold;
-		color: #09C;
-		text-decoration: none;
-		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
-		padding:10px;
-		border: 1px solid #999;
-		border: inset 1px solid #333;
-		-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	}
 
-	input{
-		width:375px;
-		display:block;
-		border: 1px solid #999;
-		height: 25px;
-		-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-		box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	}
-	</style>
+		$('#division').change(function(event) {
+			var division = $("select#division").val();
+			$.get('GetSubstationNames',{
+				divisionName : division
+			}, function(response) {
+				var select = $('#substation');
+				select.find('option').remove();
+				$('<option>').val("-1").text("select substation").appendTo(select);
+				$.each(response, function(index, value) {
+					$('<option>').val(value.id).text(value.id+" "+value.name).appendTo(select);
+				});
+			});
+		});
+	});
+</script>
+<style>
+form{
+	background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
+	background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
+	margin:auto;
+	position:relative;
+	width:550px;
+	height:auto;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 14px;
+	font-style: bold;
+	line-height: 24px;
+	font-weight: bold;
+	color: #09C;
+	text-decoration: none;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding:10px;
+	border: 1px solid #999;
+	border: inset 1px solid #333;
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+
+input{
+	width:375px;
+	display:block;
+	border: 1px solid #999;
+	height: 25px;
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+mark {
+	background-color: white;
+	color: red;
+}
+</style>
 </head>
 <body>
 	<jsp:useBean id="user" class="mms.com.beans.UserLogin" scope="session" />
@@ -119,29 +131,9 @@
 	<div id="linkHolder" name="linkHolder" align="center">
 		<h1>Enter 11KV Feeder Details</h1>
 		<br>
+		<h4 align="center"><mark>${errorBean.errorMessage}</mark></h4>
 		<form action="AddKV11FeederDetails.jsp">
 			<div>
-				<label>
-					<span>Select SUBSTATION Name</span>
-					<select name="substationID" id="substation">
-						<option >Select substation</option>
-					</select>
-				</label>
-				<br/>
-				
-				<br/>
-				<label>
-					<span>Enter 11KV Feeder Name</span><input id="name" type="text" name="name" required="true"/>
-				</label>
-
-				<label>
-					<span>Enter 11KV Feeder Code</span><input id="code" type="text" name="code" required="true"/>
-				</label>
-
-				<label>
-					<span>Enter 11KV Feeder location</span><input id="location" type="text" name="location" required="true"/>
-				</label>
-
 				<label>
 					<span>Select 11KV Feeder Region</span>
 					<select name="region" id="region">
@@ -168,10 +160,40 @@
 				</label>
 				<br/>
 				<br/>
+
+				<label>
+					<span>Select SUBSTATION Name</span>
+					<select name="substationID" id="substation">
+						<option >Select substation</option>
+					</select>
+				</label>
+				<br/>
+				
+				<br/>
+				<label>
+					<span>Enter 11KV Feeder Name</span><input id="name" type="text" name="name" required="true"/>
+				</label>
+
+				<label>
+					<span>Enter 11KV Feeder Code</span><input id="code" type="text" name="code" required="true"/>
+				</label>
+
+				<label>
+					<span>Enter 11KV Feeder Type</span><input id="feederType" type="text" name="feederType" required="true"/>
+				</label>
+				
+                <label>
+					<span>Enter DC</span><input id="dc" type="text" name="dc" required="true"/>
+				</label> 
+
+				<br/>
 				<label>
 					<input type="submit" value="Add 11KV Feeder" />
 				</label>
-
+				<br/>
+				<label>
+					<input type="reset" value="Reset" />
+				</label>
 			</div>
 		</form>
 	</div>

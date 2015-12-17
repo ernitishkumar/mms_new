@@ -1,9 +1,9 @@
+<jsp:useBean id="userBean" class="mms.com.beans.User" scope="session" />
 <html>
 <head>
 	<title>MMS - Home</title>
 </head>
 <body>
-	<jsp:useBean id="user" class="mms.com.beans.UserLogin" scope="session" />
 	<%@ include file="MasterPageTopSection.jsp" %>
 	<br/>
 	<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%">
@@ -14,7 +14,7 @@
 						<td width="34%" bgcolor="#000080">
 							<b>
 								<span lang="en">
-									<font color="#00FFFF">WEL COME USER: ${user.userLoginid}</font>
+									<font color="#00FFFF">WEL COME USER: ${userBean.name}</font>
 								</span>
 							</b>
 						</td>
@@ -37,7 +37,7 @@
 	</table>
 	<br/>
 	<div id="linkHolder" name="linkHolder" align="center">
-		<b><a href="EHVSSDetails.jsp">Add EHVSS Details</a></b>
+		<b><a href="EHVSSDetails.jsp">Add EHVSS Details</a></b>           <b><a href="ViewData.jsp">View EHVSS Details</a></b>
 		<br/>
 		<b><a href="KV33FeederDetails.jsp">Add 33 KV Feeder Details</a></b>
 		<br/>

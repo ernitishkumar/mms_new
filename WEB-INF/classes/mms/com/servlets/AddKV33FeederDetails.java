@@ -1,15 +1,14 @@
 package mms.com.servlets;
-
 import java.io.IOException;
-
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import mms.com.beans.KV33Feeder;
 import mms.com.dao.KV33FeederDAO;
+import mms.com.beans.ErrorBean;
 
 public class AddKV33FeederDetails extends HttpServlet{
 
@@ -18,17 +17,16 @@ public class AddKV33FeederDetails extends HttpServlet{
 		System.out.println("AddKV33FeederDetails Started ");
 		KV33FeederDAO kv33Feeder = new KV33FeederDAO();
 		KV33Feeder kv33FeederBean = (KV33Feeder) httpServletRequest.getAttribute("kv33FeederBean");
-		System.out.println("KV33 Name : "+kv33FeederBean.getName());
-		System.out.println("KV33 Code : "+kv33FeederBean.getCode());
-		System.out.println("KV33 Location : "+kv33FeederBean.getLocation());
-		System.out.println("KV33 REgion : "+kv33FeederBean.getRegion());
-		System.out.println("KV33 Circle : "+kv33FeederBean.getCircle());
-		System.out.println("KV33 Division : "+kv33FeederBean.getDivision());
-		System.out.println("KV33 EHVSS ID : "+kv33FeederBean.getEhvssID());
-		
-		kv33Feeder.addKV33Feeder(kv33FeederBean);
-//		System.out.println("KV33Feeder Details added successfully");
-		httpServletResponse.sendRedirect("sucess.jsp");
+		ErrorBean errorBean=new ErrorBean();
+		boolean added=kv33Feeder.addKV33Feeder(kv33FeederBean,errorBean);
+		if(added!=true){
+			System.out.println("Unable to add 33KV Feeder due to reason : "+errorBean.getErrorMessage());
+			httpServletRequest.setAttribute("errorBean",errorBean);
+			RequestDispatcher requestDispatcher =httpServletRequest.getRequestDispatcher("/KV33FeederDetails.jsp");
+			requestDispatcher.forward(httpServletRequest, httpServletResponse);
+		}else{
+			httpServletResponse.sendRedirect("sucess.jsp");
+		}
 	}
 
 	@Override

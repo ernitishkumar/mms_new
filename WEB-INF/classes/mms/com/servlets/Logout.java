@@ -11,7 +11,10 @@ public class Logout extends HttpServlet {
 
     protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
     throws ServletException, IOException {
+        System.out.println("Logout initiated");
         HttpSession httpSession =httpServletRequest.getSession();
+        httpSession.removeAttribute("userBean");
+        httpServletResponse.sendRedirect("index.jsp");
     } 
 
 

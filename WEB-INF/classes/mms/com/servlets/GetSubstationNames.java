@@ -16,9 +16,14 @@ public class GetSubstationNames extends HttpServlet{
 		System.out.println("Get Substation Names Called");
 		SubstationDAO substationDAO=new SubstationDAO();
 		ArrayList<Substation> locations=new ArrayList<Substation>();
+		String divisionName=httpServletRequest.getParameter("divisionName");
 		try {
-			locations=substationDAO.getAll();
-			System.out.println("Substations are : "+locations);
+			if(divisionName==null){
+				locations=substationDAO.getAll();
+			}else{
+				locations=substationDAO.getByDivision(divisionName);
+			}
+			System.out.println("Substations for division "+divisionName+" are : "+locations.size());
 		}catch(Exception e){
 			System.out.println("Exception in class : GetSubstationNames method : processRequest() : "+e);
 		}

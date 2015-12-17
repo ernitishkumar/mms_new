@@ -93,7 +93,14 @@
 		<url-pattern>/AddKV11FeederDetails</url-pattern>
 	</servlet-mapping>
 
-
+	<servlet>
+		<servlet-name>EHVSSController</servlet-name>
+		<servlet-class>mms.com.servlets.EHVSSController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>EHVSSController</servlet-name>
+		<url-pattern>/EHVSSController</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>Logout</servlet-name>
