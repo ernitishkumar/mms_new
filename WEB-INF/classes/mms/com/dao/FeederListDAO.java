@@ -1,14 +1,11 @@
-package feeder.com.dao;
-
+package mms.com.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import mms.com.utility.DatabaseConnection;
-import feeder.com.beans.FeederList;
-
+import mms.com.beans.FeederList;
 public class FeederListDAO {
 
     Connection connection = DatabaseConnection.getConnection("mpeb_new");

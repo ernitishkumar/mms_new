@@ -1,17 +1,15 @@
 package mms.com.utility;
-
 import java.util.ArrayList;
-
-import feeder.com.beans.EHVSS;
-import feeder.com.beans.FeederList;
-import feeder.com.beans.KV11Feeder;
-import feeder.com.beans.KV33Feeder;
-import feeder.com.beans.Substation;
-import feeder.com.dao.EhvssDAO;
-import feeder.com.dao.FeederListDAO;
-import feeder.com.dao.KV11FeederDAO;
-import feeder.com.dao.KV33FeederDAO;
-import feeder.com.dao.SubstationDAO;
+import mms.com.beans.EHVSS;
+import mms.com.beans.FeederList;
+import mms.com.beans.KV11Feeder;
+import mms.com.beans.KV33Feeder;
+import mms.com.beans.Substation;
+import mms.com.dao.EhvssDAO;
+import mms.com.dao.FeederListDAO;
+import mms.com.dao.KV11FeederDAO;
+import mms.com.dao.KV33FeederDAO;
+import mms.com.dao.SubstationDAO;
 
 public class DBMigration {
 
@@ -95,7 +93,12 @@ public class DBMigration {
 			kv11Feeder.setLocation("Dummy");
 			kv11Feeder.setName(list.get(0).getKV33_FDR_NAME());
 			kv11Feeder.setRegion(list.get(0).getRESION());
-			//kv11Feeder.setFeederType(list.get(0).getCATEGORY());
+			if(list.get(0).getCATEGORY()==null){
+				kv11Feeder.setFeederType("DUMMY");	
+			}else{
+				kv11Feeder.setFeederType(list.get(0).getCATEGORY());
+			}
+			
 			kv11Feeder.setSubstationID(substationDAO.getBySubstationCode(list.get(0).getKV_SUBSTATION_CODE_33()).getId());
 			kv11FeederDAO.add11KVFeeder(kv11Feeder);
 		}
@@ -104,6 +107,13 @@ public class DBMigration {
 	
 	public static void main(String[] args) {
 		DBMigration dbMigration = new DBMigration();
+		dbMigration.migrateEHVSSTable();
+		System.out.println("Migration Successful for EHVSS");
+		dbMigration.migrate33kvFeederTable();
+		System.out.println("Migration Successful for 33KV");
+		dbMigration.migrateSubstationTable();
+		System.out.println("Migration Successful for substation");
 		dbMigration.migrate11kvFeederTable();
+		System.out.println("Migration Successful for 11KV");
 	}
 }

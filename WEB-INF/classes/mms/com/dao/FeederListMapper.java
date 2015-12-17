@@ -1,10 +1,7 @@
-package feeder.com.dao;
-
+package mms.com.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import feeder.com.beans.FeederList;
-
+import mms.com.beans.FeederList;
 public class FeederListMapper {
 
 	public FeederList feederListMapper(ResultSet resultSet)
