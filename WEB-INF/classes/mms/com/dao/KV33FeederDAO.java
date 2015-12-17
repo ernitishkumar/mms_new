@@ -131,4 +131,27 @@ public class KV33FeederDAO {
 		}
 		return kv33Feeders;
 	}
+	
+	public KV33Feeder getBykv33FeederCode(String code){
+		KV33Feeder kv33Feeder = new KV33Feeder();
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM KV33Feeder where code=?");
+			ps.setString(1, code);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
+				kv33Feeder.setName(rs.getString(3).trim());
+				kv33Feeder.setCode(rs.getString(2).trim());
+				kv33Feeder.setLocation(rs.getString(4).trim());
+				kv33Feeder.setRegion(rs.getString(5).trim());
+				kv33Feeder.setCircle(rs.getString(6).trim());
+				kv33Feeder.setDivision(rs.getString(7).trim());
+				kv33Feeder.setEhvssID(rs.getString(8).trim());
+				System.out.println("");
+			}
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getBykv33FeederCode]"+e);
+		}
+		return kv33Feeder;
+	}
 }

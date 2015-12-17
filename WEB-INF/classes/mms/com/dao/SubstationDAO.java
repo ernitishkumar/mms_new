@@ -190,4 +190,28 @@ public class SubstationDAO {
 		}
 		return substations;
 	}
+	
+	public Substation getBySubstationCode(String code){
+		Substation substation = new Substation();
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM substation where code=?");
+			ps.setString(1, code);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				substation.setId(String.valueOf(rs.getInt(1)));
+				substation.setName(rs.getString(3).trim());
+				substation.setCode(rs.getString(2).trim());
+				substation.setLocation(rs.getString(4).trim());
+				substation.setRegion(rs.getString(5).trim());
+				substation.setCircle(rs.getString(6).trim());
+				substation.setDivision(rs.getString(7).trim());
+				substation.setDc(rs.getString(8).trim());
+				substation.setKv33FeederID(rs.getString(9).trim());
+				System.out.println("");
+			}
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getBykv33FeederCode]"+e);
+		}
+		return substation;
+	}
 }

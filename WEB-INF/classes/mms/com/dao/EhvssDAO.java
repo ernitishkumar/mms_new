@@ -148,4 +148,27 @@ public class EhvssDAO {
 		}
 		return ehvssNames;
 	}
+	
+	public EHVSS getByEhvssCode(String code){
+		EHVSS ehvss = new EHVSS();
+		
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss where code=?");
+			ps.setString(1, code);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				ehvss.setId(String.valueOf(rs.getInt(1)));
+				ehvss.setName(rs.getString(3).trim());
+				ehvss.setCode(rs.getString(2).trim());
+				ehvss.setLocation(rs.getString(4).trim());
+				ehvss.setRegion(rs.getString(5).trim());
+				ehvss.setCircle(rs.getString(6).trim());
+				ehvss.setDivision(rs.getString(7).trim());
+			}
+		} catch (SQLException e) {
+			System.out.println("Exception in class : EhvssDAO : method : [getByEhvssCode]"+e);
+		}
+		
+		return ehvss;
+	}
 }
