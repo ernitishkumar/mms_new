@@ -17,7 +17,7 @@
             pageSize: 10, //Set page size (default: 10)   
             actions: {
                 listAction: 'EHVSSController?action=list',
-                createAction:'CRUDController?action=create',
+                createAction:'EHVSSController?action=create',
                 updateAction: 'CRUDController?action=update',
                 deleteAction: 'CRUDController?action=delete'
             },
@@ -38,16 +38,8 @@
             },
             region: {
                 title: 'Region',
-                width: '20%'
-            },
-            circle: {
-                title: 'Circle',
                 width: '20%',
-
-            },
-            division: {
-                title: 'Division',
-                width: '20%',
+                options: ['INDORE','UJJAIN'],
             }
         }
     });
@@ -91,9 +83,8 @@ $('#EhvssTableContainer').jtable('load');
     </table>
     <br/>
     <div style="width:60%;margin-right:20%;margin-left:20%;text-align:center;">
-        <h1>Setup and Load Data in jTable using Servlet and JSP</h1>
-        <h4>Demo by Nitish Kumar</h4>
-        <div id="EhvssTableContainer"></div>
+        <h1>ALL 33 KV Feeders </h1>
+        <div id="KV33TableContainer"></div>
     </div>
     <br/>
     <br/>

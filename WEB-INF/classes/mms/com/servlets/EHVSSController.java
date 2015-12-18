@@ -30,6 +30,9 @@ public class EHVSSController extends HttpServlet{
 				httpServletResponse.setContentType("application/json");
 				httpServletResponse.getWriter().write(json);	
 			}
+			if(action.toLowerCase().equals("create")){
+				System.out.println("Request Recieved for create");
+			}
 			
 		}else{
 			String error="{\"Result\":\"ERROR\",\"Message\":"+"Wrong Action"+"}";
@@ -37,16 +40,12 @@ public class EHVSSController extends HttpServlet{
 		}
 
 	}
-}
 
-@Override
-protected void doGet(HttpServletRequest request, HttpServletResponse response)
+public void doGet(HttpServletRequest request, HttpServletResponse response)
 throws ServletException, IOException {
 	processRequest(request, response);
 } 
-
-@Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response)
+public void doPost(HttpServletRequest request, HttpServletResponse response)
 throws ServletException, IOException {
 	processRequest(request, response);
 }
