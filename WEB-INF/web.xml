@@ -103,6 +103,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>KV33FeederController</servlet-name>
+		<servlet-class>mms.com.servlets.KV33FeederController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>KV33FeederController</servlet-name>
+		<url-pattern>/KV33FeederController</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>Logout</servlet-name>
 		<servlet-class>mms.com.servlets.Logout</servlet-class>
 	</servlet>

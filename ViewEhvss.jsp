@@ -18,15 +18,15 @@
             actions: {
                 listAction: 'EHVSSController?action=list',
                 createAction:'EHVSSController?action=create',
-                updateAction: 'CRUDController?action=update',
-                deleteAction: 'CRUDController?action=delete'
+                updateAction: 'EHVSSController?action=update',
+                deleteAction: 'EHVSSController?action=delete'
             },
             fields:{
                 id: {
                   title: 'EHVSS ID',
                   key: true,
                   list: true,
-                  create:true
+                  create:false
               },
               name: {
                 title: 'EHVSS Name',
@@ -83,7 +83,7 @@ $('#EhvssTableContainer').jtable('load');
     </table>
     <br/>
     <div style="width:60%;margin-right:20%;margin-left:20%;text-align:center;">
-        <h1>ALL EHVSS </h1>
+        <h1>All EHVSS Records</h1>
         <div id="EhvssTableContainer"></div>
     </div>
     <br/>

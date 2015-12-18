@@ -6,32 +6,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import mms.com.beans.EHVSS;
-import mms.com.dao.EhvssDAO;
+import mms.com.beans.KV33Feeder;
+import mms.com.dao.KV33FeederDAO;
 import mms.com.beans.ErrorBean;
 import java.util.ArrayList;
 import com.google.gson.*;
 import com.google.gson.reflect.*;
-public class EHVSSController extends HttpServlet{
+public class KV33FeederController extends HttpServlet{
 
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
-		System.out.println("EHVSSController Started");
+		System.out.println("KV33FeederController Started");
 		String action=(String)httpServletRequest.getParameter("action");
 		if(action!=null){
 			System.out.println("EHVSSController called for action : "+action);
-			EhvssDAO ehvssDAO=new EhvssDAO();
+			KV33FeederDAO kv33FeederDAO=new KV33FeederDAO();
 			Gson gson=new Gson();
 			if(action.toLowerCase().equals("list")){
 				String startIndex=(String)httpServletRequest.getParameter("jtStartIndex");
 				String pageSize=(String)httpServletRequest.getParameter("jtPageSize");
 				System.out.println("Start Index : "+startIndex+" Page Size : "+pageSize);
-				ArrayList<EHVSS> ehvssRecords=new ArrayList<EHVSS>();
-				ehvssRecords=ehvssDAO.getAll(startIndex,pageSize);
-				int count=ehvssDAO.getEhvssCount();
+				ArrayList<KV33Feeder> kv33FeederRecords=new ArrayList<KV33Feeder>();
+				kv33FeederRecords=kv33FeederDAO.getAll(startIndex,pageSize);
+				int count=kv33FeederDAO.getKV33FeederCount();
 				System.out.println("Count of EHVSS form controller : "+count);
-				String json = new Gson().toJson(ehvssRecords);
-				JsonElement element = gson.toJsonTree(ehvssRecords,new TypeToken<ArrayList<EHVSS>>(){}.getType());
+				String json = new Gson().toJson(kv33FeederRecords);
+				JsonElement element = gson.toJsonTree(kv33FeederRecords,new TypeToken<ArrayList<KV33Feeder>>(){}.getType());
 				JsonArray jsonArray = element.getAsJsonArray();
 				String listData=jsonArray.toString();
 				//System.out.println("JSON String is : "+json); //remove after testing
@@ -40,7 +40,7 @@ public class EHVSSController extends HttpServlet{
 				httpServletResponse.setContentType("application/json");
 				httpServletResponse.getWriter().write(json);	
 			}
-			if(action.toLowerCase().equals("create")||action.toLowerCase().equals("update")){
+			/*if(action.toLowerCase().equals("create")||action.toLowerCase().equals("update")){
 				System.out.println("Request Recieved for create or update");
 				String name=(String)httpServletRequest.getParameter("name");
 				String code=(String)httpServletRequest.getParameter("code");
@@ -69,7 +69,7 @@ public class EHVSSController extends HttpServlet{
 					String listData="{\"Result\":\"OK\"}";       
 					httpServletResponse.getWriter().print(listData);
 				}	
-			}
+			}*/
 			
 		}else{
 			String error="{\"Result\":\"ERROR\",\"Message\":"+"Wrong Action"+"}";

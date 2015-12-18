@@ -70,6 +70,11 @@ public class EHVSS {
 		this.circle = circle;
 		this.division = division;
 	}
+	public EHVSS(String name, String code,String region) {
+		this.name = name;
+		this.code = code;
+		this.region = region;
+	}
 	public EHVSS() {
 	}
 	

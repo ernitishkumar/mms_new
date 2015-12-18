@@ -10,7 +10,7 @@ import mms.com.beans.ErrorBean;
 public class EhvssDAO {
 	private Connection connection = DatabaseConnection.getConnection("mms_new");
 	
-	public void addEHVSS(EHVSS ehvss){
+	public EHVSS addEHVSS(EHVSS ehvss){
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into EHVSS(code, name, location, region, circle, division) VALUES(?,?,?,?,?,?)");
 			ps.setString(1,ehvss.getCode());
@@ -20,9 +20,34 @@ public class EhvssDAO {
 			ps.setString(5,"DUMMY");
 			ps.setString(6,"DUMMY");
 			ps.executeUpdate();
+			ResultSet resultSet=ps.executeQuery("select last_insert_id() as 'id'");
+			resultSet.next();
+			int id=resultSet.getInt("id");
+			ehvss.setId(String.valueOf(id));
+			resultSet.close();
+			ps.close();
 		} catch (SQLException e) {
-			System.out.println("Exception in [updateUser]"+e);
+			System.out.println("Exception in [addEHVSS(EHVSS)]"+e);
 		}
+		return ehvss;
+	}
+
+	public EHVSS updateEHVSS(EHVSS ehvss){
+		try {
+			PreparedStatement ps = connection.prepareStatement("update EHVSS set code=?,name=?,location=?,region=?,circle=?,division=? where id=?");
+			ps.setString(1,ehvss.getCode());
+			ps.setString(2,ehvss.getName());
+			ps.setString(3,"DUMMY");
+			ps.setString(4,ehvss.getRegion());
+			ps.setString(5,"DUMMY");
+			ps.setString(6,"DUMMY");
+			ps.setInt(7,Integer.parseInt(ehvss.getId()));
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println("Exception in [updateEHVSS(EHVSS)]"+e);
+		}
+		return ehvss;
 	}
 
 	public boolean addEHVSS(EHVSS ehvss,ErrorBean errorBean){
@@ -51,6 +76,16 @@ public class EhvssDAO {
 		return added;
 	}
 
+	public void deleteEHVSS(String id){
+		try {
+			PreparedStatement ps = connection.prepareStatement("delete from ehvss where id=?");
+			ps.setInt(1,Integer.parseInt(id));
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println("Exception in [deleteEHVSS(id)]"+e);
+		}
+	}
 	public ArrayList<String> get(){
 		ArrayList<String> ehvssNames=null;
 		try {
@@ -91,6 +126,49 @@ public class EhvssDAO {
 			System.out.println("Exception in class : EhvssDAO : method : [getAll]"+exp);
 		}
 		return ehvssNames;
+	}
+
+	public ArrayList<EHVSS> getAll(String startIndex,String pageSize){
+		ArrayList<EHVSS> ehvssNames=null;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss limit "+startIndex+","+pageSize);
+			ResultSet rs=ps.executeQuery();
+			ehvssNames=new ArrayList<EHVSS>();
+			while(rs.next()){
+				EHVSS ehvss=new EHVSS();
+				ehvss.setId(String.valueOf(rs.getInt(1)));
+				ehvss.setName(rs.getString(3).trim());
+				ehvss.setCode(rs.getString(2).trim());
+				ehvss.setLocation(rs.getString(4).trim());
+				ehvss.setRegion(rs.getString(5).trim());
+				ehvss.setCircle(rs.getString(6).trim());
+				ehvss.setDivision(rs.getString(7).trim());
+				ehvssNames.add(ehvss);
+			}
+			System.out.println("Number of Ehvss Locations for PageSize : "+pageSize+" is : "+ehvssNames.size()); 
+		} catch (SQLException e) {
+			System.out.println("Exception in class : EhvssDAO : method : [getAll]"+e);
+		}catch (Exception exp) {
+			System.out.println("Exception in class : EhvssDAO : method : [getAll]"+exp);
+		}
+		return ehvssNames;
+	}
+
+	public int getEhvssCount(){
+		int count=0;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT count(*) as count FROM ehvss");
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				count=rs.getInt("count");
+			}
+			System.out.println("Count of EHVSS : "+count);
+		} catch (SQLException e) {
+			System.out.println("Exception in class : EhvssDAO : method : [getEhvssCount]"+e);
+		}catch (Exception exp) {
+			System.out.println("Exception in class : EhvssDAO : method : [getEhvssCount]"+exp);
+		}
+		return count;
 	}
 
 	public ArrayList<EHVSS> getByCode(String code){

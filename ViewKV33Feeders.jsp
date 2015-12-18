@@ -11,39 +11,59 @@
     <script type="text/javascript">
     $(document).ready(function () {
         //initialize jTable
-        $('#EhvssTableContainer').jtable({
-            title: 'Table of EHVSS',
+        $('#KV33TableContainer').jtable({
+            title: 'Table of 33KV Feeders',
             paging: true, //Enable paging
             pageSize: 10, //Set page size (default: 10)   
             actions: {
-                listAction: 'EHVSSController?action=list',
-                createAction:'EHVSSController?action=create',
-                updateAction: 'CRUDController?action=update',
-                deleteAction: 'CRUDController?action=delete'
+                listAction: 'KV33FeederController?action=list',
+                createAction:'KV33FeederController?action=create',
+                updateAction: 'KV33FeederController?action=update',
+                deleteAction: 'KV33FeederController?action=delete'
             },
             fields:{
                 id: {
-                  title: 'EHVSS ID',
+                  title: '33KV Feeder ID',
                   key: true,
                   list: true,
-                  create:true
+                  create:true,
+                  width: '15%'
               },
               name: {
-                title: 'EHVSS Name',
-                width: '30%'
+                title: '33KV Feeder Name',
+                width: '20%'
             },
             code: {
-                title: 'Code',
-                width: '30%'
+                title: '33KV Feeder Code',
+                width: '15%'
             },
             region: {
-                title: 'Region',
+                title: '33KV Feeder Region',
                 width: '20%',
                 options: ['INDORE','UJJAIN'],
+            },
+            circle: {
+                title: '33KV Feeder Circle',
+                width: '20%',
+                dependsOn: 'region',
+                list:false,
+                edit:true,
+                create:true,
+                options: function(data){
+                    if(data.source=='edit'||data.source=='create'||data.source=='update'){
+                        return 'GetCircles?source=jtable&regionName='+data.dependedValues.region;
+                    }else if(data.source=='list'){
+                        return data.record.circle;
+                    }
+                }
+            },
+            ehvssID: {
+                title: 'EHVSS ID',
+                width: '20%'
             }
         }
     });
-$('#EhvssTableContainer').jtable('load');
+$('#KV33TableContainer').jtable('load');
 });
 </script>
 </head>
@@ -83,7 +103,7 @@ $('#EhvssTableContainer').jtable('load');
     </table>
     <br/>
     <div style="width:60%;margin-right:20%;margin-left:20%;text-align:center;">
-        <h1>ALL 33 KV Feeders </h1>
+        <h1>All 33 KV Feeders </h1>
         <div id="KV33TableContainer"></div>
     </div>
     <br/>
