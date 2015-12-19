@@ -26,7 +26,8 @@
                   title: '33KV Feeder ID',
                   key: true,
                   list: true,
-                  create:true,
+                  create:false,
+                  update:true,
                   width: '15%'
               },
               name: {
@@ -46,16 +47,17 @@
                 title: '33KV Feeder Circle',
                 width: '20%',
                 dependsOn: 'region',
-                list:false,
+                list:true,
                 edit:true,
                 create:true,
-                options: function(data){
+                options:['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR']
+                /*options: function(data){
                     if(data.source=='edit'||data.source=='create'||data.source=='update'){
                         return 'GetCircles?source=jtable&regionName='+data.dependedValues.region;
                     }else if(data.source=='list'){
-                        return data.record.circle;
+                        return ['INDORE','DHAR','UJJAIN','KHANDWA'];
                     }
-                }
+                }*/
             },
             ehvssID: {
                 title: 'EHVSS ID',

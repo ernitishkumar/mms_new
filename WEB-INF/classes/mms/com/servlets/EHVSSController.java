@@ -19,7 +19,7 @@ public class EHVSSController extends HttpServlet{
 		System.out.println("EHVSSController Started");
 		String action=(String)httpServletRequest.getParameter("action");
 		if(action!=null){
-			System.out.println("EHVSSController called for action : "+action);
+			//System.out.println("EHVSSController called for action : "+action);
 			EhvssDAO ehvssDAO=new EhvssDAO();
 			Gson gson=new Gson();
 			if(action.toLowerCase().equals("list")){
@@ -29,7 +29,7 @@ public class EHVSSController extends HttpServlet{
 				ArrayList<EHVSS> ehvssRecords=new ArrayList<EHVSS>();
 				ehvssRecords=ehvssDAO.getAll(startIndex,pageSize);
 				int count=ehvssDAO.getEhvssCount();
-				System.out.println("Count of EHVSS form controller : "+count);
+				//System.out.println("Count of EHVSS form controller : "+count);
 				String json = new Gson().toJson(ehvssRecords);
 				JsonElement element = gson.toJsonTree(ehvssRecords,new TypeToken<ArrayList<EHVSS>>(){}.getType());
 				JsonArray jsonArray = element.getAsJsonArray();
@@ -45,7 +45,7 @@ public class EHVSSController extends HttpServlet{
 				String name=(String)httpServletRequest.getParameter("name");
 				String code=(String)httpServletRequest.getParameter("code");
 				String region=(String)httpServletRequest.getParameter("region");
-				System.out.println("Data for jTABLE create : "+name+" "+code+" "+region);
+				//System.out.println("Data for jTABLE create : "+name+" "+code+" "+region);
 				EHVSS ehvss=new EHVSS(name,code,region);
 				if(action.toLowerCase().equals("create")){
 					ehvss=ehvssDAO.addEHVSS(ehvss);
@@ -65,7 +65,8 @@ public class EHVSSController extends HttpServlet{
 			if(action.toLowerCase().equals("delete")){
 				if(httpServletRequest.getParameter("id")!=null){
 					String id=(String)httpServletRequest.getParameter("id");
-					ehvssDAO.deleteEHVSS(id);
+					System.out.println("Deleting EHVSS for id : "+id);
+					ehvssDAO.deleteEHVSSById(id);
 					String listData="{\"Result\":\"OK\"}";       
 					httpServletResponse.getWriter().print(listData);
 				}	

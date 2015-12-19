@@ -8,7 +8,6 @@ import mms.com.beans.KV11Feeder;
 import mms.com.beans.ErrorBean;
 import java.util.ArrayList;
 public class KV11FeederDAO {
-
 	private Connection connection = DatabaseConnection.getConnection("mms_new");
 	public void add11KVFeeder(KV11Feeder kv11Feeder){
 		try {
@@ -88,5 +87,63 @@ public class KV11FeederDAO {
 			System.out.println("Exception in class : KV11FeederDAO : method :getByCode()"+e);
 		}
 		return kv11Feeders;
+	}
+
+	public ArrayList<KV11Feeder> getBySubstationId(String substationId){
+		System.out.println("Get Feeder by substationId started for substationId : "+substationId);
+		ArrayList<KV11Feeder> kv11Feeders=null;
+		try{
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv11feeder where substation_id=?");
+			ps.setInt(1,Integer.parseInt(substationId));
+			ResultSet rs=ps.executeQuery();
+			kv11Feeders=new ArrayList<KV11Feeder> ();
+			while(rs.next()){
+				KV11Feeder kv11Feeder = new KV11Feeder();
+				kv11Feeder.setId(String.valueOf(rs.getInt(1)));
+				kv11Feeder.setName(rs.getString(3).trim());
+				kv11Feeder.setCode(rs.getString(2).trim());
+				kv11Feeder.setLocation(rs.getString(4).trim());
+				kv11Feeder.setRegion(rs.getString(5).trim());
+				kv11Feeder.setCircle(rs.getString(6).trim());
+				kv11Feeder.setDivision(rs.getString(7).trim());
+				kv11Feeder.setDc(rs.getString(8).trim());
+				kv11Feeder.setSubstationID(rs.getString(9).trim());
+				kv11Feeder.setFeederType(rs.getString(10).trim());
+				kv11Feeders.add(kv11Feeder);
+			}
+			System.out.println("Number of 11 KV Feeder for substationId : "+substationId+" are :"+kv11Feeders.size());
+		}catch(SQLException e){
+			e.printStackTrace();
+			System.out.println("Exception in class : KV11FeederDAO : method :getBySubstationId()"+e);
+		}
+		return kv11Feeders;
+	}
+
+	public void deleteKV11FeederBySubstationId(String id){
+		System.out.println("Deletion of 11kvfeeders by Substation ID started");
+		try {
+			System.out.println("Now Deleting 11kv feeders from KV11Feeder table");
+			PreparedStatement ps = connection.prepareStatement("delete from kv11feeder where substation_id=?");
+			ps.setInt(1,Integer.parseInt(id));
+			ps.executeUpdate();
+			ps.close();
+			System.out.println("Successfully deleted 11kvfeeder for substation id : "+id);
+			System.out.println("Going back to SubstationDAO for further deletion");
+		} catch (SQLException e) {
+			System.out.println("Exception in [deleteKV11FeederBySubstationId(id)]"+e);
+		}
+	}
+
+	public void deleteById(String id){
+		try {
+			System.out.println("Deletion of 11kvfeeders by 11KVFeeder id "+id+" started");
+			PreparedStatement ps = connection.prepareStatement("delete from kv11feeder where id=?");
+			ps.setInt(1,Integer.parseInt(id));
+			ps.executeUpdate();
+			ps.close();
+			System.out.println("Successfully deleted from 11KVFeeder for 11kvfeeder id : "+id);
+		} catch (SQLException e) {
+			System.out.println("Exception in [deleteById(id)]"+e);
+		}
 	}
 }

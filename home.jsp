@@ -37,13 +37,13 @@
 	</table>
 	<br/>
 	<div id="linkHolder" name="linkHolder" align="center">
-		<b><a href="EHVSSDetails.jsp">Add EHVSS Details</a></b>           <b><a href="ViewEhvss.jsp">View EHVSS Details</a></b>
+		<b>EHVSS[   <a href="EHVSSDetails.jsp">Add</a>, <a href="ViewEhvss.jsp">View</a>       ]</b>
 		<br/>
-		<b><a href="KV33FeederDetails.jsp">Add 33 KV Feeder Details</a></b>     <b><a href="ViewKV33Feeders.jsp">View 33KV Feeder Details</a></b>
+		<b>33KVFeeder[   <a href="KV33FeederDetails.jsp">Add</a>, <a href="ViewKV33Feeders.jsp">View</a>   ]</b>
 		<br/>
-		<b><a href="Substation.jsp">Add Substation Details</a></b>
+		<b>Substation[   <a href="Substation.jsp">Add</a>, <a href="ViewSubstations.jsp">View</a>   ]</b>
 		<br/>
-		<b><a href="KV11FeederDetails.jsp">Add 11 KV Feeder Details</a></b>
+		<b>11KVFeeder[   <a href="KV11FeederDetails.jsp">Add</a>, <a href="ViewSubstations.jsp">View</a>   ]</b>
 	</div>
 	<br/>
 	<br/>

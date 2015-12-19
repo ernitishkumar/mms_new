@@ -31,6 +31,14 @@ public class KV33Feeder {
 		this.division = division;
 		this.ehvssID = ehvssID;
 	}
+	public KV33Feeder(String name, String code,String region,
+			String circle,String ehvssID) {
+		this.name = name;
+		this.code = code;
+		this.region = region;
+		this.circle = circle;
+		this.ehvssID = ehvssID;
+	}
 	public KV33Feeder() {
 	}
 	public String getId() {

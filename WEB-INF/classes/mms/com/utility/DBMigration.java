@@ -2,9 +2,10 @@ package mms.com.utility;
 import java.util.ArrayList;
 import java.sql.*;
 import java.io.Serializable;
+import mms.com.utility.DatabaseConnection;
 public class DBMigration {
 
-	//private Connection connection = DatabaseConnection.getConnection("feeder");
+	//private Connection connection = DatabaseConnection.getConnection("mms_new");
 	
 	public void migrateEHVSSTable(){
 		FeederListDAO feederListDAO = new FeederListDAO();
@@ -20,13 +21,6 @@ public class DBMigration {
 			ehvss.setRegion(list.get(0).getRESION());
 			EhvssDAO ehvssDAO = new EhvssDAO();
 			ehvssDAO.addEHVSS(ehvss);
-			/*try {
-				PreparedStatement ps = connection.prepareStatement("insert into ehvss (code) values (?)");
-				ps.setString(1, ehvssCodelist.get(i));
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}*/
 		}
 	}
 	
@@ -39,10 +33,10 @@ public class DBMigration {
 			KV33Feeder kv33Feeder = new KV33Feeder(); 
 			ArrayList<FeederList> list = feederListDAO.getBykv33FeederCode(kv33FeederCodelist.get(i));
 			kv33Feeder.setCircle(list.get(0).getCIRCLE_NAME());
-			kv33Feeder.setCode(list.get(0).getKV33_FDR_CODE());
+			kv33Feeder.setCode(list.get(0).getKV33_FDR_NAME());
 			kv33Feeder.setDivision(list.get(0).getDIVISION());
 			kv33Feeder.setLocation("Dummy");
-			kv33Feeder.setName(list.get(0).getKV33_FDR_NAME());
+			kv33Feeder.setName(list.get(0).getKV33_FDR_CODE());
 			kv33Feeder.setRegion(list.get(0).getRESION());
 			kv33Feeder.setEhvssID(ehvssDAO.getByEhvssCode(list.get(0).getEHV_SS_CODE()).getId());
 			KV33FeederDAO kv33FeederDAO = new KV33FeederDAO();
@@ -66,7 +60,7 @@ public class DBMigration {
 			substation.setName(list.get(0).getSUBSTATION_NAME_33_11());
 			substation.setRegion(list.get(0).getRESION());
 			substation.setDc("Dummy");
-			substation.setKv33FeederID(kv33FeederDAO.getBykv33FeederCode(list.get(0).getKV33_FDR_CODE()).getId());
+			substation.setKv33FeederID(kv33FeederDAO.getBykv33FeederCode(list.get(0).getKV33_FDR_NAME()).getId());
 			substationDAO.addSubstation(substation);
 		}
 	}
@@ -80,10 +74,11 @@ public class DBMigration {
 			KV11Feeder kv11Feeder = new KV11Feeder(); 
 			ArrayList<FeederList> list = feederListDAO.getBykv11FeederCode(kv11Feederlist.get(i));
 			kv11Feeder.setCircle(list.get(0).getCIRCLE_NAME());
-			kv11Feeder.setCode(list.get(0).getKV33_FDR_CODE());
+			kv11Feeder.setCode(list.get(0).getKV11FDR_CODE());
 			kv11Feeder.setDivision(list.get(0).getDIVISION());
 			kv11Feeder.setLocation("Dummy");
-			kv11Feeder.setName(list.get(0).getKV33_FDR_NAME());
+			kv11Feeder.setDc("Dummy");
+			kv11Feeder.setName(list.get(0).getKV11FDR_NAME());
 			kv11Feeder.setRegion(list.get(0).getRESION());
 			if(list.get(0).getCATEGORY()==null){
 				kv11Feeder.setFeederType("DUMMY");	
@@ -615,9 +610,10 @@ class Substation {
 }
 
 class EhvssDAO {
-	private Connection connection = DatabaseConnection.getConnection("mms_new");
+	//private Connection connection = DatabaseConnection.getConnection("mms_new");
 	
 	public void addEHVSS(EHVSS ehvss){
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into EHVSS(code, name, location, region, circle, division) VALUES(?,?,?,?,?,?)");
 			ps.setString(1,ehvss.getCode());
@@ -630,9 +626,18 @@ class EhvssDAO {
 		} catch (SQLException e) {
 			System.out.println("Exception in [updateUser]"+e);
 		}
+		finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public boolean addEHVSS(EHVSS ehvss,ErrorBean errorBean){
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		ArrayList<EHVSS> ehvssList=new ArrayList<EHVSS>();
 		boolean added;
 		try {
@@ -654,12 +659,20 @@ class EhvssDAO {
 		} catch (SQLException e) {
 			added=false;
 			System.out.println("Exception in [updateUser]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return added;
 	}
 
 	public ArrayList<String> get(){
 		ArrayList<String> ehvssNames=null;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT name FROM ehvss");
 			ResultSet rs=ps.executeQuery();
@@ -670,12 +683,20 @@ class EhvssDAO {
 			System.out.println("Number of Ehvss Locations :"+ehvssNames.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [get]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return ehvssNames;
 	}
 
 	public ArrayList<EHVSS> getAll(){
 		ArrayList<EHVSS> ehvssNames=null;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss");
 			ResultSet rs=ps.executeQuery();
@@ -696,12 +717,20 @@ class EhvssDAO {
 			System.out.println("Exception in class : EhvssDAO : method : [getAll]"+e);
 		}catch (Exception exp) {
 			System.out.println("Exception in class : EhvssDAO : method : [getAll]"+exp);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return ehvssNames;
 	}
 
 	public ArrayList<EHVSS> getByCode(String code){
 		System.out.println("GetByCode called with code : "+code);
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		ArrayList<EHVSS> ehvssNames=null;
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss where code=?");
@@ -724,12 +753,20 @@ class EhvssDAO {
 			System.out.println("Exception in class : EhvssDAO : method : [getByCode]"+e);
 		}catch (Exception exp) {
 			System.out.println("Exception in class : EhvssDAO : method : [getByCode]"+exp);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return ehvssNames;
 	}
 
 	public ArrayList<EHVSS> getByRegion(String region){
 		System.out.println("GetByCode called with region : "+region);
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		ArrayList<EHVSS> ehvssNames=null;
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss where region=?");
@@ -752,11 +789,19 @@ class EhvssDAO {
 			System.out.println("Exception in class : EhvssDAO : method : [getByRegion]"+e);
 		}catch (Exception exp) {
 			System.out.println("Exception in class : EhvssDAO : method : [getByRegion]"+exp);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return ehvssNames;
 	}
 	
 	public EHVSS getByEhvssCode(String code){
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		EHVSS ehvss = new EHVSS();
 		
 		try {
@@ -774,6 +819,13 @@ class EhvssDAO {
 			}
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getByEhvssCode]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return ehvss;
@@ -782,9 +834,10 @@ class EhvssDAO {
 
 class FeederListDAO {
 
-    Connection connection = DatabaseConnection.getConnection("mpeb_new");
+    //Connection connection = DatabaseConnection.getConnection("mpeb_new");
 	public ArrayList<FeederList> getAll(){
 		ArrayList<FeederList> list = new ArrayList<FeederList>();
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		try {
 			PreparedStatement ps=connection.prepareStatement("select * from mms_feeder_list");
 			ResultSet resultSet = ps.executeQuery();
@@ -795,13 +848,19 @@ class FeederListDAO {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getAll] "+e);
 		} finally{
-			
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return list;
 		
 	}
 	public void add(FeederList feederList){
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into mms_feeder_list(RESION,CIRCLE_NAME,DIVISION,EHV_SS_CODE,EHV_SS_NAME,KV33_FDR_CODE,KV33_FDR_NAME,GROUP_ALLOTED,SUBSTATION_NAME_33_11,KV_SUBSTATION_CODE_33,KV11FDR_NAME,KV11FDR_CODE,CATEGORY,TYPE,UID) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			ps.setString(1, feederList.getRESION());
@@ -823,12 +882,20 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [add] method "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
 	
 	public FeederList getbyRegion(String region){	
 		PreparedStatement ps;
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		FeederList feederList = null;
 		try {
 			ps = connection.prepareStatement("select * from mms_feeder_list where RESION=?");
@@ -842,6 +909,13 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getbyRegion] "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return feederList;
@@ -849,6 +923,7 @@ class FeederListDAO {
 	
 	public FeederList getbyCircleName(String circleName){	
 		PreparedStatement ps;
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		FeederList feederList = null;
 		try {
 			ps = connection.prepareStatement("select * from mms_feeder_list where CIRCLE_NAME=?");
@@ -862,6 +937,13 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getbyCircleName] "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return feederList;
@@ -869,6 +951,7 @@ class FeederListDAO {
 	
 	public FeederList getbyDivision(String devision){	
 		PreparedStatement ps;
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		FeederList feederList = null;
 		try {
 			ps = connection.prepareStatement("select * from mms_feeder_list where DIVISION=?");
@@ -882,6 +965,13 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getbyDivision] "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return feederList;
@@ -889,6 +979,7 @@ class FeederListDAO {
 	
 	public ArrayList<FeederList> getByCode(String code){	
 		PreparedStatement ps;
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		ArrayList<FeederList> feederListArray = new ArrayList<FeederList>();
 		FeederList list = new FeederList();
 		try {
@@ -904,6 +995,13 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getbyDivision] "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return feederListArray;
@@ -911,6 +1009,7 @@ class FeederListDAO {
 	
 	public ArrayList<String> getAllDistinctEHVSSCode(){	
 		PreparedStatement ps;
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		ArrayList<String> ehvssCodeList = new ArrayList<String>();
 		try {
 			ps = connection.prepareStatement("select distinct(EHV_SS_CODE) from mms_feeder_list");
@@ -923,15 +1022,23 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getbyDivision] "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return ehvssCodeList;
 	}
 	public ArrayList<String> getAllDistinct33kvFeederCode() {
 		PreparedStatement ps;
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		ArrayList<String> kv33FeederCodeList = new ArrayList<String>();
 		try {
-			ps = connection.prepareStatement("select distinct(KV33_FDR_CODE) from mms_feeder_list");
+			ps = connection.prepareStatement("select distinct(KV33_FDR_NAME) from mms_feeder_list");
 			ResultSet resultSet = ps.executeQuery();
 			//FeederListMapper mapper = new FeederListMapper();
 			while(resultSet.next()){
@@ -940,16 +1047,24 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getbyDivision] "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return kv33FeederCodeList;
 	}
 	
 	public ArrayList<FeederList> getBykv33FeederCode(String code){	
 		PreparedStatement ps;
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		ArrayList<FeederList> feederListArray = new ArrayList<FeederList>();
 		FeederList list = new FeederList();
 		try {
-			ps = connection.prepareStatement("select * from mms_feeder_list where KV33_FDR_CODE=?");
+			ps = connection.prepareStatement("select * from mms_feeder_list where KV33_FDR_NAME=?");
 			ps.setString(1, code);
 			ResultSet resultSet = ps.executeQuery();
 			FeederListMapper mapper = new FeederListMapper();
@@ -961,12 +1076,20 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getbyDivision] "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return feederListArray;
 	}
 	public ArrayList<String> getAllDistinctSubstationCode() {
 		PreparedStatement ps;
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		ArrayList<String> substationCodeList = new ArrayList<String>();
 		try {
 			ps = connection.prepareStatement("select distinct(KV_SUBSTATION_CODE_33) from mms_feeder_list");
@@ -978,11 +1101,19 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getAllDistinctSubstationCode] "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return substationCodeList;
 	}
 	public ArrayList<FeederList> getBySubstationCode(String code){	
 		PreparedStatement ps;
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		ArrayList<FeederList> feederListArray = new ArrayList<FeederList>();
 		FeederList list = new FeederList();
 		try {
@@ -998,12 +1129,20 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getbyDivision] "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return feederListArray;
 	}
 	public ArrayList<String> getAllDistinct11kvFeederCode() {
 		PreparedStatement ps;
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		ArrayList<String> kv11FeederCodeList = new ArrayList<String>();
 		try {
 			ps = connection.prepareStatement("select distinct(KV11FDR_CODE) from mms_feeder_list");
@@ -1015,12 +1154,20 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getAllDistinct11kvFeederCode] "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return kv11FeederCodeList;
 	}
 	
 	public ArrayList<FeederList> getBykv11FeederCode(String code){	
 		PreparedStatement ps;
+		Connection connection = DatabaseConnection.getConnection("mpeb_new");
 		ArrayList<FeederList> feederListArray = new ArrayList<FeederList>();
 		FeederList list = new FeederList();
 		try {
@@ -1036,6 +1183,13 @@ class FeederListDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception Occured in [getBykv11FeederCode] "+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return feederListArray;
@@ -1046,6 +1200,7 @@ class FeederListMapper {
 
 	public FeederList feederListMapper(ResultSet resultSet)
 	{
+		
 		FeederList feederList = new FeederList();
 		try {
 			feederList.setRESION(resultSet.getString(1));
@@ -1073,8 +1228,9 @@ class FeederListMapper {
 
 class KV11FeederDAO {
 
-	private Connection connection = DatabaseConnection.getConnection("mms_new");
+	//private Connection connection = DatabaseConnection.getConnection("mms_new");
 	public void add11KVFeeder(KV11Feeder kv11Feeder){
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into KV11FEEDER(code, name, location, region, circle, division, dc, substation_id,feeder_type) VALUES(?,?,?,?,?,?,?,?,?)");
 			ps.setString(1,kv11Feeder.getCode());
@@ -1090,11 +1246,19 @@ class KV11FeederDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception in [updateUser]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public boolean add11KVFeeder(KV11Feeder kv11Feeder,ErrorBean errorBean){
 		ArrayList<KV11Feeder> kv11Feeders=new ArrayList<KV11Feeder> ();
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		boolean added;
 		try {
 			kv11Feeders=getByCode(kv11Feeder.getCode());
@@ -1119,13 +1283,20 @@ class KV11FeederDAO {
 			added=false;
 			e.printStackTrace();
 			System.out.println("Exception in [updateUser]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return added;
 	}
 
 	public ArrayList<KV11Feeder> getByCode(String code){
 		System.out.println("Get Feeder by code started for code : "+code);
-
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		ArrayList<KV11Feeder> kv11Feeders=null;
 		try{
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv11feeder where code=?");
@@ -1150,6 +1321,13 @@ class KV11FeederDAO {
 		}catch(SQLException e){
 			e.printStackTrace();
 			System.out.println("Exception in class : KV11FeederDAO : method :getByCode()"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return kv11Feeders;
 	}
@@ -1157,8 +1335,9 @@ class KV11FeederDAO {
 
 class KV33FeederDAO {
 
-	Connection connection = DatabaseConnection.getConnection("mms_new");
+	//Connection connection = DatabaseConnection.getConnection("mms_new");
 	public void addKV33Feeder(KV33Feeder kv33Feeder){
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into KV33Feeder(code, name, location, region, circle, division, ehvss_id) VALUES(?,?,?,?,?,?,?)");
 			ps.setString(1,kv33Feeder.getCode());
@@ -1172,12 +1351,20 @@ class KV33FeederDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception in [updateUser]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public boolean addKV33Feeder(KV33Feeder kv33Feeder,ErrorBean errorBean){
 		ArrayList<KV33Feeder> kv33Feeders=new ArrayList<KV33Feeder>();
 		boolean added;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			kv33Feeders=getByCode(kv33Feeder.getCode());
 			if(kv33Feeders==null || kv33Feeders.size()==0){
@@ -1199,12 +1386,20 @@ class KV33FeederDAO {
 			added=false;
 			e.printStackTrace();
 			System.out.println("Exception in [updateUser]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return added;
 	}
 
 	public ArrayList<KV33Feeder> getAll() {
 		ArrayList<KV33Feeder> kv33Feeders=null;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv33feeder");
 			ResultSet rs=ps.executeQuery();
@@ -1224,12 +1419,20 @@ class KV33FeederDAO {
 			System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getAll]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return kv33Feeders;
 	}
 
 	public ArrayList<KV33Feeder> getByCode(String code) {
 		ArrayList<KV33Feeder> kv33Feeders=null;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv33feeder where code=?");
 			ps.setString(1,code);
@@ -1250,12 +1453,20 @@ class KV33FeederDAO {
 			System.out.println("Number of 33KV Feeders  for code :"+code+" is : "+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getByCode]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return kv33Feeders;
 	}
 
 	public ArrayList<KV33Feeder> getByCircle(String circle) {
 		ArrayList<KV33Feeder> kv33Feeders=null;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv33feeder where circle=?");
 			ps.setString(1,circle);
@@ -1276,12 +1487,20 @@ class KV33FeederDAO {
 			System.out.println("Number of 33KV Feeders  for circle :"+circle+" is : "+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getByCircle]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return kv33Feeders;
 	}
 	
 	public KV33Feeder getBykv33FeederCode(String code){
 		KV33Feeder kv33Feeder = new KV33Feeder();
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM KV33Feeder where code=?");
 			ps.setString(1, code);
@@ -1298,6 +1517,13 @@ class KV33FeederDAO {
 			}
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getBykv33FeederCode]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return kv33Feeder;
 	}
@@ -1305,8 +1531,9 @@ class KV33FeederDAO {
 
 class SubstationDAO {
 
-	private Connection connection = DatabaseConnection.getConnection("mms_new");
+	//private Connection connection = DatabaseConnection.getConnection("mms_new");
 	public void addSubstation(Substation substation){
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into substation(code, name, location, region, circle, division, dc, kv33feeder_id) VALUES(?,?,?,?,?,?,?,?)");
 			ps.setString(1,substation.getCode());
@@ -1321,12 +1548,20 @@ class SubstationDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Exception in [updateUser]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public boolean addSubstation(Substation substation,ErrorBean errorBean){
 		ArrayList<Substation> substations=new ArrayList<Substation>();
 		boolean added;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			substations=getByCode(substation.getCode());
 			if(substations==null || substations.size()==0){
@@ -1349,12 +1584,20 @@ class SubstationDAO {
 			added=false;
 			e.printStackTrace();
 			System.out.println("Exception in [updateUser]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return added;
 	}
 
 	public ArrayList<Substation> getAll() {
 		ArrayList<Substation> substations=null;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM substation");
 			ResultSet rs=ps.executeQuery();
@@ -1375,12 +1618,20 @@ class SubstationDAO {
 			System.out.println("Number of Substations:"+substations.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : SubstationDAO : method : [getAll]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return substations;
 	}
 
 	public ArrayList<Substation> getByCode(String code) {
 		ArrayList<Substation> substations=null;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM substation where code=?");
 			ps.setString(1,code);
@@ -1402,12 +1653,20 @@ class SubstationDAO {
 			System.out.println("Number of Substations for code : "+code+" are :"+substations.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : SubstationDAO : method : [getByCode]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return substations;
 	}
 
 	public ArrayList<Substation> getByDivision(String division) {
 		ArrayList<Substation> substations=null;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM substation where division=?");
 			ps.setString(1,division);
@@ -1429,12 +1688,20 @@ class SubstationDAO {
 			System.out.println("Number of Substations for division : "+division+" are :"+substations.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : SubstationDAO : method : [getByCode]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return substations;
 	}
 
 	public ArrayList<Substation> getByCircle(String circle) {
 		ArrayList<Substation> substations=null;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM substation where circle=?");
 			ps.setString(1,circle);
@@ -1456,12 +1723,20 @@ class SubstationDAO {
 			System.out.println("Number of Substations for circle : "+circle+" are :"+substations.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : SubstationDAO : method : [getByCircle]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return substations;
 	}
 
 	public ArrayList<Substation> getByRegion(String region) {
 		ArrayList<Substation> substations=null;
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM substation where region=?");
 			ps.setString(1,region);
@@ -1483,12 +1758,20 @@ class SubstationDAO {
 			System.out.println("Number of Substations for region : "+region+" are :"+substations.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : SubstationDAO : method : [getByRegion]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return substations;
 	}
 	
 	public Substation getBySubstationCode(String code){
 		Substation substation = new Substation();
+		Connection connection = DatabaseConnection.getConnection("mms_new");
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM substation where code=?");
 			ps.setString(1, code);
@@ -1506,6 +1789,13 @@ class SubstationDAO {
 			}
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getBykv33FeederCode]"+e);
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return substation;
 	}

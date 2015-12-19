@@ -7,9 +7,11 @@ import mms.com.utility.DatabaseConnection;
 import mms.com.beans.EHVSS;
 import java.util.ArrayList;
 import mms.com.beans.ErrorBean;
+import mms.com.dao.KV33FeederDAO;
+import mms.com.beans.KV33Feeder;
 public class EhvssDAO {
 	private Connection connection = DatabaseConnection.getConnection("mms_new");
-	
+	private KV33FeederDAO kv33FeederDAO=new KV33FeederDAO();
 	public EHVSS addEHVSS(EHVSS ehvss){
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into EHVSS(code, name, location, region, circle, division) VALUES(?,?,?,?,?,?)");
@@ -76,14 +78,19 @@ public class EhvssDAO {
 		return added;
 	}
 
-	public void deleteEHVSS(String id){
+	public void deleteEHVSSById(String id){
 		try {
+			System.out.println("Deletion of EHVSS started");
+			System.out.println("First deleting 33kv feeders against EHVSSID : "+id);
+			kv33FeederDAO.deleteKV33FeederByEhvssId(id);
+			System.out.println("Successfully deleted from 33KVFeeder Table now deleting from ehvss for id : "+id);
 			PreparedStatement ps = connection.prepareStatement("delete from ehvss where id=?");
 			ps.setInt(1,Integer.parseInt(id));
 			ps.executeUpdate();
 			ps.close();
+			System.out.println("Successfully deleted from ehvss for id : "+id);
 		} catch (SQLException e) {
-			System.out.println("Exception in [deleteEHVSS(id)]"+e);
+			System.out.println("Exception in [deleteEHVSSById(id)]"+e);
 		}
 	}
 	public ArrayList<String> get(){
