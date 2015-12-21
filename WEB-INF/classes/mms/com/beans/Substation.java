@@ -35,6 +35,24 @@ public class Substation {
 		this.dc = dc;
 		this.kv33FeederID = kv33FeederID;
 	}
+	public Substation(String name, String code,String region,
+			String circle, String division,String kv33FeederID) {
+		this.name = name;
+		this.code = code;
+		this.region = region;
+		this.circle = circle;
+		this.division = division;
+		this.kv33FeederID = kv33FeederID;
+	}
+	public Substation(String name, String code,String region,
+			String circle, String division) {
+		this.name = name;
+		this.code = code;
+		this.region = region;
+		this.circle = circle;
+		this.division = division;
+		this.kv33FeederID = kv33FeederID;
+	}
 	public Substation() {
 	}
 	public String getId() {

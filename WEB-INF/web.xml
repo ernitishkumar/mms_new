@@ -112,6 +112,24 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>SubstationController</servlet-name>
+		<servlet-class>mms.com.servlets.SubstationController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SubstationController</servlet-name>
+		<url-pattern>/SubstationController</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>KV11FeederController</servlet-name>
+		<servlet-class>mms.com.servlets.KV11FeederController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>KV11FeederController</servlet-name>
+		<url-pattern>/KV11FeederController</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>Logout</servlet-name>
 		<servlet-class>mms.com.servlets.Logout</servlet-class>
 	</servlet>

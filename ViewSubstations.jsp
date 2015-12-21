@@ -13,94 +13,71 @@
     <script type="text/javascript">
     $(document).ready(function () {
         //initialize jTable
-        $('#EhvssTableContainer').jtable({
-            title: 'Table of EHVSS',
+        $('#SubstationTableContainer').jtable({
+            title: 'Table of Substations',
             paging: true, //Enable paging
             pageSize: 10, //Set page size (default: 10)   
             actions: {
-                listAction: 'EHVSSController?action=list',
-                createAction:'EHVSSController?action=create',
-                updateAction: 'EHVSSController?action=update',
-                deleteAction: 'EHVSSController?action=delete'
+                listAction: 'SubstationController?action=list',
+                createAction:'SubstationController?action=create',
+                updateAction: 'SubstationController?action=update',
+                deleteAction: 'SubstationController?action=delete'
             },
             fields:{
                 id: {
-                  title: 'EHVSS ID',
+                  title: 'ID',
                   key: true,
                   list: true,
-                  create:false
+                  create:false,
+                  update:true,
+                  width: 'auto'
               },
-              name: {
-                title: 'EHVSS Name',
-                width: '30%'
-            },
-            code: {
+              code: {
                 title: 'Code',
+                width: 'auto'
+            },
+            name: {
+                title: 'Substation Name',
                 width: 'auto'
             },
             region: {
                 title: 'Region',
-                width: '15%',
+                width: 'auto',
                 options: ['INDORE','UJJAIN'],
+            },
+            circle: {
+                title: 'Circle',
+                width: 'auto',
+                dependsOn: 'region',
+                list:true,
+                edit:true,
+                create:true,
+                options:['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR']
+                /*options: function(data){
+                    if(data.source=='edit'||data.source=='create'||data.source=='update'){
+                        return 'GetCircles?source=jtable&regionName='+data.dependedValues.region;
+                    }else if(data.source=='list'){
+                        return ['INDORE','DHAR','UJJAIN','KHANDWA'];
+                    }
+                }*/
+            },
+            division: {
+                title: 'Division',
+                width: 'auto',
+                options:['INDORE-EAST','INDORE-SOUTH','INDORE-WEST','INDORE-NORTH','INDORE-CENTRAL','MHOW',
+                'INDOREO&M','DEPALPUR','PITHAMPUR','BARWANI','SENDHWA','KHANDWA-I','PANDHANA','KHANDWACITY','KHANDWA-II','BURHANPURO&M','BURHANPURCITY','KHARGONE-I','MANDLESHWAR','KHARGONE-II',
+                'BARWAHA','DHAR','RAJGARH-DHAR','MANAWAR','JHABUA','ALIRAJPUR','SHAJAPUR','SHUJALPUR','NEEMUCH','JAWAD','MANASA','MANDSAUR','MALHARGARH','SITAMAU','GAROTH','DEWASCITY','DEWASO&M',
+                'SONKATCH','BAGLI','KANNOD','RATLAMO&M','RATLAMCITY','JAORA','ALOT','UJJAINEAST','UJJAINWEST','UJJAINO&M','MAHIDPUR','NAGDA','BARNAGAR','TARANA','AGAR','SUSNER']
+            },
+            kv33FeederID: {
+                title: '33KV Feeder ID & Name',
+                width: 'auto',
             }
         }
     });
-
-         //Re-load records when user click 'load records' button.
-        $('#LoadRecordsButton').click(function (e) {
-            e.preventDefault();
-            $('#EhvssTableContainer').jtable('load', {
-                region: $('#region').val()
-            });
-        });
- 
-        //Load all records when page is first shown
-        $('#LoadRecordsButton').click();
-
-       //$('#EhvssTableContainer').jtable('load');
-    });
+$('#SubstationTableContainer').jtable('load');
+});
 </script>
-<style>
-.selectForm{
-    background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
-    background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
-    margin:auto;
-    position:relative;
-    width:550px;
-    height:auto;
-    font-family: Tahoma, Geneva, sans-serif;
-    font-size: 14px;
-    font-style: bold;
-    line-height: 24px;
-    font-weight: bold;
-    color: #09C;
-    text-decoration: none;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    padding:10px;
-    border: 1px solid #999;
-    border: inset 1px solid #333;
-    -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-}
-
-.selectInput{
-    width:375px;
-    display:block;
-    border: 1px solid #999;
-    height: 25px;
-    -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-}
-
-mark {
-    background-color: white;
-    color: red;
-}
-</style>
 </head>
 <body>
     <jsp:useBean id="user" class="mms.com.beans.UserLogin" scope="session" />
@@ -138,19 +115,8 @@ mark {
     </table>
     <br/>
     <div style="width:60%;margin-right:20%;margin-left:20%;text-align:center;">
-        <h1>All EHVSS Records</h1><br/>
-        <div class="filtering">
-            <form>
-                Select Region: 
-                <select id="region" name="region">
-                    <option selected="selected">All Regions</option>
-                    <option>INDORE</option>
-                    <option>UJJAIN</option>
-                </select>
-                <button type="submit" id="LoadRecordsButton">Load records</button>
-            </form>
-        </div>
-        <div id="EhvssTableContainer"></div>
+        <h1>All Substations </h1>
+        <div id="SubstationTableContainer"></div>
     </div>
     <br/>
     <br/>

@@ -10,8 +10,6 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function() {
-		$('#example').guardian();
-
 		/*$('#region').change(function(event) {
 			var region = $("select#region").val();
 			$.get('GetCircles', {

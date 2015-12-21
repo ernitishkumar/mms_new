@@ -3,55 +3,57 @@
 	<title>MMS - EHVSS Details</title>
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="css/guardian.css">
-	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	<script src="js/jquery.guardian-1.0.min.js"></script>
-	<script type="text/javascript">
-	
-	$(document).ready(function() {
-		
-		$('#region').change(function(event) {
-			var region = $("select#region").val();
-			$.get('GetCircles', {
-				regionName : region
-			}, function(response) {
-				var select = $('#circle');
-				select.find('option').remove();
-				$('<option>').val("-1").text("select circle").appendTo(select);
-				$.each(response, function(index, value) {
-					$('<option>').val(value).text(value).appendTo(select);
-				});
-			});
-		});
+	<!-- Include jTable script file.
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript">
 
-		$('#circle').change(function(event) {
-			var circle = $("select#circle").val();
-			$.get('GetDivisions', {
-				circleName : circle
-			}, function(response) {
-				var select = $('#division');
-				select.find('option').remove();
-				$('<option>').val("-1").text("select division").appendTo(select);
-				$.each(response, function(index, value) {
-					$('<option>').val(value).text(value).appendTo(select);
-				});
-			});
-		});
+    $(document).ready(function() {
 
-		$('#division').change(function(event) {
-			var division = $("select#division").val();
-			$.get('GetSubstationNames',{
-				divisionName : division
-			}, function(response) {
-				var select = $('#substation');
-				select.find('option').remove();
-				$('<option>').val("-1").text("select substation").appendTo(select);
-				$.each(response, function(index, value) {
-					$('<option>').val(value.id).text(value.id+" "+value.name).appendTo(select);
-				});
-			});
-		});
-	});
+    	$('#region').change(function(event) {
+    		var region = $("select#region").val();
+    		$.get('GetCircles', {
+    			regionName : region
+    		}, function(response) {
+    			var select = $('#circle');
+    			select.find('option').remove();
+    			$('<option>').val("-1").text("select circle").appendTo(select);
+    			$.each(response, function(index, value) {
+    				$('<option>').val(value).text(value).appendTo(select);
+    			});
+    		});
+    	});
+
+    	$('#circle').change(function(event) {
+    		var circle = $("select#circle").val();
+    		$.get('GetDivisions', {
+    			circleName : circle
+    		}, function(response) {
+    			var select = $('#division');
+    			select.find('option').remove();
+    			$('<option>').val("-1").text("select division").appendTo(select);
+    			$.each(response, function(index, value) {
+    				$('<option>').val(value).text(value).appendTo(select);
+    			});
+    		});
+    	});
+
+    	$('#division').change(function(event) {
+    		var division = $("select#division").val();
+    		$.get('GetSubstationNames',{
+    			divisionName : division
+    		}, function(response) {
+    			var select = $('#substation');
+    			select.find('option').remove();
+    			$('<option>').val("-1").text("select substation").appendTo(select);
+    			$.each(response, function(index, value) {
+    				$('<option>').val(value.id).text(value.id+" "+value.name).appendTo(select);
+    			});
+    		});
+    	});
+    });
 </script>
 <style>
 form{
@@ -177,13 +179,26 @@ mark {
 				<label>
 					<span>Enter 11KV Feeder Code</span><input id="code" type="text" name="code" required="true"/>
 				</label>
-
+				<br/>
 				<label>
-					<span>Enter 11KV Feeder Type</span><input id="feederType" type="text" name="feederType" required="true"/>
+					<span>Select 11KV Feeder Category</span>
+					<select size="1" name="feederType" id="feederType">
+						<option >Select Feeder Category</option>
+						<option >FS-IRR</option>
+						<option >RURAL-MIXED</option>
+						<option >THQ</option>
+						<option >FS-DLF</option>
+						<option >TOWN-OTHER</option>
+						<option >DHQ</option>
+						<option >INDUSTRIAL</option>
+						<option >ESSENTIAL</option>
+						<option >CHQ</option>
+					</select>
 				</label>
-				
-                <label>
-					<span>Enter DC</span><input id="dc" type="text" name="dc" required="true"/>
+				<br/>
+				<br/>
+				<label>
+					<span>Select DC</span><input id="dc" type="text" name="dc" required="true"/>
 				</label> 
 
 				<br/>

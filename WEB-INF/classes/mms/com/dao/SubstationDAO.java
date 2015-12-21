@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import mms.com.utility.DatabaseConnection;
 import mms.com.beans.Substation;
 import mms.com.beans.ErrorBean;
+import mms.com.dao.KV11FeederDAO;
+import mms.com.dao.KV33FeederDAO;
+import mms.com.beans.KV11Feeder;
+import mms.com.beans.KV33Feeder;
 public class SubstationDAO {
 	private Connection connection = DatabaseConnection.getConnection("mms_new");
-	private KV11FeederDAO kv11FeederDAO=new KV11FeederDAO();
-	public void addSubstation(Substation substation){
+	public Substation addSubstation(Substation substation){
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into substation(code, name, location, region, circle, division, dc, kv33feeder_id) VALUES(?,?,?,?,?,?,?,?)");
 			ps.setString(1,substation.getCode());
@@ -22,10 +25,17 @@ public class SubstationDAO {
 			ps.setString(7,"DUMMY");
 			ps.setString(8,substation.getKv33FeederID());
 			ps.executeUpdate();
+			ResultSet resultSet=ps.executeQuery("select last_insert_id() as 'id'");
+			resultSet.next();
+			int id=resultSet.getInt("id");
+			substation.setId(String.valueOf(id));
+			resultSet.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Exception in [updateUser]"+e);
+			System.out.println("Exception in [addSubstation]"+e);
 		}
+		return substation;
 	}
 
 	public boolean addSubstation(Substation substation,ErrorBean errorBean){
@@ -57,6 +67,27 @@ public class SubstationDAO {
 		return added;
 	}
 
+	public Substation updateSubstation(Substation substation){
+		try {
+			PreparedStatement ps = connection.prepareStatement("update substation set code=?,name=?,region=?,circle=?,division=? where id=?");
+			ps.setString(1,substation.getCode());
+			ps.setString(2,substation.getName());
+			ps.setString(3,substation.getRegion());
+			ps.setString(4,substation.getCircle());
+			ps.setString(5,substation.getDivision());
+			/*if(kv33Feeder.getEhvssID().trim().indexOf(" ")>=0){
+				ps.setInt(7,Integer.parseInt(kv33Feeder.getEhvssID().split(" ")[0]));
+			}else{
+				ps.setInt(7,Integer.parseInt(kv33Feeder.getEhvssID()));	
+			}*/
+			ps.setInt(6,Integer.parseInt(substation.getId()));
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			System.out.println("Exception in [updateSubstation(Substation)]"+e);
+		}
+		return substation;
+	}
 	public ArrayList<Substation> getAll() {
 		ArrayList<Substation> substations=null;
 		try {
@@ -76,11 +107,58 @@ public class SubstationDAO {
 				substation.setKv33FeederID(rs.getString(9).trim());
 				substations.add(substation);
 			}
-			System.out.println("Number of Substations:"+substations.size());
+			rs.close();
+			ps.close();
+			//System.out.println("Number of Substations:"+substations.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : SubstationDAO : method : [getAll]"+e);
 		}
 		return substations;
+	}
+
+	public ArrayList<Substation> getAll(String startIndex,String pageSize){
+		ArrayList<Substation> substations=null;
+		try {
+			System.out.println("getAll for substation called ");
+			PreparedStatement ps = connection.prepareStatement("SELECT s.id,s.code,s.name,s.location,s.region,s.circle,s.division,s.dc,s.kv33feeder_id,kv33.name FROM substation s join kv33feeder kv33 on s.kv33feeder_id=kv33.id limit "+startIndex+","+pageSize);
+			ResultSet rs=ps.executeQuery();
+			substations=new ArrayList<Substation>();
+			while(rs.next()){
+				Substation substation = new Substation();
+				substation.setId(String.valueOf(rs.getInt(1)));
+				substation.setName(rs.getString(3).trim());
+				substation.setCode(rs.getString(2).trim());
+				substation.setLocation(rs.getString(4).trim());
+				substation.setRegion(rs.getString(5).trim());
+				substation.setCircle(rs.getString(6).trim());
+				substation.setDivision(rs.getString(7).trim());
+				substation.setDc(rs.getString(8).trim());
+				substation.setKv33FeederID(rs.getString(9).trim()+" "+rs.getString(10));
+				substations.add(substation);
+			}
+			rs.close();
+			ps.close();
+
+			System.out.println("Number of Substations:"+substations.size());
+		} catch (SQLException e) {
+			System.out.println("Exception in class : SubstationDAO : method : [getAll(int,int)]"+e);
+		}
+		return substations;
+	}
+
+	public int getSubstationCount() {
+		int count=0;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT count(*) as count FROM substation");
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				count=rs.getInt("count");
+			}
+			System.out.println("Count of Substations :"+count);
+		} catch (SQLException e) {
+			System.out.println("Exception in class : SubstationDAO : method : [getSubstationCount]"+e);
+		}
+		return count;
 	}
 
 	public ArrayList<Substation> getByCode(String code) {
@@ -241,6 +319,7 @@ public class SubstationDAO {
 	}
 
 	public void deleteSubstationById(String id){
+		KV11FeederDAO kv11FeederDAO=new KV11FeederDAO();
 		try {
 			System.out.println("Deletion of substation started for substation id : "+id);
 			System.out.println("First deleting from 11KV Feeder table");
@@ -258,6 +337,7 @@ public class SubstationDAO {
 	}
 
 	public void deleteSubstationByKV33FeederId(String id){
+		KV11FeederDAO kv11FeederDAO=new KV11FeederDAO();
 		System.out.println("Deletion of substation by 33KV Feeder ID started");
 		try {
 			ArrayList<Substation> substations = getByKV33FeederId(id);

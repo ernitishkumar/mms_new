@@ -10,10 +10,10 @@ import mms.com.beans.ErrorBean;
 import mms.com.dao.KV33FeederDAO;
 import mms.com.beans.KV33Feeder;
 public class EhvssDAO {
-	private Connection connection = DatabaseConnection.getConnection("mms_new");
 	private KV33FeederDAO kv33FeederDAO=new KV33FeederDAO();
 	public EHVSS addEHVSS(EHVSS ehvss){
 		try {
+			Connection connection = DatabaseConnection.getConnection("mms_new");
 			PreparedStatement ps = connection.prepareStatement("insert into EHVSS(code, name, location, region, circle, division) VALUES(?,?,?,?,?,?)");
 			ps.setString(1,ehvss.getCode());
 			ps.setString(2,ehvss.getName());
@@ -28,6 +28,7 @@ public class EhvssDAO {
 			ehvss.setId(String.valueOf(id));
 			resultSet.close();
 			ps.close();
+			 
 		} catch (SQLException e) {
 			System.out.println("Exception in [addEHVSS(EHVSS)]"+e);
 		}
@@ -36,6 +37,7 @@ public class EhvssDAO {
 
 	public EHVSS updateEHVSS(EHVSS ehvss){
 		try {
+		 Connection connection = DatabaseConnection.getConnection("mms_new");
 			PreparedStatement ps = connection.prepareStatement("update EHVSS set code=?,name=?,location=?,region=?,circle=?,division=? where id=?");
 			ps.setString(1,ehvss.getCode());
 			ps.setString(2,ehvss.getName());
@@ -46,6 +48,7 @@ public class EhvssDAO {
 			ps.setInt(7,Integer.parseInt(ehvss.getId()));
 			ps.executeUpdate();
 			ps.close();
+			 
 		} catch (SQLException e) {
 			System.out.println("Exception in [updateEHVSS(EHVSS)]"+e);
 		}
@@ -56,6 +59,7 @@ public class EhvssDAO {
 		ArrayList<EHVSS> ehvssList=new ArrayList<EHVSS>();
 		boolean added;
 		try {
+			 Connection connection = DatabaseConnection.getConnection("mms_new");
 			ehvssList=getByCode(ehvss.getCode());
 			if(ehvssList==null || ehvssList.size()==0){
 				PreparedStatement ps = connection.prepareStatement("insert into EHVSS(code, name, location, region, circle, division) VALUES(?,?,?,?,?,?)");
@@ -67,6 +71,8 @@ public class EhvssDAO {
 				ps.setString(6,"DUMMY");
 				ps.executeUpdate();
 				added=true;
+				ps.close();
+				 
 			}else{
 				errorBean.setErrorMessage("EHVSS Code Already Exist. Please provide Different EHVSS Code");
 				added=false;
@@ -80,6 +86,7 @@ public class EhvssDAO {
 
 	public void deleteEHVSSById(String id){
 		try {
+			 Connection connection = DatabaseConnection.getConnection("mms_new");
 			System.out.println("Deletion of EHVSS started");
 			System.out.println("First deleting 33kv feeders against EHVSSID : "+id);
 			kv33FeederDAO.deleteKV33FeederByEhvssId(id);
@@ -88,6 +95,7 @@ public class EhvssDAO {
 			ps.setInt(1,Integer.parseInt(id));
 			ps.executeUpdate();
 			ps.close();
+			 
 			System.out.println("Successfully deleted from ehvss for id : "+id);
 		} catch (SQLException e) {
 			System.out.println("Exception in [deleteEHVSSById(id)]"+e);
@@ -96,12 +104,16 @@ public class EhvssDAO {
 	public ArrayList<String> get(){
 		ArrayList<String> ehvssNames=null;
 		try {
+			Connection connection = DatabaseConnection.getConnection("mms_new");
 			PreparedStatement ps = connection.prepareStatement("SELECT name FROM ehvss");
 			ResultSet rs=ps.executeQuery();
 			ehvssNames=new ArrayList<String>();
 			while(rs.next()){
 				ehvssNames.add(rs.getString(1).trim());
 			}
+			rs.close();
+			ps.close();
+			 
 			System.out.println("Number of Ehvss Locations :"+ehvssNames.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [get]"+e);
@@ -112,6 +124,7 @@ public class EhvssDAO {
 	public ArrayList<EHVSS> getAll(){
 		ArrayList<EHVSS> ehvssNames=null;
 		try {
+			Connection connection = DatabaseConnection.getConnection("mms_new");
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss");
 			ResultSet rs=ps.executeQuery();
 			ehvssNames=new ArrayList<EHVSS>();
@@ -126,6 +139,9 @@ public class EhvssDAO {
 				ehvss.setDivision(rs.getString(7).trim());
 				ehvssNames.add(ehvss);
 			}
+			rs.close();
+			ps.close();
+			 
 			System.out.println("Number of Ehvss Locations :"+ehvssNames.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getAll]"+e);
@@ -138,6 +154,7 @@ public class EhvssDAO {
 	public ArrayList<EHVSS> getAll(String startIndex,String pageSize){
 		ArrayList<EHVSS> ehvssNames=null;
 		try {
+			 Connection connection = DatabaseConnection.getConnection("mms_new");
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss limit "+startIndex+","+pageSize);
 			ResultSet rs=ps.executeQuery();
 			ehvssNames=new ArrayList<EHVSS>();
@@ -152,6 +169,9 @@ public class EhvssDAO {
 				ehvss.setDivision(rs.getString(7).trim());
 				ehvssNames.add(ehvss);
 			}
+			rs.close();
+			ps.close();
+			 
 			System.out.println("Number of Ehvss Locations for PageSize : "+pageSize+" is : "+ehvssNames.size()); 
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getAll]"+e);
@@ -164,11 +184,15 @@ public class EhvssDAO {
 	public int getEhvssCount(){
 		int count=0;
 		try {
+			Connection connection = DatabaseConnection.getConnection("mms_new");
 			PreparedStatement ps = connection.prepareStatement("SELECT count(*) as count FROM ehvss");
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()){
 				count=rs.getInt("count");
 			}
+			rs.close();
+			ps.close();
+			 
 			System.out.println("Count of EHVSS : "+count);
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getEhvssCount]"+e);
@@ -182,6 +206,7 @@ public class EhvssDAO {
 		System.out.println("GetByCode called with code : "+code);
 		ArrayList<EHVSS> ehvssNames=null;
 		try {
+			 Connection connection = DatabaseConnection.getConnection("mms_new");
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss where code=?");
 			ps.setString(1,code);
 			ResultSet rs=ps.executeQuery();
@@ -197,6 +222,9 @@ public class EhvssDAO {
 				ehvss.setDivision(rs.getString(7).trim());
 				ehvssNames.add(ehvss);
 			}
+			rs.close();
+			ps.close();
+			 
 			System.out.println("Number of Ehvss Locations :"+ehvssNames.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getByCode]"+e);
@@ -210,6 +238,7 @@ public class EhvssDAO {
 		System.out.println("GetByCode called with region : "+region);
 		ArrayList<EHVSS> ehvssNames=null;
 		try {
+			 Connection connection = DatabaseConnection.getConnection("mms_new");
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss where region=?");
 			ps.setString(1,region);
 			ResultSet rs=ps.executeQuery();
@@ -225,6 +254,9 @@ public class EhvssDAO {
 				ehvss.setDivision(rs.getString(7).trim());
 				ehvssNames.add(ehvss);
 			}
+			rs.close();
+			ps.close();
+			 
 			System.out.println("Number of Ehvss Locations for region :"+region+"  is :"+ehvssNames.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getByRegion]"+e);
@@ -238,6 +270,7 @@ public class EhvssDAO {
 		EHVSS ehvss = new EHVSS();
 		
 		try {
+			Connection connection = DatabaseConnection.getConnection("mms_new");
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss where code=?");
 			ps.setString(1, code);
 			ResultSet rs=ps.executeQuery();
@@ -250,6 +283,9 @@ public class EhvssDAO {
 				ehvss.setCircle(rs.getString(6).trim());
 				ehvss.setDivision(rs.getString(7).trim());
 			}
+			rs.close();
+			ps.close();
+			 
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getByEhvssCode]"+e);
 		}

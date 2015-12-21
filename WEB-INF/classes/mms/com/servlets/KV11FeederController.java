@@ -6,32 +6,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import mms.com.beans.KV33Feeder;
-import mms.com.dao.KV33FeederDAO;
+import mms.com.beans.KV11Feeder;
+import mms.com.dao.KV11FeederDAO;
 import mms.com.beans.ErrorBean;
 import java.util.ArrayList;
 import com.google.gson.*;
 import com.google.gson.reflect.*;
-public class KV33FeederController extends HttpServlet{
+public class KV11FeederController extends HttpServlet{
 
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
-		//System.out.println("KV33FeederController Started");
+		System.out.println("KV11FeederController Started");
 		String action=(String)httpServletRequest.getParameter("action");
 		if(action!=null){
 			////System.out.println("EHVSSController called for action : "+action);
-			KV33FeederDAO kv33FeederDAO=new KV33FeederDAO();
+			KV11FeederDAO kv11FeederDAO=new KV11FeederDAO();
 			Gson gson=new Gson();
 			if(action.toLowerCase().equals("list")){
 				String startIndex=(String)httpServletRequest.getParameter("jtStartIndex");
 				String pageSize=(String)httpServletRequest.getParameter("jtPageSize");
 				////System.out.println("Start Index : "+startIndex+" Page Size : "+pageSize);
-				ArrayList<KV33Feeder> kv33FeederRecords=new ArrayList<KV33Feeder>();
-				kv33FeederRecords=kv33FeederDAO.getAll(startIndex,pageSize);
-				int count=kv33FeederDAO.getKV33FeederCount();
+				ArrayList<KV11Feeder> kv11FeederRecords=new ArrayList<KV11Feeder>();
+				kv11FeederRecords=kv11FeederDAO.getAll(startIndex,pageSize);
+				int count=kv11FeederDAO.getKV11FeedersCount();
 				////System.out.println("Count of EHVSS form controller : "+count);
-				String json = new Gson().toJson(kv33FeederRecords);
-				JsonElement element = gson.toJsonTree(kv33FeederRecords,new TypeToken<ArrayList<KV33Feeder>>(){}.getType());
+				String json = new Gson().toJson(kv11FeederRecords);
+				JsonElement element = gson.toJsonTree(kv11FeederRecords,new TypeToken<ArrayList<KV11Feeder>>(){}.getType());
 				JsonArray jsonArray = element.getAsJsonArray();
 				String listData=jsonArray.toString();
 				////System.out.println("JSON String is : "+json); //remove after testing
@@ -45,23 +45,21 @@ public class KV33FeederController extends HttpServlet{
 				String code=(String)httpServletRequest.getParameter("code");
 				String region=(String)httpServletRequest.getParameter("region");
 				String circle=(String)httpServletRequest.getParameter("circle");
-				String ehvssId=(String)httpServletRequest.getParameter("ehvssID");
-				//System.out.println("EHVSS ID from request : "+ehvssId);
-				if(ehvssId.trim().indexOf(" ")>=0){
-					ehvssId=ehvssId.split(" ")[0];
-				}
+				String division=(String)httpServletRequest.getParameter("division");
+				String dc=(String)httpServletRequest.getParameter("dc");
+				String feederType=(String)httpServletRequest.getParameter("feederType");
 				////System.out.println("Data for jTABLE create : "+name+" "+code+" "+region);
-				KV33Feeder kv33Feeder=new KV33Feeder(name,code,region,circle,ehvssId);
+				KV11Feeder kv11Feeder=new KV11Feeder(name,code,region,circle,division,dc,feederType);
 				if(action.toLowerCase().equals("create")){
-					kv33Feeder=kv33FeederDAO.addKV33Feeder(kv33Feeder);
+					/*kv33Feeder=kv11FeederDAO.add11KVFeeder(kv11Feeder);
 					String json=gson.toJson(kv33Feeder);    
 					String listData="{\"Result\":\"OK\",\"Record\":"+json+"}";          
 					httpServletResponse.getWriter().print(listData);
-					//System.out.println("kv33Feeder added from kv33Feeder controller and last create id is : "+kv33Feeder.getId());
+					//System.out.println("kv33Feeder added from kv33Feeder controller and last create id is : "+kv33Feeder.getId());*/
 				}else if(action.toLowerCase().equals("update")){
 					String id=(String)httpServletRequest.getParameter("id");
-					kv33Feeder.setId(id);
-					kv33Feeder=kv33FeederDAO.updateKV33Feeder(kv33Feeder);
+					kv11Feeder.setId(id);
+					kv11Feeder=kv11FeederDAO.update11KVFeeder(kv11Feeder);
 					String listData="{\"Result\":\"OK\"}";        
 					httpServletResponse.getWriter().print(listData);
 					////System.out.println("kv33Feeder updated from kv33Feeder controller and last create id is : "+kv33Feeder.getId());
@@ -71,7 +69,7 @@ public class KV33FeederController extends HttpServlet{
 				if(httpServletRequest.getParameter("id")!=null){
 					String id=(String)httpServletRequest.getParameter("id");
 					//System.out.println("ID for delete : "+id);
-					kv33FeederDAO.deleteKV33FeederById(id);
+					kv11FeederDAO.deleteById(id);
 					String listData="{\"Result\":\"OK\"}";       
 					httpServletResponse.getWriter().print(listData);
 				}	

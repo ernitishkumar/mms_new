@@ -43,7 +43,7 @@
 		<br/>
 		<b>Substation[   <a href="Substation.jsp">Add</a>, <a href="ViewSubstations.jsp">View</a>   ]</b>
 		<br/>
-		<b>11KVFeeder[   <a href="KV11FeederDetails.jsp">Add</a>, <a href="ViewSubstations.jsp">View</a>   ]</b>
+		<b>11KVFeeder[   <a href="KV11FeederDetails.jsp">Add</a>, <a href="ViewKV11Feeders.jsp">View</a>   ]</b>
 	</div>
 	<br/>
 	<br/>

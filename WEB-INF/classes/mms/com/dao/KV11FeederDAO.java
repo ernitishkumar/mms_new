@@ -9,7 +9,7 @@ import mms.com.beans.ErrorBean;
 import java.util.ArrayList;
 public class KV11FeederDAO {
 	private Connection connection = DatabaseConnection.getConnection("mms_new");
-	public void add11KVFeeder(KV11Feeder kv11Feeder){
+	public KV11Feeder add11KVFeeder(KV11Feeder kv11Feeder){
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into KV11FEEDER(code, name, location, region, circle, division, dc, substation_id,feeder_type) VALUES(?,?,?,?,?,?,?,?,?)");
 			ps.setString(1,kv11Feeder.getCode());
@@ -22,10 +22,17 @@ public class KV11FeederDAO {
 			ps.setString(8,kv11Feeder.getSubstationID());
 			ps.setString(9,kv11Feeder.getFeederType());
 			ps.executeUpdate();
+			ResultSet resultSet=ps.executeQuery("select last_insert_id() as 'id'");
+			resultSet.next();
+			int id=resultSet.getInt("id");
+			kv11Feeder.setId(String.valueOf(id));
+			resultSet.close();
+			ps.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("Exception in [updateUser]"+e);
+			System.out.println("Exception in [add11KVFeeder(KV11Feeder)]"+e);
 		}
+		return kv11Feeder;
 	}
 
 	public boolean add11KVFeeder(KV11Feeder kv11Feeder,ErrorBean errorBean){
@@ -58,9 +65,71 @@ public class KV11FeederDAO {
 		return added;
 	}
 
+	public KV11Feeder update11KVFeeder(KV11Feeder kv11Feeder){
+		try {
+			PreparedStatement ps = connection.prepareStatement("update kv11feeder set code=?,name=?,region=?,circle=?,division=?,dc=?,feeder_type=? where id=?");
+			ps.setString(1,kv11Feeder.getCode());
+			ps.setString(2,kv11Feeder.getName());
+			ps.setString(3,kv11Feeder.getRegion());
+			ps.setString(4,kv11Feeder.getCircle());
+			ps.setString(5,kv11Feeder.getDivision());
+			ps.setString(6,kv11Feeder.getDc());
+			ps.setString(7,kv11Feeder.getFeederType());
+			ps.setInt(8,Integer.parseInt(kv11Feeder.getId()));
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Exception in [update11KVFeeder(KV11Feeder)]"+e);
+		}
+		return kv11Feeder;
+	}
+	public ArrayList<KV11Feeder> getAll(String startIndex,String pageSize){
+		//System.out.println("Get All Feeders started");
+		ArrayList<KV11Feeder> kv11Feeders=null;
+		try{
+			PreparedStatement ps = connection.prepareStatement("SELECT kv11.id,kv11.code,kv11.name,kv11.region,kv11.circle,kv11.division,kv11.dc,kv11.substation_id,s.name,kv11.feeder_type FROM kv11feeder kv11 join substation s on kv11.substation_id=s.id limit "+startIndex+","+pageSize);
+			ResultSet rs=ps.executeQuery();
+			kv11Feeders=new ArrayList<KV11Feeder> ();
+			while(rs.next()){
+				KV11Feeder kv11Feeder = new KV11Feeder();
+				kv11Feeder.setId(String.valueOf(rs.getInt(1)));
+				kv11Feeder.setName(rs.getString(3).trim());
+				kv11Feeder.setCode(rs.getString(2).trim());
+				kv11Feeder.setRegion(rs.getString(4).trim());
+				kv11Feeder.setCircle(rs.getString(5).trim());
+				kv11Feeder.setDivision(rs.getString(6).trim());
+				kv11Feeder.setDc(rs.getString(7).trim());
+				kv11Feeder.setSubstationID(rs.getString(8).trim()+" "+rs.getString(9));
+				kv11Feeder.setFeederType(rs.getString(10).trim());
+				kv11Feeders.add(kv11Feeder);
+			}
+			//System.out.println("Number of 11 KV Feeder are :"+kv11Feeders.size());
+		}catch(SQLException e){
+			e.printStackTrace();
+			System.out.println("Exception in class : KV11FeederDAO : method :getAllKV11Feeders()"+e);
+		}
+		return kv11Feeders;
+	}
+
+	public int getKV11FeedersCount() {
+		int count=0;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT count(*) as count FROM kv11feeder");
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				count=rs.getInt("count");
+			}
+			//System.out.println("Count of 11KVFeeders :"+count);
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV11FeederDAO : method : [getKV11FeedersCount]"+e);
+		}
+		return count;
+	}
+
+
 	public ArrayList<KV11Feeder> getByCode(String code){
 		System.out.println("Get Feeder by code started for code : "+code);
-
 		ArrayList<KV11Feeder> kv11Feeders=null;
 		try{
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv11feeder where code=?");
@@ -81,10 +150,10 @@ public class KV11FeederDAO {
 				kv11Feeder.setFeederType(rs.getString(10).trim());
 				kv11Feeders.add(kv11Feeder);
 			}
-			System.out.println("Number of 11 KV Feeder for code : "+code+" are :"+kv11Feeders.size());
+			//System.out.println("Number of 11 KV Feeder for code : "+code+" are :"+kv11Feeders.size());
 		}catch(SQLException e){
 			e.printStackTrace();
-			System.out.println("Exception in class : KV11FeederDAO : method :getByCode()"+e);
+			System.out.println("Exception in class : KV11FeederDAO : method :getByCode(String)"+e);
 		}
 		return kv11Feeders;
 	}

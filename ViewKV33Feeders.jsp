@@ -4,10 +4,12 @@
     <title>Setup and Load Data to jTable using Servlets and JSP</title>
     <link href="css/metro/blue/jtable.css" rel="stylesheet" type="text/css" />
     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
-    <!-- Include jTable script file. -->
+    <!-- Include jTable script file.
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script src="js/jquery.jtable.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.jtable.min.js" type="text/javascript"></script>
     <script type="text/javascript">
     $(document).ready(function () {
         //initialize jTable
@@ -28,28 +30,27 @@
                   list: true,
                   create:false,
                   update:true,
-                  width: '15%'
+                  width: 'auto'
               },
               name: {
                 title: '33KV Feeder Name',
-                width: '20%'
+                width: 'auto'
             },
             code: {
                 title: '33KV Feeder Code',
-                width: '15%'
+                width: 'auto'
             },
             region: {
                 title: '33KV Feeder Region',
-                width: '20%',
+                width: 'auto',
                 options: ['INDORE','UJJAIN'],
             },
             circle: {
                 title: '33KV Feeder Circle',
-                width: '20%',
+                width: 'auto',
                 dependsOn: 'region',
                 list:true,
                 edit:true,
-                create:true,
                 options:['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR']
                 /*options: function(data){
                     if(data.source=='edit'||data.source=='create'||data.source=='update'){
@@ -61,7 +62,7 @@
             },
             ehvssID: {
                 title: 'EHVSS ID',
-                width: '20%'
+                width: 'auto'
             }
         }
     });

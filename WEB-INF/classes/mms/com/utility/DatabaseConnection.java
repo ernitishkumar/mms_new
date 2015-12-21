@@ -6,12 +6,13 @@ import java.sql.SQLException;
 public class DatabaseConnection {
 
 	private static Connection connection = null;
+	private static Connection connectionWithSource=null;
 	public static Connection getConnection()
 	{
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			if(connection==null){
-				connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/mpeb_new","root","sql");	
+				Class.forName("com.mysql.jdbc.Driver");
+				connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/mpeb_new","root","kumar");	
 			}
 		} catch (SQLException exception) {
 			System.out.println("Not able to connect to the Database "+exception.getMessage());
@@ -25,10 +26,11 @@ public class DatabaseConnection {
 	
 	public static Connection getConnection(String dbName)
 	{
-		Connection connection = null;
 		try {
+			if(connectionWithSource==null){
 			Class.forName("com.mysql.jdbc.Driver");
-			connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/"+dbName,"root","kumar");	
+			connectionWithSource=DriverManager.getConnection("jdbc:mysql://localhost:3306/"+dbName,"root","kumar");		
+			}
 		} catch (SQLException exception) {
 			System.out.println("Not able to connect to the Database "+exception.getMessage());
 			exception.printStackTrace();
@@ -36,6 +38,6 @@ public class DatabaseConnection {
 			System.out.println("Class not found "+e.getMessage());
 			e.printStackTrace();
 		}
-		return connection;
+		return connectionWithSource;
 	}
 }

@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import mms.com.beans.ErrorBean;
 public class KV33FeederDAO {
 	private Connection connection = DatabaseConnection.getConnection("mms_new");
-	private SubstationDAO substationDAO=new SubstationDAO();
 	public KV33Feeder addKV33Feeder(KV33Feeder kv33Feeder){
 		try {
 			PreparedStatement ps = connection.prepareStatement("insert into KV33Feeder(code, name, location, region, circle, division, ehvss_id) VALUES(?,?,?,?,?,?,?)");
@@ -36,15 +35,17 @@ public class KV33FeederDAO {
 
 	public KV33Feeder updateKV33Feeder(KV33Feeder kv33Feeder){
 		try {
-			PreparedStatement ps = connection.prepareStatement("update kv33feeder set code=?,name=?,location=?,region=?,circle=?,division=?,ehvss_id=? where id=?");
+			PreparedStatement ps = connection.prepareStatement("update kv33feeder set code=?,name=?,region=?,circle=? where id=?");
 			ps.setString(1,kv33Feeder.getCode());
 			ps.setString(2,kv33Feeder.getName());
-			ps.setString(3,"DUMMY");
-			ps.setString(4,kv33Feeder.getRegion());
-			ps.setString(5,kv33Feeder.getCircle());
-			ps.setString(6,"DUMMY");
-			ps.setInt(7,Integer.parseInt(kv33Feeder.getEhvssID()));
-			ps.setInt(8,Integer.parseInt(kv33Feeder.getId()));
+			ps.setString(3,kv33Feeder.getRegion());
+			ps.setString(4,kv33Feeder.getCircle());
+			/*if(kv33Feeder.getEhvssID().trim().indexOf(" ")>=0){
+				ps.setInt(7,Integer.parseInt(kv33Feeder.getEhvssID().split(" ")[0]));
+			}else{
+				ps.setInt(7,Integer.parseInt(kv33Feeder.getEhvssID()));	
+			}*/
+			ps.setInt(5,Integer.parseInt(kv33Feeder.getId()));
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -109,7 +110,7 @@ public class KV33FeederDAO {
 	public ArrayList<KV33Feeder> getAll(String startIndex,String pageSize) {
 		ArrayList<KV33Feeder> kv33Feeders=null;
 		try {
-			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv33feeder limit "+startIndex+","+pageSize);
+			PreparedStatement ps = connection.prepareStatement("SELECT kv33.id,kv33.code,kv33.name,kv33.location,kv33.region,kv33.circle,kv33.division,kv33.ehvss_id,e.name FROM kv33feeder kv33 join ehvss e on kv33.ehvss_id=e.id limit "+startIndex+","+pageSize);
 			ResultSet rs=ps.executeQuery();
 			kv33Feeders=new ArrayList<KV33Feeder>();
 			while(rs.next()){
@@ -121,7 +122,7 @@ public class KV33FeederDAO {
 				kv33Feeder.setRegion(rs.getString(5).trim());
 				kv33Feeder.setCircle(rs.getString(6).trim());
 				kv33Feeder.setDivision(rs.getString(7).trim());
-				kv33Feeder.setEhvssID(rs.getString(8).trim());
+				kv33Feeder.setEhvssID(rs.getString(8).trim()+" "+rs.getString(9));
 				kv33Feeders.add(kv33Feeder);
 			}
 			System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
@@ -170,6 +171,29 @@ public class KV33FeederDAO {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getByCode]"+e);
 		}
 		return kv33Feeders;
+	}
+
+	public KV33Feeder getById(String id) {
+		KV33Feeder kv33Feeder=null;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv33feeder where id=?");
+			ps.setInt(1,Integer.parseInt(id));
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				kv33Feeder = new KV33Feeder();
+				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
+				kv33Feeder.setName(rs.getString(3).trim());
+				kv33Feeder.setCode(rs.getString(2).trim());
+				kv33Feeder.setLocation(rs.getString(4).trim());
+				kv33Feeder.setRegion(rs.getString(5).trim());
+				kv33Feeder.setCircle(rs.getString(6).trim());
+				kv33Feeder.setDivision(rs.getString(7).trim());
+				kv33Feeder.setEhvssID(rs.getString(8).trim());
+			}
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getById]"+e);
+		}
+		return kv33Feeder;
 	}
 
 	public ArrayList<KV33Feeder> getByCircle(String circle) {
@@ -247,6 +271,7 @@ public class KV33FeederDAO {
 	}
 
 	public void deleteKV33FeederById(String id){
+		SubstationDAO substationDAO=new SubstationDAO();
 		try {
 			System.out.println("Deletion of 33KVFeeders started for 33KVFeeder ID : "+id);
 			System.out.println("First deleting 33KVFeeder id from substation");
@@ -264,6 +289,7 @@ public class KV33FeederDAO {
 	}
 
 	public void deleteKV33FeederByEhvssId(String id){
+		SubstationDAO substationDAO=new SubstationDAO();
 		try {
 			System.out.println("Deletion of 33KV Feeders started for ehvss ID : "+id);
 			ArrayList<KV33Feeder> kv33Feeders = getKV33FeederByEhvssId(id);
