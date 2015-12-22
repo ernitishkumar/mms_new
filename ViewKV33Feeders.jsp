@@ -51,18 +51,29 @@
                 dependsOn: 'region',
                 list:true,
                 edit:true,
-                options:['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR']
-                /*options: function(data){
+                dependsOn:'region',
+                //options:['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR']
+                options: function(data){
+                     //alert("Hello");
                     if(data.source=='edit'||data.source=='create'||data.source=='update'){
                         return 'GetCircles?source=jtable&regionName='+data.dependedValues.region;
                     }else if(data.source=='list'){
-                        return ['INDORE','DHAR','UJJAIN','KHANDWA'];
+                        //return ['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR'];
+                       return [data.record.circle];
                     }
-                }*/
+                }
             },
             ehvssID: {
                 title: 'EHVSS ID',
-                width: 'auto'
+                width: 'auto',
+                dependsOn:'region',
+                options: function(data){
+                    if(data.source=='edit'||data.source=='create'||data.source=='update'){
+                        return 'GetEhvssNamesByRegion?source=jtable&regionName='+data.dependedValues.region;
+                    }else if(data.source=='list'){
+                       return [data.record.ehvssID];
+                    }
+                }
             }
         }
     });

@@ -30,22 +30,24 @@ public class GetCircles extends HttpServlet {
         System.out.println("Source : "+source);
         System.out.println("Getting circles for region NAME: "+regionName);
         ArrayList<String> locations=new ArrayList<String>();
-        try {
+        if(regionName!=null){
             locations=locationDAO.getCirclesByRegionName(regionName);
-            System.out.println("Circles for Region : "+regionName+" are : "+locations);
-        }catch(Exception e){
-            System.out.println("Exception in class : GetCircles method : processRequest() : "+e);
+            System.out.println("Size of Circles for Region : "+regionName+" are : "+locations.size());    
+        }else{
+            locations=locationDAO.getCircles();
+            System.out.println("Size of all Circles is : "+locations.size()); 
         }
         if(source!=null && source.toLowerCase().equals("jtable")){
 
             int i=1;
             String optionData="";
             for(String circle:locations){
-             optionData+="{\"DisplayText\":\""+circle+"\",\"Value\":\""+i+"\"},";
+             optionData+="{\"Value\":\""+i+"\",\"DisplayText\":\""+circle+"\"},";
+            //optionData+="{\""+i+"\",\""+circle+"\"},";
              i++;
          }
          optionData=optionData.substring(0,optionData.length()-1);
-         System.out.println("Circles in json format : "+optionData);
+         //System.out.println("Circles in json format : "+optionData);
          String json="{\"Result\":\"OK\",\"Options\":["+optionData+"]}";
          System.out.println("Sending Json response as : "+json);
          httpServletResponse.setContentType("application/json");

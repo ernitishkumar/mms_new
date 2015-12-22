@@ -56,7 +56,7 @@ public class LocationDAO {
 	public ArrayList<String> getCirclesByRegionName(String regionName){
 		ArrayList<String> locations = new ArrayList<String>();
 		try {
-			PreparedStatement ps=connection.prepareStatement("SELECT distinct(circle) FROM blukloaction b where region=?");
+			PreparedStatement ps=connection.prepareStatement("SELECT distinct(circle_name) FROM mms_feeder_list m where resion=?");
 			ps.setString(1, regionName);
 			ResultSet resultSet = ps.executeQuery();
 			while(resultSet.next()){
@@ -71,10 +71,27 @@ public class LocationDAO {
 		return locations;
 	}
 
+	public ArrayList<String> getCircles(){
+		ArrayList<String> locations = new ArrayList<String>();
+		try {
+			PreparedStatement ps=connection.prepareStatement("SELECT distinct(circle_name) FROM mms_feeder_list b");
+			ResultSet resultSet = ps.executeQuery();
+			while(resultSet.next()){
+				locations.add(resultSet.getString(1).trim());
+			}
+		} catch (SQLException e) {
+			System.out.println("Exception occured in Class : LocationDAO : Method : getCircles"+e);
+		} finally{
+			
+		}
+		System.out.println("Size of All circles is : "+locations.size());
+		return locations;
+	}
+
 	public ArrayList<String> getDivisionByCircleName(String circleName){
 		ArrayList<String> locations = new ArrayList<String>();
 		try {
-			PreparedStatement ps=connection.prepareStatement("SELECT distinct(division) FROM mpeb_new.blukloaction where circle=?");
+			PreparedStatement ps=connection.prepareStatement("SELECT distinct(division) FROM mms_feeder_list where circle_name=?");
 			ps.setString(1, circleName);
 			ResultSet resultSet = ps.executeQuery();
 			while(resultSet.next()){
@@ -85,7 +102,24 @@ public class LocationDAO {
 		} finally{
 			
 		}
-		System.out.println("Size of divisions for circle Name : "+circleName+"  is : "+locations.size());
+		//System.out.println("Size of divisions for circle Name : "+circleName+"  is : "+locations.size());
+		return locations;
+	}
+
+	public ArrayList<String> getAllDivisions(){
+		ArrayList<String> locations = new ArrayList<String>();
+		try {
+			PreparedStatement ps=connection.prepareStatement("SELECT distinct(division) FROM mms_feeder_list");
+			ResultSet resultSet = ps.executeQuery();
+			while(resultSet.next()){
+				locations.add(resultSet.getString(1).trim());
+			}
+		} catch (SQLException e) {
+			System.out.println("Exception occured in Class : LocationDAO : Method : getAllDivisions()"+e);
+		} finally{
+			
+		}
+		//System.out.println("Size of divisions for circle Name : "+circleName+"  is : "+locations.size());
 		return locations;
 	}
 
