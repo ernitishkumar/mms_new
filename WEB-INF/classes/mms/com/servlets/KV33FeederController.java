@@ -46,10 +46,11 @@ public class KV33FeederController extends HttpServlet{
 				String region=(String)httpServletRequest.getParameter("region");
 				String circle=(String)httpServletRequest.getParameter("circle");
 				String ehvssId=(String)httpServletRequest.getParameter("ehvssID");
-				//System.out.println("EHVSS ID from request : "+ehvssId);
-				if(ehvssId.trim().indexOf(" ")>=0){
-					ehvssId=ehvssId.split(" ")[0];
+				System.out.println("EHVSS ID from request : "+ehvssId);
+				if(ehvssId.trim().indexOf("ID:")>=0){
+					ehvssId=ehvssId.substring(ehvssId.indexOf("(ID:")+4,ehvssId.lastIndexOf(")"));
 				}
+				System.out.println("EHVSS ID from request after Parsing : "+ehvssId);
 				////System.out.println("Data for jTABLE create : "+name+" "+code+" "+region);
 				KV33Feeder kv33Feeder=new KV33Feeder(name,code,region,circle,ehvssId);
 				if(action.toLowerCase().equals("create")){

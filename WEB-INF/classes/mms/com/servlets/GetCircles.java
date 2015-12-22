@@ -17,14 +17,13 @@ import com.google.gson.*;
 import com.google.gson.reflect.*;
 
 public class GetCircles extends HttpServlet {
-
+    private Gson gson=new Gson();
+    private LocationHelper locationHelper=new LocationHelper();
+    private LocationDAO locationDAO=new LocationDAO();
     protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
     throws ServletException, IOException {
         System.out.println("Get Circles Called");
-        Gson gson=new Gson();
         HttpSession httpSession =httpServletRequest.getSession();
-        LocationHelper locationHelper=new LocationHelper();
-        LocationDAO locationDAO=new LocationDAO();
         String regionName=httpServletRequest.getParameter("regionName");
         String source=httpServletRequest.getParameter("source");
         System.out.println("Source : "+source);
@@ -32,31 +31,20 @@ public class GetCircles extends HttpServlet {
         ArrayList<String> locations=new ArrayList<String>();
         if(regionName!=null){
             locations=locationDAO.getCirclesByRegionName(regionName);
-            System.out.println("Size of Circles for Region : "+regionName+" are : "+locations.size());    
+            //System.out.println("Size of Circles for Region : "+regionName+" are : "+locations.size());    
         }else{
             locations=locationDAO.getCircles();
-            System.out.println("Size of all Circles is : "+locations.size()); 
+            //System.out.println("Size of all Circles is : "+locations.size()); 
         }
+        String json="";
         if(source!=null && source.toLowerCase().equals("jtable")){
-
-            int i=1;
-            String optionData="";
-            for(String circle:locations){
-             optionData+="{\"Value\":\""+i+"\",\"DisplayText\":\""+circle+"\"},";
-            //optionData+="{\""+i+"\",\""+circle+"\"},";
-             i++;
-         }
-         optionData=optionData.substring(0,optionData.length()-1);
-         //System.out.println("Circles in json format : "+optionData);
-         String json="{\"Result\":\"OK\",\"Options\":["+optionData+"]}";
-         System.out.println("Sending Json response as : "+json);
-         httpServletResponse.setContentType("application/json");
-         httpServletResponse.getWriter().write(json);
-     }else{
-        String json = new Gson().toJson(locations);
-        httpServletResponse.setContentType("application/json");
-        httpServletResponse.getWriter().write(json);
+           json="{\"Result\":\"OK\",\"Options\":"+gson.toJson(locations)+"}";
+            //System.out.println("Sending Json response as : "+json);
+       }else{
+        json = new Gson().toJson(locations);
     }
+    httpServletResponse.setContentType("application/json");
+    httpServletResponse.getWriter().write(json);
 } 
 
 

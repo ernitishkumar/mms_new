@@ -27,7 +27,7 @@
                 id: {
                   title: 'EHVSS ID',
                   key: true,
-                  list: true,
+                  list: false,
                   create:false
               },
               name: {
@@ -46,7 +46,7 @@
         }
     });
 
-         //Re-load records when user click 'load records' button.
+     /*    //Re-load records when user click 'load records' button.
         $('#LoadRecordsButton').click(function (e) {
             e.preventDefault();
             $('#EhvssTableContainer').jtable('load', {
@@ -55,9 +55,9 @@
         });
  
         //Load all records when page is first shown
-        $('#LoadRecordsButton').click();
+        $('#LoadRecordsButton').click();*/
 
-       //$('#EhvssTableContainer').jtable('load');
+       $('#EhvssTableContainer').jtable('load');
     });
 </script>
 <style>
@@ -140,7 +140,6 @@ mark {
     <div style="width:60%;margin-right:20%;margin-left:20%;text-align:center;">
         <h1>All EHVSS Records</h1><br/>
         <div class="filtering">
-            <form>
                 Select Region: 
                 <select id="region" name="region">
                     <option selected="selected">All Regions</option>
@@ -148,7 +147,6 @@ mark {
                     <option>UJJAIN</option>
                 </select>
                 <button type="submit" id="LoadRecordsButton">Load records</button>
-            </form>
         </div>
         <div id="EhvssTableContainer"></div>
     </div>

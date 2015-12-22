@@ -15,14 +15,14 @@ import com.google.gson.*;
 import com.google.gson.reflect.*;
 public class SubstationController extends HttpServlet{
 
+	private SubstationDAO substationDAO=new SubstationDAO();
+	private Gson gson=new Gson();
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
 		//System.out.println("SubstationController Started");
 		String action=(String)httpServletRequest.getParameter("action");
 		if(action!=null){
 			//System.out.println("SubstationController called for action : "+action);
-			SubstationDAO substationDAO=new SubstationDAO();
-			Gson gson=new Gson();
 			if(action.toLowerCase().equals("list")){
 				String startIndex=(String)httpServletRequest.getParameter("jtStartIndex");
 				String pageSize=(String)httpServletRequest.getParameter("jtPageSize");
@@ -31,7 +31,7 @@ public class SubstationController extends HttpServlet{
 				substations=substationDAO.getAll(startIndex,pageSize);
 				int count=substationDAO.getSubstationCount();
 				//System.out.println("Count of Substation form controller : "+count);
-				String json = new Gson().toJson(substations);
+				String json = gson.toJson(substations);
 				JsonElement element = gson.toJsonTree(substations,new TypeToken<ArrayList<Substation>>(){}.getType());
 				JsonArray jsonArray = element.getAsJsonArray();
 				String listData=jsonArray.toString();
@@ -48,6 +48,9 @@ public class SubstationController extends HttpServlet{
 				String circle=(String)httpServletRequest.getParameter("circle");
 				String division=(String)httpServletRequest.getParameter("division");
 				String kv33FeederID=(String)httpServletRequest.getParameter("kv33FeederID");
+				if(kv33FeederID.trim().indexOf("ID:")>=0){
+					kv33FeederID=kv33FeederID.substring(kv33FeederID.indexOf("(ID:")+4,kv33FeederID.lastIndexOf(")"));
+				}
 				//System.out.println("33KVFeeder id from SubstationController : "+kv33FeederID); 
 				////System.out.println("Data for jTABLE create : "+name+" "+code+" "+region);
 				Substation substation=new Substation(name,code,region,circle,division,kv33FeederID);

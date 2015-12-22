@@ -8,97 +8,74 @@
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
-	<script type="text/javascript">
-	
-	$(document).ready(function() {
-		$('#example').guardian();
+    <script type="text/javascript">
+    $(document).ready(function() {
+    	$('#region').change(function(event) {
+    		var region = $("select#region").val();
+    		$.get('GetEhvssNames', {
+    			regionName : region
+    		}, function(response) {
+    			var select = $('#ehvss');
+    			select.find('option').remove();
+    			$('<option>').val("-1").text("select EHVSS").appendTo(select);
+    			$.each(response, function(index, value) {
+    				$('<option>').val(value.id).text(value.id+" "+value.name).appendTo(select);
+    			});
+    		});
 
-		/*$.get('GetEhvssNames',function(response) {
-			var select = $('#ehvss');
-			$.each(response, function(index, value) {
-				$('<option>').val(value.id).text(value.id+" "+value.name).appendTo(select);
-			});
-});*/
+    		$.get('GetCircles', {
+    			regionName : region
+    		}, function(response) {
+    			var select = $('#circle');
+    			select.find('option').remove();
+    			$('<option>').val("-1").text("select circle").appendTo(select);
+    			$.each(response, function(index, value) {
+    				$('<option>').val(value).text(value).appendTo(select);
+    			});
+    		});
+    	});
+    });
+    </script>
+    <style>
+    form{
+    	background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
+    	background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
+    	margin:auto;
+    	position:relative;
+    	width:550px;
+    	height:auto;
+    	font-family: Tahoma, Geneva, sans-serif;
+    	font-size: 14px;
+    	font-style: bold;
+    	line-height: 24px;
+    	font-weight: bold;
+    	color: #09C;
+    	text-decoration: none;
+    	-webkit-border-radius: 10px;
+    	-moz-border-radius: 10px;
+    	border-radius: 10px;
+    	padding:10px;
+    	border: 1px solid #999;
+    	border: inset 1px solid #333;
+    	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    }
 
-$('#region').change(function(event) {
-	var region = $("select#region").val();
-	$.get('GetEhvssNames', {
-		regionName : region
-	}, function(response) {
-		var select = $('#ehvss');
-		select.find('option').remove();
-		$('<option>').val("-1").text("select EHVSS").appendTo(select);
-		$.each(response, function(index, value) {
-			$('<option>').val(value.id).text(value.id+" "+value.name).appendTo(select);
-		});
-	});
-	$.get('GetCircles', {
-		regionName : region
-	}, function(response) {
-		var select = $('#circle');
-		select.find('option').remove();
-		$('<option>').val("-1").text("select circle").appendTo(select);
-		$.each(response, function(index, value) {
-			$('<option>').val(value).text(value).appendTo(select);
-		});
-	});
-});
-
-/*$('#circle').change(function(event) {
-	var circle = $("select#circle").val();
-	$.get('GetDivisions', {
-		circleName : circle
-	}, function(response) {
-		var select = $('#division');
-		select.find('option').remove();
-		$('<option>').val("-1").text("select division").appendTo(select);
-		$.each(response, function(index, value) {
-			$('<option>').val(value).text(value).appendTo(select);
-		});
-	});
-});*/
-});
-</script>
-<style>
-form{
-	background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
-	background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
-	margin:auto;
-	position:relative;
-	width:550px;
-	height:auto;
-	font-family: Tahoma, Geneva, sans-serif;
-	font-size: 14px;
-	font-style: bold;
-	line-height: 24px;
-	font-weight: bold;
-	color: #09C;
-	text-decoration: none;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	padding:10px;
-	border: 1px solid #999;
-	border: inset 1px solid #333;
-	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-}
-
-input{
-	width:375px;
-	display:block;
-	border: 1px solid #999;
-	height: 25px;
-	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-}
-mark {
-	background-color: white;
-	color: red;
-}
-</style>
+    input{
+    	width:375px;
+    	display:block;
+    	border: 1px solid #999;
+    	height: 25px;
+    	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    }
+    mark {
+    	background-color: white;
+    	color: red;
+    }
+    </style>
 </head>
 <body>
 	<jsp:useBean id="user" class="mms.com.beans.UserLogin" scope="session" />

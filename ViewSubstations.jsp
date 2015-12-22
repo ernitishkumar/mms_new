@@ -25,7 +25,7 @@
             },
             fields:{
                 id: {
-                  title: 'ID',
+                  title: '33/11 Substation ID',
                   key: true,
                   list: true,
                   create:false,
@@ -37,7 +37,7 @@
                 width: 'auto'
             },
             name: {
-                title: 'Substation Name',
+                title: '33/11 Substation Name',
                 width: 'auto'
             },
             region: {
@@ -49,32 +49,47 @@
                 title: 'Circle',
                 width: 'auto',
                 dependsOn: 'region',
-                list:true,
-                edit:true,
-                create:true,
-                options:['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR']
-                /*options: function(data){
+                //options:['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR']
+                options: function(data){
                     if(data.source=='edit'||data.source=='create'||data.source=='update'){
                         return 'GetCircles?source=jtable&regionName='+data.dependedValues.region;
                     }else if(data.source=='list'){
-                        return ['INDORE','DHAR','UJJAIN','KHANDWA'];
+                        //return ['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR'];
+                        return [data.record.circle];
                     }
-                }*/
+                }
             },
             division: {
                 title: 'Division',
                 width: 'auto',
-                options:['INDORE-EAST','INDORE-SOUTH','INDORE-WEST','INDORE-NORTH','INDORE-CENTRAL','MHOW',
+                dependsOn: 'circle',
+                /*options:['INDORE-EAST','INDORE-SOUTH','INDORE-WEST','INDORE-NORTH','INDORE-CENTRAL','MHOW',
                 'INDOREO&M','DEPALPUR','PITHAMPUR','BARWANI','SENDHWA','KHANDWA-I','PANDHANA','KHANDWACITY','KHANDWA-II','BURHANPURO&M','BURHANPURCITY','KHARGONE-I','MANDLESHWAR','KHARGONE-II',
                 'BARWAHA','DHAR','RAJGARH-DHAR','MANAWAR','JHABUA','ALIRAJPUR','SHAJAPUR','SHUJALPUR','NEEMUCH','JAWAD','MANASA','MANDSAUR','MALHARGARH','SITAMAU','GAROTH','DEWASCITY','DEWASO&M',
-                'SONKATCH','BAGLI','KANNOD','RATLAMO&M','RATLAMCITY','JAORA','ALOT','UJJAINEAST','UJJAINWEST','UJJAINO&M','MAHIDPUR','NAGDA','BARNAGAR','TARANA','AGAR','SUSNER']
+                'SONKATCH','BAGLI','KANNOD','RATLAMO&M','RATLAMCITY','JAORA','ALOT','UJJAINEAST','UJJAINWEST','UJJAINO&M','MAHIDPUR','NAGDA','BARNAGAR','TARANA','AGAR','SUSNER']*/
+                options: function(data){
+                    if(data.source=='edit'||data.source=='create'||data.source=='update'){
+                        return 'GetDivisions?source=jtable&circleName='+data.dependedValues.circle;
+                    }else if(data.source=='list'){
+                        //return ['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR'];
+                        return [data.record.division];
+                    }
+                }
             },
             kv33FeederID: {
-                title: '33KV Feeder ID & Name',
+                title: '33KV Feeder Name',
                 width: 'auto',
-            }
-        }
-    });
+                dependsOn: 'circle',
+                options: function(data){
+                    if(data.source=='edit'||data.source=='create'||data.source=='update'){
+                        return 'GetKV33FeederNames?source=jtable&circleName='+data.dependedValues.circle;
+                    }else if(data.source=='list'){
+                       return [data.record.kv33FeederID];
+                   }
+               }
+           }
+       }
+   });
 $('#SubstationTableContainer').jtable('load');
 });
 </script>

@@ -28,9 +28,7 @@ public class LocationDAO {
 		} finally{
 			
 		}
-		
 		return list;
-		
 	}
 	
 	public Location getbyLocationCode(String locationCode){
@@ -67,7 +65,7 @@ public class LocationDAO {
 		} finally{
 			
 		}
-		System.out.println("Size of Circle for region Name : "+regionName+"  is : "+locations.size());
+		//System.out.println("Size of Circle for region Name : "+regionName+"  is : "+locations.size());
 		return locations;
 	}
 
@@ -84,7 +82,7 @@ public class LocationDAO {
 		} finally{
 			
 		}
-		System.out.println("Size of All circles is : "+locations.size());
+		//System.out.println("Size of All circles is : "+locations.size());
 		return locations;
 	}
 
@@ -99,6 +97,24 @@ public class LocationDAO {
 			}
 		} catch (SQLException e) {
 			System.out.println("Exception occured in Class : LocationDAO : Method : getDivisionByCircleName"+e);
+		} finally{
+			
+		}
+		//System.out.println("Size of divisions for circle Name : "+circleName+"  is : "+locations.size());
+		return locations;
+	}
+
+	public ArrayList<String> getDivisionByRegionName(String regionName){
+		ArrayList<String> locations = new ArrayList<String>();
+		try {
+			PreparedStatement ps=connection.prepareStatement("SELECT distinct(division) FROM mms_feeder_list where resion=?");
+			ps.setString(1, regionName);
+			ResultSet resultSet = ps.executeQuery();
+			while(resultSet.next()){
+				locations.add(resultSet.getString(1).trim());
+			}
+		} catch (SQLException e) {
+			System.out.println("Exception occured in Class : LocationDAO : Method : getDivisionByRegionName"+e);
 		} finally{
 			
 		}

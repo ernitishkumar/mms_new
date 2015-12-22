@@ -35,17 +35,13 @@ public class KV33FeederDAO {
 
 	public KV33Feeder updateKV33Feeder(KV33Feeder kv33Feeder){
 		try {
-			PreparedStatement ps = connection.prepareStatement("update kv33feeder set code=?,name=?,region=?,circle=? where id=?");
+			PreparedStatement ps = connection.prepareStatement("update kv33feeder set code=?,name=?,region=?,circle=?,ehvss_id=? where id=?");
 			ps.setString(1,kv33Feeder.getCode());
 			ps.setString(2,kv33Feeder.getName());
 			ps.setString(3,kv33Feeder.getRegion());
 			ps.setString(4,kv33Feeder.getCircle());
-			/*if(kv33Feeder.getEhvssID().trim().indexOf(" ")>=0){
-				ps.setInt(7,Integer.parseInt(kv33Feeder.getEhvssID().split(" ")[0]));
-			}else{
-				ps.setInt(7,Integer.parseInt(kv33Feeder.getEhvssID()));	
-			}*/
-			ps.setInt(5,Integer.parseInt(kv33Feeder.getId()));
+			ps.setInt(5,Integer.parseInt(kv33Feeder.getEhvssID()));
+			ps.setInt(6,Integer.parseInt(kv33Feeder.getId()));
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -100,11 +96,38 @@ public class KV33FeederDAO {
 				kv33Feeder.setEhvssID(rs.getString(8).trim());
 				kv33Feeders.add(kv33Feeder);
 			}
-			System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
+			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getAll]"+e);
 		}
 		return kv33Feeders;
+	}
+
+	public ArrayList<String> getAllKV33FeedersNameWithId() {
+		ArrayList<KV33Feeder> kv33Feeders=getAll();
+		ArrayList<String> kv33FeedersNames=new ArrayList<String>();
+		for(KV33Feeder kv33Feeder:kv33Feeders){
+			kv33FeedersNames.add(kv33Feeder.getName()+"(ID:"+kv33Feeder.getId()+")");
+		}
+		return kv33FeedersNames;
+	}
+
+	public ArrayList<String> getKV33FeedersNameWithIdByCircle(String circle) {
+		ArrayList<KV33Feeder> kv33Feeders=getByCircle(circle);
+		ArrayList<String> kv33FeedersNames=new ArrayList<String>();
+		for(KV33Feeder kv33Feeder:kv33Feeders){
+			kv33FeedersNames.add(kv33Feeder.getName()+"(ID:"+kv33Feeder.getId()+")");
+		}
+		return kv33FeedersNames;
+	}
+
+	public ArrayList<String> getKV33FeedersNameWithIdByRegion(String region) {
+		ArrayList<KV33Feeder> kv33Feeders=getByRegion(region);
+		ArrayList<String> kv33FeedersNames=new ArrayList<String>();
+		for(KV33Feeder kv33Feeder:kv33Feeders){
+			kv33FeedersNames.add(kv33Feeder.getName()+"(ID:"+kv33Feeder.getId()+")");
+		}
+		return kv33FeedersNames;
 	}
 
 	public ArrayList<KV33Feeder> getAll(String startIndex,String pageSize) {
@@ -122,10 +145,10 @@ public class KV33FeederDAO {
 				kv33Feeder.setRegion(rs.getString(5).trim());
 				kv33Feeder.setCircle(rs.getString(6).trim());
 				kv33Feeder.setDivision(rs.getString(7).trim());
-				kv33Feeder.setEhvssID(rs.getString(8).trim()+" "+rs.getString(9));
+				kv33Feeder.setEhvssID(rs.getString(9)+"(ID:"+rs.getString(8).trim()+")");
 				kv33Feeders.add(kv33Feeder);
 			}
-			System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
+			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getAll(int,int)]"+e);
 		}
@@ -140,7 +163,7 @@ public class KV33FeederDAO {
 			while(rs.next()){
 				count=rs.getInt("count");
 			}
-			System.out.println("Count of 33KV Feeders :"+count);
+			//System.out.println("Count of 33KV Feeders :"+count);
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getKV33FeederCount]"+e);
 		}
@@ -166,7 +189,7 @@ public class KV33FeederDAO {
 				kv33Feeder.setEhvssID(rs.getString(8).trim());
 				kv33Feeders.add(kv33Feeder);
 			}
-			System.out.println("Number of 33KV Feeders  for code :"+code+" is : "+kv33Feeders.size());
+			//System.out.println("Number of 33KV Feeders  for code :"+code+" is : "+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getByCode]"+e);
 		}
@@ -215,9 +238,35 @@ public class KV33FeederDAO {
 				kv33Feeder.setEhvssID(rs.getString(8).trim());
 				kv33Feeders.add(kv33Feeder);
 			}
-			System.out.println("Number of 33KV Feeders  for circle :"+circle+" is : "+kv33Feeders.size());
+			//System.out.println("Number of 33KV Feeders  for circle :"+circle+" is : "+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getByCircle]"+e);
+		}
+		return kv33Feeders;
+	}
+
+	public ArrayList<KV33Feeder> getByRegion(String region) {
+		ArrayList<KV33Feeder> kv33Feeders=null;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv33feeder where region=?");
+			ps.setString(1,region);
+			ResultSet rs=ps.executeQuery();
+			kv33Feeders=new ArrayList<KV33Feeder>();
+			while(rs.next()){
+				KV33Feeder kv33Feeder = new KV33Feeder();
+				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
+				kv33Feeder.setName(rs.getString(3).trim());
+				kv33Feeder.setCode(rs.getString(2).trim());
+				kv33Feeder.setLocation(rs.getString(4).trim());
+				kv33Feeder.setRegion(rs.getString(5).trim());
+				kv33Feeder.setCircle(rs.getString(6).trim());
+				kv33Feeder.setDivision(rs.getString(7).trim());
+				kv33Feeder.setEhvssID(rs.getString(8).trim());
+				kv33Feeders.add(kv33Feeder);
+			}
+			//System.out.println("Number of 33KV Feeders  for circle :"+circle+" is : "+kv33Feeders.size());
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getByRegion]"+e);
 		}
 		return kv33Feeders;
 	}
@@ -273,16 +322,16 @@ public class KV33FeederDAO {
 	public void deleteKV33FeederById(String id){
 		SubstationDAO substationDAO=new SubstationDAO();
 		try {
-			System.out.println("Deletion of 33KVFeeders started for 33KVFeeder ID : "+id);
-			System.out.println("First deleting 33KVFeeder id from substation");
+			//System.out.println("Deletion of 33KVFeeders started for 33KVFeeder ID : "+id);
+			//System.out.println("First deleting 33KVFeeder id from substation");
 			substationDAO.deleteSubstationByKV33FeederId(id);
-			System.out.println("Substation deletion successful for 33KVFeeder id : "+id);
-			System.out.println("Now deleting from 33KVFeeder table");
+			//System.out.println("Substation deletion successful for 33KVFeeder id : "+id);
+			//System.out.println("Now deleting from 33KVFeeder table");
 			PreparedStatement ps = connection.prepareStatement("delete from kv33feeder where id=?");
 			ps.setInt(1,Integer.parseInt(id));
 			ps.executeUpdate();
 			ps.close();
-			System.out.println("33KVFeeder deletion successful for 33KVFeeder id : "+id);
+			//System.out.println("33KVFeeder deletion successful for 33KVFeeder id : "+id);
 		} catch (SQLException e) {
 			System.out.println("Exception in [deleteKV33Feeder(id)]"+e);
 		}
@@ -291,20 +340,20 @@ public class KV33FeederDAO {
 	public void deleteKV33FeederByEhvssId(String id){
 		SubstationDAO substationDAO=new SubstationDAO();
 		try {
-			System.out.println("Deletion of 33KV Feeders started for ehvss ID : "+id);
+			//System.out.println("Deletion of 33KV Feeders started for ehvss ID : "+id);
 			ArrayList<KV33Feeder> kv33Feeders = getKV33FeederByEhvssId(id);
-			System.out.println("Number of 33KV Feeders for ehvssID : "+id+" is : "+kv33Feeders.size());
-			System.out.println("Now deleting these 33KV Feeders from Substation Table : ");
+			//System.out.println("Number of 33KV Feeders for ehvssID : "+id+" is : "+kv33Feeders.size());
+			//System.out.println("Now deleting these 33KV Feeders from Substation Table : ");
 			for(KV33Feeder kv33Feeder:kv33Feeders){
 				substationDAO.deleteSubstationByKV33FeederId(kv33Feeder.getId());
 			}
-			System.out.println("33KV Deleted from substation now deleting from 33KV Feeder table");
+			//System.out.println("33KV Deleted from substation now deleting from 33KV Feeder table");
 			PreparedStatement ps = connection.prepareStatement("delete from kv33feeder where ehvss_id=?");
 			ps.setInt(1,Integer.parseInt(id));
 			ps.executeUpdate();
 			ps.close();
-			System.out.println("33KVFeeder deletion successful for ehvss id : "+id);
-			System.out.println("Going back to EHVSSDAO for further deletion");
+			//System.out.println("33KVFeeder deletion successful for ehvss id : "+id);
+			//System.out.println("Going back to EHVSSDAO for further deletion");
 		} catch (SQLException e) {
 			System.out.println("Exception in [deleteKV33Feeder(id)]"+e);
 		}

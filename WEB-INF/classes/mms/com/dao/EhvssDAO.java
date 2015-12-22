@@ -113,8 +113,7 @@ public class EhvssDAO {
 			}
 			rs.close();
 			ps.close();
-			 
-			System.out.println("Number of Ehvss Locations :"+ehvssNames.size());
+			//System.out.println("Number of Ehvss Locations :"+ehvssNames.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [get]"+e);
 		}
@@ -141,8 +140,7 @@ public class EhvssDAO {
 			}
 			rs.close();
 			ps.close();
-			 
-			System.out.println("Number of Ehvss Locations :"+ehvssNames.size());
+			//System.out.println("Number of Ehvss Locations :"+ehvssNames.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getAll]"+e);
 		}catch (Exception exp) {
@@ -171,8 +169,7 @@ public class EhvssDAO {
 			}
 			rs.close();
 			ps.close();
-			 
-			System.out.println("Number of Ehvss Locations for PageSize : "+pageSize+" is : "+ehvssNames.size()); 
+			//System.out.println("Number of Ehvss Locations for PageSize : "+pageSize+" is : "+ehvssNames.size()); 
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getAll]"+e);
 		}catch (Exception exp) {
@@ -192,8 +189,7 @@ public class EhvssDAO {
 			}
 			rs.close();
 			ps.close();
-			 
-			System.out.println("Count of EHVSS : "+count);
+			//System.out.println("Count of EHVSS : "+count);
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getEhvssCount]"+e);
 		}catch (Exception exp) {
@@ -224,8 +220,7 @@ public class EhvssDAO {
 			}
 			rs.close();
 			ps.close();
-			 
-			System.out.println("Number of Ehvss Locations :"+ehvssNames.size());
+			//System.out.println("Number of Ehvss Locations :"+ehvssNames.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getByCode]"+e);
 		}catch (Exception exp) {
@@ -235,7 +230,7 @@ public class EhvssDAO {
 	}
 
 	public ArrayList<EHVSS> getByRegion(String region){
-		System.out.println("GetByCode called with region : "+region);
+		//System.out.println("GetByRegion called with region : "+region);
 		ArrayList<EHVSS> ehvssNames=null;
 		try {
 			 Connection connection = DatabaseConnection.getConnection("mms_new");
@@ -256,12 +251,42 @@ public class EhvssDAO {
 			}
 			rs.close();
 			ps.close();
-			 
-			System.out.println("Number of Ehvss Locations for region :"+region+"  is :"+ehvssNames.size());
+			//System.out.println("Number of Ehvss Locations for region :"+region+"  is :"+ehvssNames.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getByRegion]"+e);
 		}catch (Exception exp) {
 			System.out.println("Exception in class : EhvssDAO : method : [getByRegion]"+exp);
+		}
+		return ehvssNames;
+	}
+
+	public ArrayList<EHVSS> getByCircle(String circle){
+		//System.out.println("GetByCircle called with circle : "+circle);
+		ArrayList<EHVSS> ehvssNames=null;
+		try {
+			 Connection connection = DatabaseConnection.getConnection("mms_new");
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss where circle=?");
+			ps.setString(1,circle);
+			ResultSet rs=ps.executeQuery();
+			ehvssNames=new ArrayList<EHVSS>();
+			while(rs.next()){
+				EHVSS ehvss=new EHVSS();
+				ehvss.setId(String.valueOf(rs.getInt(1)));
+				ehvss.setName(rs.getString(3).trim());
+				ehvss.setCode(rs.getString(2).trim());
+				ehvss.setLocation(rs.getString(4).trim());
+				ehvss.setRegion(rs.getString(5).trim());
+				ehvss.setCircle(rs.getString(6).trim());
+				ehvss.setDivision(rs.getString(7).trim());
+				ehvssNames.add(ehvss);
+			}
+			rs.close();
+			ps.close();
+			//System.out.println("Number of Ehvss Locations for region :"+region+"  is :"+ehvssNames.size());
+		} catch (SQLException e) {
+			System.out.println("Exception in class : EhvssDAO : method : [getByCircle(String)]"+e);
+		}catch (Exception exp) {
+			System.out.println("Exception in class : EhvssDAO : method : [getByCircle(String)]"+exp);
 		}
 		return ehvssNames;
 	}
@@ -289,7 +314,60 @@ public class EhvssDAO {
 		} catch (SQLException e) {
 			System.out.println("Exception in class : EhvssDAO : method : [getByEhvssCode]"+e);
 		}
-		
 		return ehvss;
+	}
+
+	public ArrayList<String> getEhvssNamesByRegion(String region){
+		ArrayList<EHVSS> ehvssRecords=getByRegion(region);
+		ArrayList<String> ehvssNames=new ArrayList<String>();
+		for(EHVSS ehvss:ehvssRecords){
+			ehvssNames.add(ehvss.getName());
+		}
+		return ehvssNames;
+	}
+
+	public ArrayList<String> getEhvssNamesWithIdByRegion(String region){
+		ArrayList<EHVSS> ehvssRecords=getByRegion(region);
+		ArrayList<String> ehvssNames=new ArrayList<String>();
+		for(EHVSS ehvss:ehvssRecords){
+			ehvssNames.add(ehvss.getName()+"(ID:"+ehvss.getId()+")");
+		}
+		return ehvssNames;
+	}
+
+	public ArrayList<String> getEhvssNamesByCircle(String circle){
+		ArrayList<EHVSS> ehvssRecords=getByCircle(circle);
+		ArrayList<String> ehvssNames=new ArrayList<String>();
+		for(EHVSS ehvss:ehvssRecords){
+			ehvssNames.add(ehvss.getName());
+		}
+		return ehvssNames;
+	}
+
+	public ArrayList<String> getEhvssNamesWithIdByCircle(String circle){
+		ArrayList<EHVSS> ehvssRecords=getByCircle(circle);
+		ArrayList<String> ehvssNames=new ArrayList<String>();
+		for(EHVSS ehvss:ehvssRecords){
+			ehvssNames.add(ehvss.getName()+"(ID:"+ehvss.getId()+")");
+		}
+		return ehvssNames;
+	}
+
+	public ArrayList<String> getAllEhvssNames(){
+		ArrayList<EHVSS> ehvssRecords=getAll();
+		ArrayList<String> ehvssNames=new ArrayList<String>();
+		for(EHVSS ehvss:ehvssRecords){
+			ehvssNames.add(ehvss.getName());
+		}
+		return ehvssNames;
+	}
+
+	public ArrayList<String> getAllEhvssNamesWithId(){
+		ArrayList<EHVSS> ehvssRecords=getAll();
+		ArrayList<String> ehvssNames=new ArrayList<String>();
+		for(EHVSS ehvss:ehvssRecords){
+			ehvssNames.add(ehvss.getName()+"(ID:"+ehvss.getId()+")");
+		}
+		return ehvssNames;
 	}
 }

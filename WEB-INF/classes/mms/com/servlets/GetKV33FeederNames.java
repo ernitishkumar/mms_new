@@ -11,24 +11,40 @@ import mms.com.dao.KV33FeederDAO;
 
 public class GetKV33FeederNames extends HttpServlet{
 
+	private KV33FeederDAO kv33FeederDAO=new KV33FeederDAO();
+	private Gson gson=new Gson();
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
 		System.out.println("Get 33kvFeederNames Called");
-		KV33FeederDAO kv33FeederDAO=new KV33FeederDAO();
+		String regionName=httpServletRequest.getParameter("regionName");
+		System.out.println("Region : "+regionName);
 		String circleName=httpServletRequest.getParameter("circleName");
+		System.out.println("Circle : "+circleName);
+		String source=httpServletRequest.getParameter("source");
+		System.out.println("Source : "+source);
+
 		ArrayList<KV33Feeder> locations=new ArrayList<KV33Feeder>();
-		try {
+		ArrayList<String> kv33FeederNames=new ArrayList<String>();
+		String json = "";
+		if(source==null){
 			if(circleName==null){
 				locations=kv33FeederDAO.getAll();
-			}else{
+			}else if(circleName!=null){
 				locations=kv33FeederDAO.getByCircle(circleName);
+			}else if(regionName!=null){
+				locations=kv33FeederDAO.getByRegion(regionName);
 			}
-			System.out.println("KV 33 Feeders for circle "+circleName+" are : "+locations.size());
-		}catch(Exception e){
-			System.out.println("Exception in class : Get33kvFeederNames method : processRequest() : "+e);
+			json = gson.toJson(locations);
+		}else if(source!=null && source.toLowerCase().trim().equals("jtable")){
+			if(circleName==null && regionName==null){
+				kv33FeederNames=kv33FeederDAO.getAllKV33FeedersNameWithId();
+			}else if(circleName!=null){
+				kv33FeederNames=kv33FeederDAO.getKV33FeedersNameWithIdByCircle(circleName);
+			}else if(regionName!=null){
+				kv33FeederNames=kv33FeederDAO.getKV33FeedersNameWithIdByRegion(regionName);
+			}
+			json="{\"Result\":\"OK\",\"Options\":"+gson.toJson(kv33FeederNames)+"}";
 		}
-		String json = new Gson().toJson(locations);
-		System.out.println("JSON String is : "+json);
 		httpServletResponse.setContentType("application/json");
 		httpServletResponse.getWriter().write(json);
 	} 

@@ -69,18 +69,14 @@ public class SubstationDAO {
 
 	public Substation updateSubstation(Substation substation){
 		try {
-			PreparedStatement ps = connection.prepareStatement("update substation set code=?,name=?,region=?,circle=?,division=? where id=?");
+			PreparedStatement ps = connection.prepareStatement("update substation set code=?,name=?,region=?,circle=?,division=?,kv33feeder_id=? where id=?");
 			ps.setString(1,substation.getCode());
 			ps.setString(2,substation.getName());
 			ps.setString(3,substation.getRegion());
 			ps.setString(4,substation.getCircle());
 			ps.setString(5,substation.getDivision());
-			/*if(kv33Feeder.getEhvssID().trim().indexOf(" ")>=0){
-				ps.setInt(7,Integer.parseInt(kv33Feeder.getEhvssID().split(" ")[0]));
-			}else{
-				ps.setInt(7,Integer.parseInt(kv33Feeder.getEhvssID()));	
-			}*/
-			ps.setInt(6,Integer.parseInt(substation.getId()));
+			ps.setInt(6,Integer.parseInt(substation.getKv33FeederID()));	
+			ps.setInt(7,Integer.parseInt(substation.getId()));
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -133,7 +129,7 @@ public class SubstationDAO {
 				substation.setCircle(rs.getString(6).trim());
 				substation.setDivision(rs.getString(7).trim());
 				substation.setDc(rs.getString(8).trim());
-				substation.setKv33FeederID(rs.getString(9).trim()+" "+rs.getString(10));
+				substation.setKv33FeederID(rs.getString(10).trim()+"(ID:"+rs.getString(9)+")");
 				substations.add(substation);
 			}
 			rs.close();

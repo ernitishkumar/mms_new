@@ -27,7 +27,7 @@
                 id: {
                   title: '33KV Feeder ID',
                   key: true,
-                  list: true,
+                  list: false,
                   create:false,
                   update:true,
                   width: 'auto'
@@ -43,7 +43,7 @@
             region: {
                 title: '33KV Feeder Region',
                 width: 'auto',
-                options: ['INDORE','UJJAIN'],
+                options: ['INDORE','UJJAIN']
             },
             circle: {
                 title: '33KV Feeder Circle',
@@ -54,29 +54,28 @@
                 dependsOn:'region',
                 //options:['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR']
                 options: function(data){
-                     //alert("Hello");
                     if(data.source=='edit'||data.source=='create'||data.source=='update'){
                         return 'GetCircles?source=jtable&regionName='+data.dependedValues.region;
                     }else if(data.source=='list'){
                         //return ['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR'];
-                       return [data.record.circle];
+                        return [data.record.circle];
                     }
                 }
             },
             ehvssID: {
-                title: 'EHVSS ID',
+                title: 'EHVSS Name',
                 width: 'auto',
-                dependsOn:'region',
+                dependsOn: 'region',
                 options: function(data){
                     if(data.source=='edit'||data.source=='create'||data.source=='update'){
-                        return 'GetEhvssNamesByRegion?source=jtable&regionName='+data.dependedValues.region;
+                        return 'GetEhvssNames?source=jtable&regionName='+data.dependedValues.region;
                     }else if(data.source=='list'){
-                       return [data.record.ehvssID];
-                    }
-                }
-            }
-        }
-    });
+                     return [data.record.ehvssID];
+                 }
+             }
+         }
+     }
+ });
 $('#KV33TableContainer').jtable('load');
 });
 </script>
