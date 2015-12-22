@@ -27,7 +27,7 @@
                 id: {
                   title: '33/11 Substation ID',
                   key: true,
-                  list: true,
+                  list: false,
                   create:false,
                   update:true,
                   width: 'auto'

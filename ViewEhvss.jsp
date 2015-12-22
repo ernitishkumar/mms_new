@@ -139,7 +139,7 @@ mark {
     <br/>
     <div style="width:60%;margin-right:20%;margin-left:20%;text-align:center;">
         <h1>All EHVSS Records</h1><br/>
-        <div class="filtering">
+        <!--<div class="filtering">
                 Select Region: 
                 <select id="region" name="region">
                     <option selected="selected">All Regions</option>
@@ -147,7 +147,7 @@ mark {
                     <option>UJJAIN</option>
                 </select>
                 <button type="submit" id="LoadRecordsButton">Load records</button>
-        </div>
+        </div>-->
         <div id="EhvssTableContainer"></div>
     </div>
     <br/>
