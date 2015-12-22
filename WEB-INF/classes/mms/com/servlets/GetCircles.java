@@ -25,10 +25,10 @@ public class GetCircles extends HttpServlet {
         System.out.println("Get Circles Called");
         HttpSession httpSession =httpServletRequest.getSession();
         String regionName=httpServletRequest.getParameter("regionName");
-        String source=httpServletRequest.getParameter("source");
+        String source=httpServletRequest.getParameter("source");/*
         System.out.println("Source : "+source);
         System.out.println("Getting circles for region NAME: "+regionName);
-        ArrayList<String> locations=new ArrayList<String>();
+*/        ArrayList<String> locations=new ArrayList<String>();
         if(regionName!=null){
             locations=locationDAO.getCirclesByRegionName(regionName);
             //System.out.println("Size of Circles for Region : "+regionName+" are : "+locations.size());    

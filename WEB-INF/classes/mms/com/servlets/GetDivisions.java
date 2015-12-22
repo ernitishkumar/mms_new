@@ -25,15 +25,15 @@ public class GetDivisions extends HttpServlet {
         String regionName=httpServletRequest.getParameter("regionName");
         String source=httpServletRequest.getParameter("source");
         String circleName=httpServletRequest.getParameter("circleName");
-        System.out.println("Getting Divisions Source : "+source);
+        /*System.out.println("Getting Divisions Source : "+source);
         System.out.println("Getting Divisions for region NAME: "+regionName);
-        System.out.println("Getting Divisions for circle NAME: "+circleName);
+        System.out.println("Getting Divisions for circle NAME: "+circleName);*/
         ArrayList<String> locations=new ArrayList<String>();
         if(circleName==null && regionName==null){
-           locations=locationDAO.getAllDivisions();
-        }else if(circleName!=null){
-           locations=locationDAO.getDivisionByCircleName(circleName);
-       }else if(regionName!=null){
+         locations=locationDAO.getAllDivisions();
+     }else if(circleName!=null){
+         locations=locationDAO.getDivisionByCircleName(circleName);
+     }else if(regionName!=null){
         locations=locationDAO.getDivisionByRegionName(regionName);
     }
     System.out.println("Divisions for Circle : "+circleName+" are : "+locations);
