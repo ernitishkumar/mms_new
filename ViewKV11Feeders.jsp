@@ -4,6 +4,11 @@
     <title>Setup and Load Data to jTable using Servlets and JSP</title>
     <link href="css/metro/blue/jtable.css" rel="stylesheet" type="text/css" />
     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <!-- Importing CSS file for jTable form validations-->
+    <!-- <link href="css/validationEngine/validationEngine.jquery.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/validationEngine/jquery.validationEngine.js"></script>
+    <script type="text/javascript" src="js/validationEngine/jquery.validationEngine-en.js"></script>-->
+
     <!-- Include jTable script file.
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
@@ -16,7 +21,7 @@
         $('#KV11TableContainer').jtable({
             title: 'Table of 11KV Feeders',
             paging: true, //Enable paging
-            pageSize: 10, //Set page size (default: 10)   
+            pageSize: 20, //Set page size (default: 10)   
             actions: {
                 listAction: 'KV11FeederController?action=list',
                 createAction:'KV11FeederController?action=create',
@@ -34,10 +39,11 @@
               },
               code: {
                 title: 'Code',
-                width: 'auto'
+                width: 'auto',
+                create: true
             },
             name: {
-                title: '11KVFeeder Name',
+                title: 'Feeder Name',
                 width: 'auto'
             },
             region: {
@@ -49,38 +55,59 @@
                 title: 'Circle',
                 width: 'auto',
                 dependsOn: 'region',
-                options:['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR']
-                /*options: function(data){
+                //options:['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR']
+                options: function(data){
                     if(data.source=='edit'||data.source=='create'||data.source=='update'){
                         return 'GetCircles?source=jtable&regionName='+data.dependedValues.region;
                     }else if(data.source=='list'){
-                        return ['INDORE','DHAR','UJJAIN','KHANDWA'];
+                        //return ['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR'];
+                        return [data.record.circle];
                     }
-                }*/
+                }
             },
             division: {
                 title: 'Division',
                 width: 'auto',
-                options:['INDORE-EAST','INDORE-SOUTH','INDORE-WEST','INDORE-NORTH','INDORE-CENTRAL','MHOW',
+                dependsOn: 'circle',
+                /*options:['INDORE-EAST','INDORE-SOUTH','INDORE-WEST','INDORE-NORTH','INDORE-CENTRAL','MHOW',
                 'INDOREO&M','DEPALPUR','PITHAMPUR','BARWANI','SENDHWA','KHANDWA-I','PANDHANA','KHANDWACITY','KHANDWA-II','BURHANPURO&M','BURHANPURCITY','KHARGONE-I','MANDLESHWAR','KHARGONE-II',
                 'BARWAHA','DHAR','RAJGARH-DHAR','MANAWAR','JHABUA','ALIRAJPUR','SHAJAPUR','SHUJALPUR','NEEMUCH','JAWAD','MANASA','MANDSAUR','MALHARGARH','SITAMAU','GAROTH','DEWASCITY','DEWASO&M',
-                'SONKATCH','BAGLI','KANNOD','RATLAMO&M','RATLAMCITY','JAORA','ALOT','UJJAINEAST','UJJAINWEST','UJJAINO&M','MAHIDPUR','NAGDA','BARNAGAR','TARANA','AGAR','SUSNER']
-            },
-            substationID: {
-                title: 'Substation ID & Name',
-                width: 'auto',
+                'SONKATCH','BAGLI','KANNOD','RATLAMO&M','RATLAMCITY','JAORA','ALOT','UJJAINEAST','UJJAINWEST','UJJAINO&M','MAHIDPUR','NAGDA','BARNAGAR','TARANA','AGAR','SUSNER']*/
+                options: function(data){
+                    if(data.source=='edit'||data.source=='create'||data.source=='update'){
+                        return 'GetDivisions?source=jtable&circleName='+data.dependedValues.circle;
+                    }else if(data.source=='list'){
+                        //return ['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR'];
+                        return [data.record.division];
+                    }
+                }
             },
             dc: {
                 title: 'DC Name',
                 width: 'auto',
             },
             feederType: {
-                title: '11KV Feeder Type',
+                title: 'Feeder Category',
                 width: 'auto',
                 options:['INDUSTRIAL','CHQ','ESSENTIAL','FS-IRR','FS-DLF','RURAL-MIXED','TOWN-OTHER','THQ','RURAL- MIXED','DUMMY','FS-DL','DHQ','DLF','FS -IRR','IND']
-            }
-        }
-    });
+            },
+            substationID: {
+                title: 'Substation Name',
+                width: 'auto',
+                dependsOn: 'division',
+                options: function(data){
+                    if(data.source=='edit'||data.source=='create'||data.source=='update'){
+                        return 'GetSubstationNames?source=jtable&divisionName='+data.dependedValues.division;
+                    }else if(data.source=='list'){
+                       return [data.record.substationID];
+                   }
+               }
+           }
+       },
+       deleteConfirmation: function(data) {
+        data.deleteConfirmMessage = 'Are you sure to delete 11KVFeeder: ' + data.record.name + '?';
+    }
+});
 $('#KV11TableContainer').jtable('load');
 });
 </script>

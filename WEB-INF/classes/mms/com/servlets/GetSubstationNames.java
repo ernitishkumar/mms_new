@@ -10,25 +10,47 @@ import mms.com.beans.Substation;
 import mms.com.dao.SubstationDAO;
 
 public class GetSubstationNames extends HttpServlet{
-
+	private SubstationDAO substationDAO=new SubstationDAO();
+	private Gson gson=new Gson();
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
 		System.out.println("Get Substation Names Called");
-		SubstationDAO substationDAO=new SubstationDAO();
-		ArrayList<Substation> locations=new ArrayList<Substation>();
+
+		String regionName=httpServletRequest.getParameter("regionName");
+		System.out.println("Region : "+regionName);
+		String circleName=httpServletRequest.getParameter("circleName");
+		System.out.println("Circle : "+circleName);
 		String divisionName=httpServletRequest.getParameter("divisionName");
-		try {
-			if(divisionName==null){
+		System.out.println("Division : "+divisionName);
+		String source=httpServletRequest.getParameter("source");
+		System.out.println("Source : "+source);
+		ArrayList<Substation> locations=new ArrayList<Substation>();
+		ArrayList<String> substationNames=new ArrayList<String>();
+
+		String json = "";
+		if(source==null){
+			if(regionName==null&&circleName==null&&divisionName==null){
 				locations=substationDAO.getAll();
-			}else{
+			}else if(circleName!=null){
+				locations=substationDAO.getByCircle(circleName);
+			}else if(regionName!=null){
+				locations=substationDAO.getByRegion(regionName);
+			}else if(divisionName!=null){
 				locations=substationDAO.getByDivision(divisionName);
 			}
-			System.out.println("Substations for division "+divisionName+" are : "+locations.size());
-		}catch(Exception e){
-			System.out.println("Exception in class : GetSubstationNames method : processRequest() : "+e);
+			json = gson.toJson(locations);
+		}else if(source!=null && source.toLowerCase().trim().equals("jtable")){
+			if(circleName==null && regionName==null && divisionName==null){
+				substationNames=substationDAO.getAllSubstationsNameWithId();
+			}else if(circleName!=null){
+				substationNames=substationDAO.getSubstationsNameWithIdByCircle(circleName);
+			}else if(regionName!=null){
+				substationNames=substationDAO.getSubstationsNameWithIdByRegion(regionName);
+			}else if(divisionName!=null){
+				substationNames=substationDAO.getSubstationsNameWithIdByDivision(divisionName);
+			}
+			json="{\"Result\":\"OK\",\"Options\":"+gson.toJson(substationNames)+"}";
 		}
-		String json = new Gson().toJson(locations);
-		System.out.println("JSON String is : "+json);
 		httpServletResponse.setContentType("application/json");
 		httpServletResponse.getWriter().write(json);
 	} 

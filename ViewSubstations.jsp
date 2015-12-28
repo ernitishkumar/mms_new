@@ -4,6 +4,11 @@
     <title>Setup and Load Data to jTable using Servlets and JSP</title>
     <link href="css/metro/blue/jtable.css" rel="stylesheet" type="text/css" />
     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <!-- Importing CSS file for jTable form validations-->
+    <!-- <link href="css/validationEngine/validationEngine.jquery.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/validationEngine/jquery.validationEngine.js"></script>
+    <script type="text/javascript" src="js/validationEngine/jquery.validationEngine-en.js"></script>-->
+
     <!-- Include jTable script file.
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
@@ -84,12 +89,15 @@
                     if(data.source=='edit'||data.source=='create'||data.source=='update'){
                         return 'GetKV33FeederNames?source=jtable&circleName='+data.dependedValues.circle;
                     }else if(data.source=='list'){
-                       return [data.record.kv33FeederID];
-                   }
-               }
-           }
-       }
-   });
+                     return [data.record.kv33FeederID];
+                 }
+             }
+         }
+     },
+     deleteConfirmation: function(data) {
+        data.deleteConfirmMessage = 'Are you sure to delete Substation: ' + data.record.name + '?';
+    }
+});
 $('#SubstationTableContainer').jtable('load');
 });
 </script>

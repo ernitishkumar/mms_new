@@ -314,6 +314,42 @@ public class SubstationDAO {
 		return substations;
 	}
 
+	public ArrayList<String> getAllSubstationsNameWithId() {
+		ArrayList<Substation> substations=getAll();
+		ArrayList<String> substationNames=new ArrayList<String>();
+		for(Substation substation:substations){
+			substationNames.add(substation.getName()+"(ID:"+substation.getId()+")");
+		}
+		return substationNames;
+	}
+
+	public ArrayList<String> getSubstationsNameWithIdByCircle(String circle) {
+		ArrayList<Substation> substations=getByCircle(circle);
+		ArrayList<String> substationNames=new ArrayList<String>();
+		for(Substation substation:substations){
+			substationNames.add(substation.getName()+"(ID:"+substation.getId()+")");
+		}
+		return substationNames;
+	}
+
+	public ArrayList<String> getSubstationsNameWithIdByRegion(String region) {
+		ArrayList<Substation> substations=getByRegion(region);
+		ArrayList<String> substationNames=new ArrayList<String>();
+		for(Substation substation:substations){
+			substationNames.add(substation.getName()+"(ID:"+substation.getId()+")");
+		}
+		return substationNames;
+	}
+
+	public ArrayList<String> getSubstationsNameWithIdByDivision(String division) {
+		ArrayList<Substation> substations=getByDivision(division);
+		ArrayList<String> substationNames=new ArrayList<String>();
+		for(Substation substation:substations){
+			substationNames.add(substation.getName()+"(ID:"+substation.getId()+")");
+		}
+		return substationNames;
+	}
+
 	public void deleteSubstationById(String id){
 		KV11FeederDAO kv11FeederDAO=new KV11FeederDAO();
 		try {

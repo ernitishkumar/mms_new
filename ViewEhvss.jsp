@@ -4,6 +4,11 @@
     <title>Setup and Load Data to jTable using Servlets and JSP</title>
     <link href="css/metro/blue/jtable.css" rel="stylesheet" type="text/css" />
     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <!-- Importing CSS file for jTable form validations-->
+    <!-- <link href="css/validationEngine/validationEngine.jquery.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/validationEngine/jquery.validationEngine.js"></script>
+    <script type="text/javascript" src="js/validationEngine/jquery.validationEngine-en.js"></script>-->
+
     <!-- Include jTable script file.
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
@@ -43,8 +48,26 @@
                 width: '15%',
                 options: ['INDORE','UJJAIN'],
             }
+        },
+        deleteConfirmation: function(data) {
+            data.deleteConfirmMessage = 'Are you sure to delete EHVSS: ' + data.record.name + '?';
         }
-    });
+      /*  //Initialize validation logic when a form is created
+        ,formCreated: function (event, data) {
+            data.form.find('input[name="name"]').addClass('validate[required]');
+            data.form.find('input[name="code"]').addClass('validate[required]');
+            data.form.validationEngine();
+        },
+            //Validate form when it is being submitted
+            formSubmitting: function (event, data) {
+                return data.form.validationEngine('validate');
+            }*/
+            //Dispose validation logic when form is closed
+            /*formClosed: function (event, data) {
+                data.form.validationEngine('hide');
+                data.form.validationEngine('detach');
+            }*/
+        });
 
      /*    //Re-load records when user click 'load records' button.
         $('#LoadRecordsButton').click(function (e) {
@@ -57,50 +80,9 @@
         //Load all records when page is first shown
         $('#LoadRecordsButton').click();*/
 
-       $('#EhvssTableContainer').jtable('load');
+        $('#EhvssTableContainer').jtable('load');
     });
 </script>
-<style>
-.selectForm{
-    background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC), to(#EEEEEE));
-    background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
-    margin:auto;
-    position:relative;
-    width:550px;
-    height:auto;
-    font-family: Tahoma, Geneva, sans-serif;
-    font-size: 14px;
-    font-style: bold;
-    line-height: 24px;
-    font-weight: bold;
-    color: #09C;
-    text-decoration: none;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-    padding:10px;
-    border: 1px solid #999;
-    border: inset 1px solid #333;
-    -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-}
-
-.selectInput{
-    width:375px;
-    display:block;
-    border: 1px solid #999;
-    height: 25px;
-    -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-}
-
-mark {
-    background-color: white;
-    color: red;
-}
-</style>
 </head>
 <body>
     <jsp:useBean id="user" class="mms.com.beans.UserLogin" scope="session" />
@@ -147,12 +129,14 @@ mark {
                     <option>UJJAIN</option>
                 </select>
                 <button type="submit" id="LoadRecordsButton">Load records</button>
-        </div>-->
-        <div id="EhvssTableContainer"></div>
-    </div>
-    <br/>
-    <br/>
-    <br/>
-    <%@ include file="MasterPageBottomSection.jsp" %>
-</body>
-</html>
+            </div>-->
+            <form>
+                <div id="EhvssTableContainer"></div>
+            </form>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <%@ include file="MasterPageBottomSection.jsp" %>
+    </body>
+    </html>

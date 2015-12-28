@@ -132,7 +132,7 @@
 				<br/>
 				<label>
 					<span>Select EHVSS Region</span>
-					<select name="region" id="region">
+					<select name="region" id="region" required="true">
 						<option >Select Region</option>
 						<option >INDORE</option>
 						<option >UJJAIN</option>

@@ -14,14 +14,14 @@ import com.google.gson.*;
 import com.google.gson.reflect.*;
 public class KV11FeederController extends HttpServlet{
 
+	private KV11FeederDAO kv11FeederDAO=new KV11FeederDAO();
+	private Gson gson=new Gson();
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
 		System.out.println("KV11FeederController Started");
 		String action=(String)httpServletRequest.getParameter("action");
 		if(action!=null){
 			////System.out.println("EHVSSController called for action : "+action);
-			KV11FeederDAO kv11FeederDAO=new KV11FeederDAO();
-			Gson gson=new Gson();
 			if(action.toLowerCase().equals("list")){
 				String startIndex=(String)httpServletRequest.getParameter("jtStartIndex");
 				String pageSize=(String)httpServletRequest.getParameter("jtPageSize");
@@ -30,7 +30,7 @@ public class KV11FeederController extends HttpServlet{
 				kv11FeederRecords=kv11FeederDAO.getAll(startIndex,pageSize);
 				int count=kv11FeederDAO.getKV11FeedersCount();
 				////System.out.println("Count of EHVSS form controller : "+count);
-				String json = new Gson().toJson(kv11FeederRecords);
+				String json = gson.toJson(kv11FeederRecords);
 				JsonElement element = gson.toJsonTree(kv11FeederRecords,new TypeToken<ArrayList<KV11Feeder>>(){}.getType());
 				JsonArray jsonArray = element.getAsJsonArray();
 				String listData=jsonArray.toString();
@@ -48,14 +48,18 @@ public class KV11FeederController extends HttpServlet{
 				String division=(String)httpServletRequest.getParameter("division");
 				String dc=(String)httpServletRequest.getParameter("dc");
 				String feederType=(String)httpServletRequest.getParameter("feederType");
+				String substationID=(String)httpServletRequest.getParameter("substationID");
+				if(substationID.trim().indexOf("ID:")>=0){
+					substationID=substationID.substring(substationID.indexOf("(ID:")+4,substationID.lastIndexOf(")"));
+				}
 				////System.out.println("Data for jTABLE create : "+name+" "+code+" "+region);
-				KV11Feeder kv11Feeder=new KV11Feeder(name,code,region,circle,division,dc,feederType);
+				KV11Feeder kv11Feeder=new KV11Feeder(name,code,region,circle,division,dc,substationID,feederType);
 				if(action.toLowerCase().equals("create")){
-					/*kv33Feeder=kv11FeederDAO.add11KVFeeder(kv11Feeder);
-					String json=gson.toJson(kv33Feeder);    
+					kv11Feeder=kv11FeederDAO.add11KVFeeder(kv11Feeder);
+					String json=gson.toJson(kv11Feeder);    
 					String listData="{\"Result\":\"OK\",\"Record\":"+json+"}";          
 					httpServletResponse.getWriter().print(listData);
-					//System.out.println("kv33Feeder added from kv33Feeder controller and last create id is : "+kv33Feeder.getId());*/
+					//System.out.println("kv33Feeder added from kv33Feeder controller and last create id is : "+kv33Feeder.getId());
 				}else if(action.toLowerCase().equals("update")){
 					String id=(String)httpServletRequest.getParameter("id");
 					kv11Feeder.setId(id);
@@ -72,6 +76,10 @@ public class KV11FeederController extends HttpServlet{
 					kv11FeederDAO.deleteById(id);
 					String listData="{\"Result\":\"OK\"}";       
 					httpServletResponse.getWriter().print(listData);
+				}else{
+					//System.out.println("Error coming here");
+					String error="{\"Result\":\"ERROR\",\"Message\":"+"Unable to delete"+"}";
+					httpServletResponse.getWriter().print(error);
 				}	
 			}
 			

@@ -39,6 +39,20 @@ public class KV11Feeder {
 		this.substationID = substationID;
 		this.feederType=feederType;
 	}
+
+	public KV11Feeder(String name, String code, String region,
+			String circle, String division, String dc, String substationID,String feederType) {
+		this.name = name;
+		this.code = code;
+		this.location = location;
+		this.region = region;
+		this.circle = circle;
+		this.division = division;
+		this.dc = dc;
+		this.substationID = substationID;
+		this.feederType=feederType;
+	}
+
 	public KV11Feeder(String name, String code,String region,
 			String circle, String division,String dc,String feederType) {
 		this.name = name;
@@ -49,6 +63,7 @@ public class KV11Feeder {
 		this.dc = dc;
 		this.feederType=feederType;
 	}
+
 	public KV11Feeder() {
 	}
 	public String getId() {
