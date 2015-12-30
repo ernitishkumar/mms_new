@@ -150,6 +150,84 @@ public class KV33FeederDAO {
 			}
 			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
 		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getAll(String,String)]"+e);
+		}
+		return kv33Feeders;
+	}
+
+	public ArrayList<KV33Feeder> getByRegion(String region,String startIndex,String pageSize) {
+		ArrayList<KV33Feeder> kv33Feeders=null;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT kv33.id,kv33.code,kv33.name,kv33.location,kv33.region,kv33.circle,kv33.division,kv33.ehvss_id,e.name FROM kv33feeder kv33 join ehvss e on kv33.ehvss_id=e.id where kv33.region=? limit "+startIndex+","+pageSize);
+			ps.setString(1,region);
+			ResultSet rs=ps.executeQuery();
+			kv33Feeders=new ArrayList<KV33Feeder>();
+			while(rs.next()){
+				KV33Feeder kv33Feeder = new KV33Feeder();
+				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
+				kv33Feeder.setName(rs.getString(3).trim());
+				kv33Feeder.setCode(rs.getString(2).trim());
+				kv33Feeder.setLocation(rs.getString(4).trim());
+				kv33Feeder.setRegion(rs.getString(5).trim());
+				kv33Feeder.setCircle(rs.getString(6).trim());
+				kv33Feeder.setDivision(rs.getString(7).trim());
+				kv33Feeder.setEhvssID(rs.getString(9)+"(ID:"+rs.getString(8).trim()+")");
+				kv33Feeders.add(kv33Feeder);
+			}
+			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getByRegion(String,String,String)]"+e);
+		}
+		return kv33Feeders;
+	}
+
+	public ArrayList<KV33Feeder> getByCircle(String circle,String startIndex,String pageSize) {
+		ArrayList<KV33Feeder> kv33Feeders=null;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT kv33.id,kv33.code,kv33.name,kv33.location,kv33.region,kv33.circle,kv33.division,kv33.ehvss_id,e.name FROM kv33feeder kv33 join ehvss e on kv33.ehvss_id=e.id where kv33.circle=? limit "+startIndex+","+pageSize);
+			ps.setString(1,circle);
+			ResultSet rs=ps.executeQuery();
+			kv33Feeders=new ArrayList<KV33Feeder>();
+			while(rs.next()){
+				KV33Feeder kv33Feeder = new KV33Feeder();
+				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
+				kv33Feeder.setName(rs.getString(3).trim());
+				kv33Feeder.setCode(rs.getString(2).trim());
+				kv33Feeder.setLocation(rs.getString(4).trim());
+				kv33Feeder.setRegion(rs.getString(5).trim());
+				kv33Feeder.setCircle(rs.getString(6).trim());
+				kv33Feeder.setDivision(rs.getString(7).trim());
+				kv33Feeder.setEhvssID(rs.getString(9)+"(ID:"+rs.getString(8).trim()+")");
+				kv33Feeders.add(kv33Feeder);
+			}
+			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getByCircle(String,String,String)]"+e);
+		}
+		return kv33Feeders;
+	}
+
+	public ArrayList<KV33Feeder> getByEhvssId(String ehvssId,String startIndex,String pageSize) {
+		ArrayList<KV33Feeder> kv33Feeders=null;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT kv33.id,kv33.code,kv33.name,kv33.location,kv33.region,kv33.circle,kv33.division,kv33.ehvss_id,e.name FROM kv33feeder kv33 join ehvss e on kv33.ehvss_id=e.id where kv33.ehvss_id=? limit "+startIndex+","+pageSize);
+			ps.setString(1,ehvssId);
+			ResultSet rs=ps.executeQuery();
+			kv33Feeders=new ArrayList<KV33Feeder>();
+			while(rs.next()){
+				KV33Feeder kv33Feeder = new KV33Feeder();
+				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
+				kv33Feeder.setName(rs.getString(3).trim());
+				kv33Feeder.setCode(rs.getString(2).trim());
+				kv33Feeder.setLocation(rs.getString(4).trim());
+				kv33Feeder.setRegion(rs.getString(5).trim());
+				kv33Feeder.setCircle(rs.getString(6).trim());
+				kv33Feeder.setDivision(rs.getString(7).trim());
+				kv33Feeder.setEhvssID(rs.getString(9)+"(ID:"+rs.getString(8).trim()+")");
+				kv33Feeders.add(kv33Feeder);
+			}
+			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
+		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getAll(int,int)]"+e);
 		}
 		return kv33Feeders;
@@ -166,6 +244,54 @@ public class KV33FeederDAO {
 			//System.out.println("Count of 33KV Feeders :"+count);
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getKV33FeederCount]"+e);
+		}
+		return count;
+	}
+
+	public int getKV33FeederCountByRegion(String region) {
+		int count=0;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT count(*) as count FROM kv33feeder where region=?");
+			ps.setString(1,region);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				count=rs.getInt("count");
+			}
+			//System.out.println("Count of 33KV Feeders :"+count);
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getKV33FeederCountByRegion(String)]"+e);
+		}
+		return count;
+	}
+
+	public int getKV33FeederCountByCircle(String circle) {
+		int count=0;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT count(*) as count FROM kv33feeder where circle=?");
+			ps.setString(1,circle);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				count=rs.getInt("count");
+			}
+			//System.out.println("Count of 33KV Feeders :"+count);
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getKV33FeederCountByCircle(String)]"+e);
+		}
+		return count;
+	}
+
+	public int getKV33FeederCountByEhvssId(String ehvssId) {
+		int count=0;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT count(*) as count FROM kv33feeder where ehvss_id=?");
+			ps.setString(1,ehvssId);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				count=rs.getInt("count");
+			}
+			//System.out.println("Count of 33KV Feeders :"+count);
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getKV33FeederCountByEhvssId(String)]"+e);
 		}
 		return count;
 	}

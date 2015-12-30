@@ -20,20 +20,19 @@ public class GetEhvssNames extends HttpServlet {
     private Gson gson=new Gson();
     protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
     throws ServletException, IOException {
-        System.out.println("Get EhvssNames Called");
-
+        //System.out.println("Get EhvssNames Called");
         String regionName=httpServletRequest.getParameter("regionName");
-        System.out.println("Region : "+regionName);
+        //System.out.println("Region : "+regionName);
         String circleName=httpServletRequest.getParameter("circleName");
-        System.out.println("Circle : "+circleName);
+        //System.out.println("Circle : "+circleName);
         String source=httpServletRequest.getParameter("source");
-        System.out.println("Source : "+source);
+        //System.out.println("Source : "+source);
         ArrayList<EHVSS> locations=new ArrayList<EHVSS>();
         ArrayList<String> ehvssNames=new ArrayList<String>();
         try {
             String json="";
             if(source==null){
-                if(regionName==null && circleName==null) {
+                if((regionName==null||regionName.toLowerCase().trim().equals("all")) && circleName==null) {
                     locations=ehvssDAO.getAll();
                 }else if(regionName!=null){
                     locations=ehvssDAO.getByRegion(regionName);
@@ -41,7 +40,7 @@ public class GetEhvssNames extends HttpServlet {
                     locations=ehvssDAO.getByCircle(circleName);
                 }
             //System.out.println("EHVSS for region :"+regionName+" is : "+locations);
-                json = new Gson().toJson(locations);
+                json = gson.toJson(locations);
                 
             }else if(source!=null && source.toLowerCase().trim().equals("jtable")){
                 if(regionName==null && circleName==null) {

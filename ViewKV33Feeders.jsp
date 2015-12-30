@@ -17,6 +17,31 @@
     <script src="js/jquery.jtable.min.js" type="text/javascript"></script>
     <script type="text/javascript">
     $(document).ready(function () {
+
+     $('#region').change(function(event) {
+        var region = $("select#region").val();
+        $.get('GetEhvssNames', {
+            regionName : region
+        }, function(response) {
+            var select = $('#ehvss');
+            select.find('option').remove();
+            $('<option>').val("-1").text("select EHVSS").appendTo(select);
+            $.each(response, function(index, value) {
+                $('<option>').val(value.id).text(value.id+" "+value.name).appendTo(select);
+            });
+        });
+
+        $.get('GetCircles',{
+            regionName : region
+        }, function(response) {
+            var select = $('#circle');
+            select.find('option').remove();
+            $('<option>').val("-1").text("select circle").appendTo(select);
+            $.each(response, function(index, value) {
+                $('<option>').val(value).text(value).appendTo(select);
+            });
+        });
+    });
         //initialize jTable
         $('#KV33TableContainer').jtable({
             title: 'Table of 33KV Feeders',
@@ -75,16 +100,35 @@
                     if(data.source=='edit'||data.source=='create'||data.source=='update'){
                         return 'GetEhvssNames?source=jtable&regionName='+data.dependedValues.region;
                     }else if(data.source=='list'){
-                     return [data.record.ehvssID];
-                 }
-             }
-         }
-     },
+                       return [data.record.ehvssID];
+                   }
+               }
+           }
+       },
        deleteConfirmation: function(data) {
         data.deleteConfirmMessage = 'Are you sure to delete 33KVFeeder: ' + data.record.name + '?';
     }
- });
+});
 $('#KV33TableContainer').jtable('load');
+
+$('#regionButton').click(function (e) {
+    $('#KV33TableContainer').jtable('load', {
+        region: $('#region').val()
+    });
+});
+
+$('#circleButton').click(function (e) {
+    $('#KV33TableContainer').jtable('load', {
+        circle: $('#circle').val()
+    });
+});
+
+$('#ehvssButton').click(function (e) {
+    $('#KV33TableContainer').jtable('load', {
+        ehvssID: $('#ehvss').val()
+    });
+});
+
 });
 </script>
 </head>
@@ -125,6 +169,36 @@ $('#KV33TableContainer').jtable('load');
     <br/>
     <div style="width:60%;margin-right:20%;margin-left:20%;text-align:center;">
         <h1>All 33 KV Feeders </h1>
+        <br/>
+        <label>
+            <span>Select EHVSS Region</span>
+            <select name="region" id="region">
+                <option selected='true'>ALL</option>
+                <option >INDORE</option>
+                <option >UJJAIN</option>
+            </select>
+            <button id="regionButton">Load feeders by Region</button>
+        </label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <label>
+            <span>Select 33KV Feeder Circle</span>
+            <select name="circle" id="circle">
+                <option >Select circle</option>
+            </select>
+            <button id="circleButton">Load feeders by Circle</button>
+        </label>
+        <br/>
+        <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <label>
+            <span>Select EHVSS Name</span>
+            <select name="ehvss" id="ehvss">
+                <option >Select ehvss</option>
+            </select>
+            <button id="ehvssButton">Load feeders by EHVSS</button>
+        </label>
+        <br/>
+        <br/>
         <div id="KV33TableContainer"></div>
     </div>
     <br/>

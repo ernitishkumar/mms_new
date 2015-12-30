@@ -18,10 +18,10 @@ public class EHVSSController extends HttpServlet{
 	private Gson gson=new Gson();
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
-		System.out.println("EHVSSController Started");
+		//System.out.println("EHVSSController Started");
 		String action=(String)httpServletRequest.getParameter("action");
 		String regionName=(String)httpServletRequest.getParameter("region");
-		System.out.println("Action and region from request : "+action+" "+regionName);
+		//System.out.println("Action and region from request : "+action+" "+regionName);
 		if(action!=null){
 			//System.out.println("EHVSSController called for action : "+action);
 			if(action.toLowerCase().equals("list")){

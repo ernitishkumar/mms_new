@@ -13,24 +13,38 @@ import java.util.ArrayList;
 import com.google.gson.*;
 import com.google.gson.reflect.*;
 public class KV33FeederController extends HttpServlet{
-
+	private KV33FeederDAO kv33FeederDAO=new KV33FeederDAO();
+	private Gson gson=new Gson();
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
-		//System.out.println("KV33FeederController Started");
+		System.out.println("KV33FeederController Started");
 		String action=(String)httpServletRequest.getParameter("action");
+		String regionName=(String)httpServletRequest.getParameter("region");
+		String circleName=(String)httpServletRequest.getParameter("circle");
+		String ehvss=(String)httpServletRequest.getParameter("ehvssID");
+		System.out.println("Action and region from request : "+action+" "+regionName+" "+circleName+" "+ehvss);
 		if(action!=null){
-			////System.out.println("EHVSSController called for action : "+action);
-			KV33FeederDAO kv33FeederDAO=new KV33FeederDAO();
-			Gson gson=new Gson();
 			if(action.toLowerCase().equals("list")){
 				String startIndex=(String)httpServletRequest.getParameter("jtStartIndex");
 				String pageSize=(String)httpServletRequest.getParameter("jtPageSize");
 				////System.out.println("Start Index : "+startIndex+" Page Size : "+pageSize);
 				ArrayList<KV33Feeder> kv33FeederRecords=new ArrayList<KV33Feeder>();
-				kv33FeederRecords=kv33FeederDAO.getAll(startIndex,pageSize);
-				int count=kv33FeederDAO.getKV33FeederCount();
-				////System.out.println("Count of EHVSS form controller : "+count);
-				String json = new Gson().toJson(kv33FeederRecords);
+				int count=0;
+				if((regionName==null|| regionName.toLowerCase().trim().equals("all")) && circleName==null && ehvss==null){
+					kv33FeederRecords=kv33FeederDAO.getAll(startIndex,pageSize);
+					count=kv33FeederDAO.getKV33FeederCount();	
+				}else if((regionName!=null && !regionName.toLowerCase().trim().equals("all")) && circleName==null && ehvss==null){
+					kv33FeederRecords=kv33FeederDAO.getByRegion(regionName,startIndex,pageSize);
+					count=kv33FeederDAO.getKV33FeederCountByRegion(regionName);	
+				}else if(regionName==null && circleName!=null && ehvss==null){
+					kv33FeederRecords=kv33FeederDAO.getByCircle(circleName,startIndex,pageSize);
+					count=kv33FeederDAO.getKV33FeederCountByCircle(circleName);	
+				}else if(regionName==null && circleName==null && ehvss!=null){
+					kv33FeederRecords=kv33FeederDAO.getByEhvssId(ehvss,startIndex,pageSize);
+					count=kv33FeederDAO.getKV33FeederCountByEhvssId(ehvss);	
+				}
+				///System.out.println("Count of EHVSS form controller : "+count);
+				String json = gson.toJson(kv33FeederRecords);
 				JsonElement element = gson.toJsonTree(kv33FeederRecords,new TypeToken<ArrayList<KV33Feeder>>(){}.getType());
 				JsonArray jsonArray = element.getAsJsonArray();
 				String listData=jsonArray.toString();

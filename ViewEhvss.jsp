@@ -57,10 +57,10 @@
         deleteConfirmation: function(data) {
             data.deleteConfirmMessage = 'Are you sure to delete EHVSS: ' + data.record.name + '?';
         }
-        });
-
-        $('#EhvssTableContainer').jtable('load',{region: 'ALL'});
     });
+
+$('#EhvssTableContainer').jtable('load',{region: 'ALL'});
+});
 </script>
 </head>
 <body>
@@ -100,23 +100,22 @@
     <br/>
     <div style="width:60%;margin-right:20%;margin-left:20%;text-align:center;">
         <h1>All EHVSS Records</h1><br/>
-            <label>
-                    <span>Select EHVSS Region</span>
-                    <select name="region" id="region" required="true">
-                        <option selected='true'>ALL</option>
-                        <option >INDORE</option>
-                        <option >UJJAIN</option>
-                    </select>
-                </label>
-                <br/>
-                <br/>
-            <form>
-                <div id="EhvssTableContainer"></div>
-            </form>
+        <label>
+            <span>Select EHVSS Region</span>
+            <select name="region" id="region" required="true">
+                <option selected='true'>ALL</option>
+                <option >INDORE</option>
+                <option >UJJAIN</option>
+            </select>
+        </label>
+        <br/>
+        <br/>
+        <div id="EhvssTableContainer">
         </div>
-        <br/>
-        <br/>
-        <br/>
-        <%@ include file="MasterPageBottomSection.jsp" %>
-    </body>
-    </html>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <%@ include file="MasterPageBottomSection.jsp" %>
+</body>
+</html>

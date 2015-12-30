@@ -22,14 +22,15 @@ public class GetCircles extends HttpServlet {
     private LocationDAO locationDAO=new LocationDAO();
     protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
     throws ServletException, IOException {
-        System.out.println("Get Circles Called");
+        //System.out.println("Get Circles Called");
         HttpSession httpSession =httpServletRequest.getSession();
         String regionName=httpServletRequest.getParameter("regionName");
-        String source=httpServletRequest.getParameter("source");/*
+        String source=httpServletRequest.getParameter("source");
+        /*
         System.out.println("Source : "+source);
-        System.out.println("Getting circles for region NAME: "+regionName);
-*/        ArrayList<String> locations=new ArrayList<String>();
-        if(regionName!=null){
+        System.out.println("Getting circles for region NAME: "+regionName);*/       
+        ArrayList<String> locations=new ArrayList<String>();
+        if(regionName!=null && !regionName.toLowerCase().trim().equals("all")){
             locations=locationDAO.getCirclesByRegionName(regionName);
             //System.out.println("Size of Circles for Region : "+regionName+" are : "+locations.size());    
         }else{
@@ -41,7 +42,7 @@ public class GetCircles extends HttpServlet {
            json="{\"Result\":\"OK\",\"Options\":"+gson.toJson(locations)+"}";
             //System.out.println("Sending Json response as : "+json);
        }else{
-        json = new Gson().toJson(locations);
+        json =gson.toJson(locations);
     }
     httpServletResponse.setContentType("application/json");
     httpServletResponse.getWriter().write(json);
