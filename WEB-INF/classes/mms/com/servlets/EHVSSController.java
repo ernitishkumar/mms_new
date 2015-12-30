@@ -14,23 +14,31 @@ import com.google.gson.*;
 import com.google.gson.reflect.*;
 public class EHVSSController extends HttpServlet{
 
+	private EhvssDAO ehvssDAO=new EhvssDAO();
+	private Gson gson=new Gson();
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
 		System.out.println("EHVSSController Started");
 		String action=(String)httpServletRequest.getParameter("action");
+		String regionName=(String)httpServletRequest.getParameter("region");
+		System.out.println("Action and region from request : "+action+" "+regionName);
 		if(action!=null){
 			//System.out.println("EHVSSController called for action : "+action);
-			EhvssDAO ehvssDAO=new EhvssDAO();
-			Gson gson=new Gson();
 			if(action.toLowerCase().equals("list")){
 				String startIndex=(String)httpServletRequest.getParameter("jtStartIndex");
 				String pageSize=(String)httpServletRequest.getParameter("jtPageSize");
 				System.out.println("Start Index : "+startIndex+" Page Size : "+pageSize);
 				ArrayList<EHVSS> ehvssRecords=new ArrayList<EHVSS>();
-				ehvssRecords=ehvssDAO.getAll(startIndex,pageSize);
-				int count=ehvssDAO.getEhvssCount();
+				int count=0;
+				if(regionName==null || regionName.toLowerCase().trim().equals("all")){
+					ehvssRecords=ehvssDAO.getAll(startIndex,pageSize);
+					count=ehvssDAO.getEhvssCount();
+				}else if(regionName!=null && !regionName.toLowerCase().trim().equals("all")){
+					ehvssRecords=ehvssDAO.getByRegion(regionName,startIndex,pageSize);
+					count=ehvssDAO.getEhvssCountByRegion(regionName);
+				}
 				//System.out.println("Count of EHVSS form controller : "+count);
-				String json = new Gson().toJson(ehvssRecords);
+				String json = gson.toJson(ehvssRecords);
 				JsonElement element = gson.toJsonTree(ehvssRecords,new TypeToken<ArrayList<EHVSS>>(){}.getType());
 				JsonArray jsonArray = element.getAsJsonArray();
 				String listData=jsonArray.toString();

@@ -17,6 +17,11 @@
     <script src="js/jquery.jtable.min.js" type="text/javascript"></script>
     <script type="text/javascript">
     $(document).ready(function () {
+        $('#region').change(function(event) {
+            var regionName = $("select#region").val();
+            $('#EhvssTableContainer').jtable('load',{region: regionName });
+        });
+
         //initialize jTable
         $('#EhvssTableContainer').jtable({
             title: 'Table of EHVSS',
@@ -52,35 +57,9 @@
         deleteConfirmation: function(data) {
             data.deleteConfirmMessage = 'Are you sure to delete EHVSS: ' + data.record.name + '?';
         }
-      /*  //Initialize validation logic when a form is created
-        ,formCreated: function (event, data) {
-            data.form.find('input[name="name"]').addClass('validate[required]');
-            data.form.find('input[name="code"]').addClass('validate[required]');
-            data.form.validationEngine();
-        },
-            //Validate form when it is being submitted
-            formSubmitting: function (event, data) {
-                return data.form.validationEngine('validate');
-            }*/
-            //Dispose validation logic when form is closed
-            /*formClosed: function (event, data) {
-                data.form.validationEngine('hide');
-                data.form.validationEngine('detach');
-            }*/
         });
 
-     /*    //Re-load records when user click 'load records' button.
-        $('#LoadRecordsButton').click(function (e) {
-            e.preventDefault();
-            $('#EhvssTableContainer').jtable('load', {
-                region: $('#region').val()
-            });
-        });
- 
-        //Load all records when page is first shown
-        $('#LoadRecordsButton').click();*/
-
-        $('#EhvssTableContainer').jtable('load');
+        $('#EhvssTableContainer').jtable('load',{region: 'ALL'});
     });
 </script>
 </head>
@@ -121,15 +100,16 @@
     <br/>
     <div style="width:60%;margin-right:20%;margin-left:20%;text-align:center;">
         <h1>All EHVSS Records</h1><br/>
-        <!--<div class="filtering">
-                Select Region: 
-                <select id="region" name="region">
-                    <option selected="selected">All Regions</option>
-                    <option>INDORE</option>
-                    <option>UJJAIN</option>
-                </select>
-                <button type="submit" id="LoadRecordsButton">Load records</button>
-            </div>-->
+            <label>
+                    <span>Select EHVSS Region</span>
+                    <select name="region" id="region" required="true">
+                        <option selected='true'>ALL</option>
+                        <option >INDORE</option>
+                        <option >UJJAIN</option>
+                    </select>
+                </label>
+                <br/>
+                <br/>
             <form>
                 <div id="EhvssTableContainer"></div>
             </form>

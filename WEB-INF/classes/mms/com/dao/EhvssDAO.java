@@ -198,6 +198,27 @@ public class EhvssDAO {
 		return count;
 	}
 
+	public int getEhvssCountByRegion(String region){
+		int count=0;
+		try {
+			Connection connection = DatabaseConnection.getConnection("mms_new");
+			PreparedStatement ps = connection.prepareStatement("SELECT count(*) as count FROM ehvss where region=?");
+			ps.setString(1,region);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				count=rs.getInt("count");
+			}
+			rs.close();
+			ps.close();
+			//System.out.println("Count of EHVSS : "+count);
+		} catch (SQLException e) {
+			System.out.println("Exception in class : EhvssDAO : method : [getEhvssCount]"+e);
+		}catch (Exception exp) {
+			System.out.println("Exception in class : EhvssDAO : method : [getEhvssCount]"+exp);
+		}
+		return count;
+	}
+
 	public ArrayList<EHVSS> getByCode(String code){
 		System.out.println("GetByCode called with code : "+code);
 		ArrayList<EHVSS> ehvssNames=null;
@@ -260,6 +281,37 @@ public class EhvssDAO {
 		return ehvssNames;
 	}
 
+	public ArrayList<EHVSS> getByRegion(String region,String startIndex,String pageSize){
+		//System.out.println("GetByRegion called with region : "+region);
+		ArrayList<EHVSS> ehvssNames=null;
+		try {
+			 Connection connection = DatabaseConnection.getConnection("mms_new");
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss where region=? limit "+startIndex+","+pageSize);
+			ps.setString(1,region);
+			ResultSet rs=ps.executeQuery();
+			ehvssNames=new ArrayList<EHVSS>();
+			while(rs.next()){
+				EHVSS ehvss=new EHVSS();
+				ehvss.setId(String.valueOf(rs.getInt(1)));
+				ehvss.setName(rs.getString(3).trim());
+				ehvss.setCode(rs.getString(2).trim());
+				ehvss.setLocation(rs.getString(4).trim());
+				ehvss.setRegion(rs.getString(5).trim());
+				ehvss.setCircle(rs.getString(6).trim());
+				ehvss.setDivision(rs.getString(7).trim());
+				ehvssNames.add(ehvss);
+			}
+			rs.close();
+			ps.close();
+			//System.out.println("Number of Ehvss Locations for region :"+region+"  is :"+ehvssNames.size());
+		} catch (SQLException e) {
+			System.out.println("Exception in class : EhvssDAO : method : [getByRegion]"+e);
+		}catch (Exception exp) {
+			System.out.println("Exception in class : EhvssDAO : method : [getByRegion]"+exp);
+		}
+		return ehvssNames;
+	}
+
 	public ArrayList<EHVSS> getByCircle(String circle){
 		//System.out.println("GetByCircle called with circle : "+circle);
 		ArrayList<EHVSS> ehvssNames=null;
@@ -287,6 +339,37 @@ public class EhvssDAO {
 			System.out.println("Exception in class : EhvssDAO : method : [getByCircle(String)]"+e);
 		}catch (Exception exp) {
 			System.out.println("Exception in class : EhvssDAO : method : [getByCircle(String)]"+exp);
+		}
+		return ehvssNames;
+	}
+
+	public ArrayList<EHVSS> getByCircle(String circle,String startIndex,String pageSize){
+		//System.out.println("GetByCircle called with circle : "+circle);
+		ArrayList<EHVSS> ehvssNames=null;
+		try {
+			 Connection connection = DatabaseConnection.getConnection("mms_new");
+			PreparedStatement ps = connection.prepareStatement("SELECT * FROM ehvss where circle=? limit "+startIndex+","+pageSize);
+			ps.setString(1,circle);
+			ResultSet rs=ps.executeQuery();
+			ehvssNames=new ArrayList<EHVSS>();
+			while(rs.next()){
+				EHVSS ehvss=new EHVSS();
+				ehvss.setId(String.valueOf(rs.getInt(1)));
+				ehvss.setName(rs.getString(3).trim());
+				ehvss.setCode(rs.getString(2).trim());
+				ehvss.setLocation(rs.getString(4).trim());
+				ehvss.setRegion(rs.getString(5).trim());
+				ehvss.setCircle(rs.getString(6).trim());
+				ehvss.setDivision(rs.getString(7).trim());
+				ehvssNames.add(ehvss);
+			}
+			rs.close();
+			ps.close();
+			//System.out.println("Number of Ehvss Locations for region :"+region+"  is :"+ehvssNames.size());
+		} catch (SQLException e) {
+			System.out.println("Exception in class : EhvssDAO : method : [getByCircle(String,String,String)]"+e);
+		}catch (Exception exp) {
+			System.out.println("Exception in class : EhvssDAO : method : [getByCircle(String,String,String)]"+exp);
 		}
 		return ehvssNames;
 	}
