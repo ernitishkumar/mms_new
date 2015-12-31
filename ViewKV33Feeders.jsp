@@ -27,7 +27,7 @@
             select.find('option').remove();
             $('<option>').val("-1").text("select EHVSS").appendTo(select);
             $.each(response, function(index, value) {
-                $('<option>').val(value.id).text(value.id+" "+value.name).appendTo(select);
+                $('<option>').val(value.id).text(value.name).appendTo(select);
             });
         });
 
@@ -110,7 +110,7 @@
     }
 });
 $('#KV33TableContainer').jtable('load');
-
+$("#region").change();
 $('#regionButton').click(function (e) {
     $('#KV33TableContainer').jtable('load', {
         region: $('#region').val()
@@ -171,7 +171,7 @@ $('#ehvssButton').click(function (e) {
         <h1>All 33 KV Feeders </h1>
         <br/>
         <label>
-            <span>Select EHVSS Region</span>
+            <span>Select Region</span>
             <select name="region" id="region">
                 <option selected='true'>ALL</option>
                 <option >INDORE</option>
@@ -181,7 +181,7 @@ $('#ehvssButton').click(function (e) {
         </label>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <label>
-            <span>Select 33KV Feeder Circle</span>
+            <span>Select Circle</span>
             <select name="circle" id="circle">
                 <option >Select circle</option>
             </select>

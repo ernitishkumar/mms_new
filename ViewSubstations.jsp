@@ -17,6 +17,46 @@
     <script src="js/jquery.jtable.min.js" type="text/javascript"></script>
     <script type="text/javascript">
     $(document).ready(function () {
+
+        $('#region').change(function(event) {
+            var region = $("select#region").val();
+            $.get('GetCircles', {
+                regionName : region
+            }, function(response) {
+                var select = $('#circle');
+                select.find('option').remove();
+                $('<option>').val("-1").text("select circle").appendTo(select);
+                $.each(response, function(index, value) {
+                    $('<option>').val(value).text(value).appendTo(select);
+                });
+                $('#circle').change();
+            });
+        });
+
+        $('#circle').change(function(event) {
+            var circle = $("select#circle").val();
+            $.get('GetKV33FeederNames',{
+                circleName : circle
+            },function(response) {
+                var select = $('#kv33FeederID');
+                select.find('option').remove();
+                $('<option>').val("-1").text("select 33KV Feeder").appendTo(select);
+                $.each(response, function(index, value) {
+                    $('<option>').val(value.id).text(value.name).appendTo(select);
+                });
+            });
+            $.get('GetDivisions', {
+                circleName : circle
+            }, function(response) {
+                var select = $('#division');
+                select.find('option').remove();
+                $('<option>').val("-1").text("select division").appendTo(select);
+                $.each(response, function(index, value) {
+                    $('<option>').val(value).text(value).appendTo(select);
+                });
+            });
+        });
+
         //initialize jTable
         $('#SubstationTableContainer').jtable({
             title: 'Table of Substations',
@@ -99,6 +139,31 @@
     }
 });
 $('#SubstationTableContainer').jtable('load');
+$("#region").change();
+$('#regionButton').click(function (e) {
+    $('#SubstationTableContainer').jtable('load', {
+        region: $('#region').val()
+    });
+});
+
+$('#circleButton').click(function (e) {
+    $('#SubstationTableContainer').jtable('load', {
+        circle: $('#circle').val()
+    });
+});
+
+$('#divisionButton').click(function (e) {
+    $('#SubstationTableContainer').jtable('load', {
+        division: $('#division').val()
+    });
+});
+
+$('#kv33FeederButton').click(function (e) {
+    $('#SubstationTableContainer').jtable('load', {
+        kv33FeederID: $('#kv33FeederID').val()
+    });
+});
+
 });
 </script>
 </head>
@@ -139,6 +204,46 @@ $('#SubstationTableContainer').jtable('load');
     <br/>
     <div style="width:60%;margin-right:20%;margin-left:20%;text-align:center;">
         <h1>All Substations </h1>
+        <br/>
+        <label>
+            <span>Select Region</span>
+            <select name="region" id="region">
+                <option selected='true'>ALL</option>
+                <option >INDORE</option>
+                <option >UJJAIN</option>
+            </select>
+            <button id="regionButton">Load substations by Region</button>
+        </label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <label>
+            <span>Select Circle</span>
+            <select name="circle" id="circle">
+                <option >Select circle</option>
+            </select>
+            <button id="circleButton">Load substations by Circle</button>
+        </label>
+        <br/>
+        <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <label>
+            <span>Select Division</span>
+            <select name="division" id="division">
+                <option >Select division</option>
+            </select>
+            <button id="divisionButton">Load substations by Division</button>
+        </label>
+        <br/>
+        <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <label>
+            <span>Select 33KVFeeder Name</span>
+            <select name="kv33FeederID" id="kv33FeederID">
+                <option >Select 33KV Feeder Name</option>
+            </select>
+            <button id="kv33FeederButton">Load substations by 33KVName</button>
+        </label>
+        <br/>
+        <br/>
         <div id="SubstationTableContainer"></div>
     </div>
     <br/>

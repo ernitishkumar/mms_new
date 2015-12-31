@@ -84,18 +84,7 @@ public class KV33FeederDAO {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM kv33feeder");
 			ResultSet rs=ps.executeQuery();
 			kv33Feeders=new ArrayList<KV33Feeder>();
-			while(rs.next()){
-				KV33Feeder kv33Feeder = new KV33Feeder();
-				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
-				kv33Feeder.setName(rs.getString(3).trim());
-				kv33Feeder.setCode(rs.getString(2).trim());
-				kv33Feeder.setLocation(rs.getString(4).trim());
-				kv33Feeder.setRegion(rs.getString(5).trim());
-				kv33Feeder.setCircle(rs.getString(6).trim());
-				kv33Feeder.setDivision(rs.getString(7).trim());
-				kv33Feeder.setEhvssID(rs.getString(8).trim());
-				kv33Feeders.add(kv33Feeder);
-			}
+			resultSetParser(rs,kv33Feeders);
 			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getAll]"+e);
@@ -136,18 +125,7 @@ public class KV33FeederDAO {
 			PreparedStatement ps = connection.prepareStatement("SELECT kv33.id,kv33.code,kv33.name,kv33.location,kv33.region,kv33.circle,kv33.division,kv33.ehvss_id,e.name FROM kv33feeder kv33 join ehvss e on kv33.ehvss_id=e.id limit "+startIndex+","+pageSize);
 			ResultSet rs=ps.executeQuery();
 			kv33Feeders=new ArrayList<KV33Feeder>();
-			while(rs.next()){
-				KV33Feeder kv33Feeder = new KV33Feeder();
-				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
-				kv33Feeder.setName(rs.getString(3).trim());
-				kv33Feeder.setCode(rs.getString(2).trim());
-				kv33Feeder.setLocation(rs.getString(4).trim());
-				kv33Feeder.setRegion(rs.getString(5).trim());
-				kv33Feeder.setCircle(rs.getString(6).trim());
-				kv33Feeder.setDivision(rs.getString(7).trim());
-				kv33Feeder.setEhvssID(rs.getString(9)+"(ID:"+rs.getString(8).trim()+")");
-				kv33Feeders.add(kv33Feeder);
-			}
+			resultSetParserForJtable(rs,kv33Feeders);
 			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getAll(String,String)]"+e);
@@ -162,18 +140,7 @@ public class KV33FeederDAO {
 			ps.setString(1,region);
 			ResultSet rs=ps.executeQuery();
 			kv33Feeders=new ArrayList<KV33Feeder>();
-			while(rs.next()){
-				KV33Feeder kv33Feeder = new KV33Feeder();
-				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
-				kv33Feeder.setName(rs.getString(3).trim());
-				kv33Feeder.setCode(rs.getString(2).trim());
-				kv33Feeder.setLocation(rs.getString(4).trim());
-				kv33Feeder.setRegion(rs.getString(5).trim());
-				kv33Feeder.setCircle(rs.getString(6).trim());
-				kv33Feeder.setDivision(rs.getString(7).trim());
-				kv33Feeder.setEhvssID(rs.getString(9)+"(ID:"+rs.getString(8).trim()+")");
-				kv33Feeders.add(kv33Feeder);
-			}
+			resultSetParserForJtable(rs,kv33Feeders);
 			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getByRegion(String,String,String)]"+e);
@@ -188,18 +155,7 @@ public class KV33FeederDAO {
 			ps.setString(1,circle);
 			ResultSet rs=ps.executeQuery();
 			kv33Feeders=new ArrayList<KV33Feeder>();
-			while(rs.next()){
-				KV33Feeder kv33Feeder = new KV33Feeder();
-				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
-				kv33Feeder.setName(rs.getString(3).trim());
-				kv33Feeder.setCode(rs.getString(2).trim());
-				kv33Feeder.setLocation(rs.getString(4).trim());
-				kv33Feeder.setRegion(rs.getString(5).trim());
-				kv33Feeder.setCircle(rs.getString(6).trim());
-				kv33Feeder.setDivision(rs.getString(7).trim());
-				kv33Feeder.setEhvssID(rs.getString(9)+"(ID:"+rs.getString(8).trim()+")");
-				kv33Feeders.add(kv33Feeder);
-			}
+			resultSetParserForJtable(rs,kv33Feeders);
 			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getByCircle(String,String,String)]"+e);
@@ -214,18 +170,7 @@ public class KV33FeederDAO {
 			ps.setString(1,ehvssId);
 			ResultSet rs=ps.executeQuery();
 			kv33Feeders=new ArrayList<KV33Feeder>();
-			while(rs.next()){
-				KV33Feeder kv33Feeder = new KV33Feeder();
-				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
-				kv33Feeder.setName(rs.getString(3).trim());
-				kv33Feeder.setCode(rs.getString(2).trim());
-				kv33Feeder.setLocation(rs.getString(4).trim());
-				kv33Feeder.setRegion(rs.getString(5).trim());
-				kv33Feeder.setCircle(rs.getString(6).trim());
-				kv33Feeder.setDivision(rs.getString(7).trim());
-				kv33Feeder.setEhvssID(rs.getString(9)+"(ID:"+rs.getString(8).trim()+")");
-				kv33Feeders.add(kv33Feeder);
-			}
+			resultSetParserForJtable(rs,kv33Feeders);
 			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getAll(int,int)]"+e);
@@ -303,18 +248,7 @@ public class KV33FeederDAO {
 			ps.setString(1,code);
 			ResultSet rs=ps.executeQuery();
 			kv33Feeders=new ArrayList<KV33Feeder>();
-			while(rs.next()){
-				KV33Feeder kv33Feeder = new KV33Feeder();
-				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
-				kv33Feeder.setName(rs.getString(3).trim());
-				kv33Feeder.setCode(rs.getString(2).trim());
-				kv33Feeder.setLocation(rs.getString(4).trim());
-				kv33Feeder.setRegion(rs.getString(5).trim());
-				kv33Feeder.setCircle(rs.getString(6).trim());
-				kv33Feeder.setDivision(rs.getString(7).trim());
-				kv33Feeder.setEhvssID(rs.getString(8).trim());
-				kv33Feeders.add(kv33Feeder);
-			}
+			resultSetParser(rs,kv33Feeders);
 			//System.out.println("Number of 33KV Feeders  for code :"+code+" is : "+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getByCode]"+e);
@@ -352,18 +286,7 @@ public class KV33FeederDAO {
 			ps.setString(1,circle);
 			ResultSet rs=ps.executeQuery();
 			kv33Feeders=new ArrayList<KV33Feeder>();
-			while(rs.next()){
-				KV33Feeder kv33Feeder = new KV33Feeder();
-				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
-				kv33Feeder.setName(rs.getString(3).trim());
-				kv33Feeder.setCode(rs.getString(2).trim());
-				kv33Feeder.setLocation(rs.getString(4).trim());
-				kv33Feeder.setRegion(rs.getString(5).trim());
-				kv33Feeder.setCircle(rs.getString(6).trim());
-				kv33Feeder.setDivision(rs.getString(7).trim());
-				kv33Feeder.setEhvssID(rs.getString(8).trim());
-				kv33Feeders.add(kv33Feeder);
-			}
+			resultSetParser(rs,kv33Feeders);
 			//System.out.println("Number of 33KV Feeders  for circle :"+circle+" is : "+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getByCircle]"+e);
@@ -378,18 +301,7 @@ public class KV33FeederDAO {
 			ps.setString(1,region);
 			ResultSet rs=ps.executeQuery();
 			kv33Feeders=new ArrayList<KV33Feeder>();
-			while(rs.next()){
-				KV33Feeder kv33Feeder = new KV33Feeder();
-				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
-				kv33Feeder.setName(rs.getString(3).trim());
-				kv33Feeder.setCode(rs.getString(2).trim());
-				kv33Feeder.setLocation(rs.getString(4).trim());
-				kv33Feeder.setRegion(rs.getString(5).trim());
-				kv33Feeder.setCircle(rs.getString(6).trim());
-				kv33Feeder.setDivision(rs.getString(7).trim());
-				kv33Feeder.setEhvssID(rs.getString(8).trim());
-				kv33Feeders.add(kv33Feeder);
-			}
+			resultSetParser(rs,kv33Feeders);
 			//System.out.println("Number of 33KV Feeders  for circle :"+circle+" is : "+kv33Feeders.size());
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getByRegion]"+e);
@@ -412,7 +324,6 @@ public class KV33FeederDAO {
 				kv33Feeder.setCircle(rs.getString(6).trim());
 				kv33Feeder.setDivision(rs.getString(7).trim());
 				kv33Feeder.setEhvssID(rs.getString(8).trim());
-				System.out.println("");
 			}
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getBykv33FeederCode]"+e);
@@ -421,24 +332,12 @@ public class KV33FeederDAO {
 	}
 
 	public ArrayList<KV33Feeder> getKV33FeederByEhvssId(String ehvssId){
-		System.out.println("getByEhvssId called for id : "+ehvssId);
 		ArrayList<KV33Feeder> kv33Feeders=new ArrayList<KV33Feeder>();
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT * FROM KV33Feeder where ehvss_id=?");
 			ps.setInt(1, Integer.parseInt(ehvssId));
 			ResultSet rs=ps.executeQuery();
-			while(rs.next()){
-				KV33Feeder kv33Feeder = new KV33Feeder();
-				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
-				kv33Feeder.setName(rs.getString(3).trim());
-				kv33Feeder.setCode(rs.getString(2).trim());
-				kv33Feeder.setLocation(rs.getString(4).trim());
-				kv33Feeder.setRegion(rs.getString(5).trim());
-				kv33Feeder.setCircle(rs.getString(6).trim());
-				kv33Feeder.setDivision(rs.getString(7).trim());
-				kv33Feeder.setEhvssID(rs.getString(8).trim());
-				kv33Feeders.add(kv33Feeder);
-			}
+			resultSetParser(rs,kv33Feeders);
 		} catch (SQLException e) {
 			System.out.println("Exception in class : KV33FeederDAO : method : [getKV33FeederByEhvssId]"+e);
 		}
@@ -482,6 +381,44 @@ public class KV33FeederDAO {
 			//System.out.println("Going back to EHVSSDAO for further deletion");
 		} catch (SQLException e) {
 			System.out.println("Exception in [deleteKV33Feeder(id)]"+e);
+		}
+	}
+
+	private void resultSetParserForJtable(ResultSet rs,ArrayList<KV33Feeder> kv33Feeders){
+		try{
+			while(rs.next()){
+				KV33Feeder kv33Feeder = new KV33Feeder();
+				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
+				kv33Feeder.setName(rs.getString(3).trim());
+				kv33Feeder.setCode(rs.getString(2).trim());
+				kv33Feeder.setLocation(rs.getString(4).trim());
+				kv33Feeder.setRegion(rs.getString(5).trim());
+				kv33Feeder.setCircle(rs.getString(6).trim());
+				kv33Feeder.setDivision(rs.getString(7).trim());
+				kv33Feeder.setEhvssID(rs.getString(9)+"(ID:"+rs.getString(8).trim()+")");
+				kv33Feeders.add(kv33Feeder);
+			}
+		}catch(SQLException e){
+			System.out.println("Exception in class : KV33FeederDAO : method : [resultSetParserForJtable(ResultSet,ArrayList<Substation>)]"+e);
+		}
+	}
+
+	private void resultSetParser(ResultSet rs,ArrayList<KV33Feeder> kv33Feeders){
+		try{
+			while(rs.next()){
+				KV33Feeder kv33Feeder = new KV33Feeder();
+				kv33Feeder.setId(String.valueOf(rs.getInt(1)));
+				kv33Feeder.setName(rs.getString(3).trim());
+				kv33Feeder.setCode(rs.getString(2).trim());
+				kv33Feeder.setLocation(rs.getString(4).trim());
+				kv33Feeder.setRegion(rs.getString(5).trim());
+				kv33Feeder.setCircle(rs.getString(6).trim());
+				kv33Feeder.setDivision(rs.getString(7).trim());
+				kv33Feeder.setEhvssID(rs.getString(8).trim());
+				kv33Feeders.add(kv33Feeder);
+			}
+		}catch(SQLException e){
+			System.out.println("Exception in class : KV33FeederDAO : method : [resultSetParser(ResultSet,ArrayList<Substation>)]"+e);
 		}
 	}
 }

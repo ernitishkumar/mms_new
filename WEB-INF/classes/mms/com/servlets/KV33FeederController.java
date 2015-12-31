@@ -17,12 +17,12 @@ public class KV33FeederController extends HttpServlet{
 	private Gson gson=new Gson();
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
-		System.out.println("KV33FeederController Started");
+		//System.out.println("KV33FeederController Started");
 		String action=(String)httpServletRequest.getParameter("action");
 		String regionName=(String)httpServletRequest.getParameter("region");
 		String circleName=(String)httpServletRequest.getParameter("circle");
 		String ehvss=(String)httpServletRequest.getParameter("ehvssID");
-		System.out.println("Action and region from request : "+action+" "+regionName+" "+circleName+" "+ehvss);
+		//System.out.println("Action and region from request : "+action+" "+regionName+" "+circleName+" "+ehvss);
 		if(action!=null){
 			if(action.toLowerCase().equals("list")){
 				String startIndex=(String)httpServletRequest.getParameter("jtStartIndex");

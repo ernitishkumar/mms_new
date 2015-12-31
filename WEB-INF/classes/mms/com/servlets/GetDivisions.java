@@ -20,7 +20,7 @@ public class GetDivisions extends HttpServlet {
     private LocationHelper locationHelper=new LocationHelper();
     private LocationDAO locationDAO=new LocationDAO();
     protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        System.out.println("Get Divisions Called");
+        //System.out.println("Get Divisions Called");
         HttpSession httpSession =httpServletRequest.getSession();
         String regionName=httpServletRequest.getParameter("regionName");
         String source=httpServletRequest.getParameter("source");
@@ -36,7 +36,7 @@ public class GetDivisions extends HttpServlet {
      }else if(regionName!=null){
         locations=locationDAO.getDivisionByRegionName(regionName);
     }
-    System.out.println("Divisions for Circle : "+circleName+" are : "+locations);
+    //System.out.println("Divisions for Circle : "+circleName+" are : "+locations);
     String json = "";
     if(source==null){
         json = gson.toJson(locations);

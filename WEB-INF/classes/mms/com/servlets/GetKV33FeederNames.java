@@ -15,13 +15,13 @@ public class GetKV33FeederNames extends HttpServlet{
 	private Gson gson=new Gson();
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
-		System.out.println("Get 33kvFeederNames Called");
+		//System.out.println("Get 33kvFeederNames Called");
 		String regionName=httpServletRequest.getParameter("regionName");
-		System.out.println("Region : "+regionName);
+		//System.out.println("Region : "+regionName);
 		String circleName=httpServletRequest.getParameter("circleName");
-		System.out.println("Circle : "+circleName);
+		//System.out.println("Circle : "+circleName);
 		String source=httpServletRequest.getParameter("source");
-		System.out.println("Source : "+source);
+		//System.out.println("Source : "+source);
 
 		ArrayList<KV33Feeder> locations=new ArrayList<KV33Feeder>();
 		ArrayList<String> kv33FeederNames=new ArrayList<String>();

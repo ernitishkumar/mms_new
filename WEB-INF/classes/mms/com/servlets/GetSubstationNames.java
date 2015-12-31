@@ -14,19 +14,17 @@ public class GetSubstationNames extends HttpServlet{
 	private Gson gson=new Gson();
 	protected void processRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	throws ServletException, IOException {
-		System.out.println("Get Substation Names Called");
-
+		//System.out.println("Get Substation Names Called");
 		String regionName=httpServletRequest.getParameter("regionName");
-		System.out.println("Region : "+regionName);
+		//System.out.println("Region : "+regionName);
 		String circleName=httpServletRequest.getParameter("circleName");
-		System.out.println("Circle : "+circleName);
+		//System.out.println("Circle : "+circleName);
 		String divisionName=httpServletRequest.getParameter("divisionName");
-		System.out.println("Division : "+divisionName);
+		//System.out.println("Division : "+divisionName);
 		String source=httpServletRequest.getParameter("source");
-		System.out.println("Source : "+source);
+		//System.out.println("Source : "+source);
 		ArrayList<Substation> locations=new ArrayList<Substation>();
 		ArrayList<String> substationNames=new ArrayList<String>();
-
 		String json = "";
 		if(source==null){
 			if(regionName==null&&circleName==null&&divisionName==null){

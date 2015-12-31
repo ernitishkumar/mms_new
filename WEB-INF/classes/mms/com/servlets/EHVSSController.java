@@ -27,7 +27,7 @@ public class EHVSSController extends HttpServlet{
 			if(action.toLowerCase().equals("list")){
 				String startIndex=(String)httpServletRequest.getParameter("jtStartIndex");
 				String pageSize=(String)httpServletRequest.getParameter("jtPageSize");
-				System.out.println("Start Index : "+startIndex+" Page Size : "+pageSize);
+				//System.out.println("Start Index : "+startIndex+" Page Size : "+pageSize);
 				ArrayList<EHVSS> ehvssRecords=new ArrayList<EHVSS>();
 				int count=0;
 				if(regionName==null || regionName.toLowerCase().trim().equals("all")){
