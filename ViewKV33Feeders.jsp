@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Setup and Load Data to jTable using Servlets and JSP</title>
+    <title>View 33KV Feeders</title>
     <link href="css/metro/blue/jtable.css" rel="stylesheet" type="text/css" />
     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <!-- Importing CSS file for jTable form validations-->
@@ -18,7 +18,7 @@
     <script type="text/javascript">
     $(document).ready(function () {
 
-     $('#region').change(function(event) {
+       $('#region').change(function(event) {
         var region = $("select#region").val();
         $.get('GetEhvssNames', {
             regionName : region
@@ -40,6 +40,22 @@
             $.each(response, function(index, value) {
                 $('<option>').val(value).text(value).appendTo(select);
             });
+             $('#circle').change();
+        });
+    });
+
+       $('#circle').change(function(event) {
+        var circle = $("select#circle").val();
+        $.get('GetDivisions', {
+            circleName : circle
+        }, function(response) {
+            var select = $('#division');
+            select.find('option').remove();
+            $('<option>').val("-1").text("select division").appendTo(select);
+            $.each(response, function(index, value) {
+                $('<option>').val(value).text(value).appendTo(select);
+            });
+           
         });
     });
         //initialize jTable
@@ -78,7 +94,6 @@
             circle: {
                 title: '33KV Feeder Circle',
                 width: 'auto',
-                dependsOn: 'region',
                 list:true,
                 edit:true,
                 dependsOn:'region',
@@ -92,6 +107,19 @@
                     }
                 }
             },
+            division: {
+                title: '33KV Feeder Division',
+                width: 'auto',
+                dependsOn:'circle',
+                options: function(data){
+                    if(data.source=='edit'||data.source=='create'||data.source=='update'){
+                        return 'GetDivisions?source=jtable&circleName='+data.dependedValues.circle;
+                    }else if(data.source=='list'){
+                        //return ['INDORECITY','INDOREO&M','BARWANI','KHANDWA','BURHANPUR','KHARGONE','DHAR','JHABUA','SHAJAPUR','NEEMUCH','MANDSAUR','DEWAS','RATLAM','UJJAIN','AGAR'];
+                        return [data.record.division];
+                    }
+                }
+            },
             ehvssID: {
                 title: 'EHVSS Name',
                 width: 'auto',
@@ -100,12 +128,12 @@
                     if(data.source=='edit'||data.source=='create'||data.source=='update'){
                         return 'GetEhvssNames?source=jtable&regionName='+data.dependedValues.region;
                     }else if(data.source=='list'){
-                       return [data.record.ehvssID];
-                   }
-               }
-           }
-       },
-       deleteConfirmation: function(data) {
+                     return [data.record.ehvssID];
+                 }
+             }
+         }
+     },
+     deleteConfirmation: function(data) {
         data.deleteConfirmMessage = 'Are you sure to delete 33KVFeeder: ' + data.record.name + '?';
     }
 });
@@ -120,6 +148,12 @@ $('#regionButton').click(function (e) {
 $('#circleButton').click(function (e) {
     $('#KV33TableContainer').jtable('load', {
         circle: $('#circle').val()
+    });
+});
+
+$('#divisionButton').click(function (e) {
+    $('#KV33TableContainer').jtable('load', {
+        division: $('#division').val()
     });
 });
 
@@ -188,7 +222,17 @@ $('#ehvssButton').click(function (e) {
             <button id="circleButton">Load feeders by Circle</button>
         </label>
         <br/>
+        <br/> 
+        <label>
+            <span>Select Division</span>
+            <select name="division" id="division">
+                <option >Select division</option>
+            </select>
+            <button id="divisionButton">Load 11KVFeeders by Division</button>
+        </label>
         <br/>
+        <br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;
         <label>
             <span>Select EHVSS Name</span>

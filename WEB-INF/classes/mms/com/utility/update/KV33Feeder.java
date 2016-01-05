@@ -1,4 +1,3 @@
-package mms.com.beans;
 
 public class KV33Feeder {
 
@@ -26,15 +25,6 @@ public class KV33Feeder {
 		this.name = name;
 		this.code = code;
 		this.location = location;
-		this.region = region;
-		this.circle = circle;
-		this.division = division;
-		this.ehvssID = ehvssID;
-	}
-	public KV33Feeder(String name, String code,String region,
-			String circle,String division,String ehvssID) {
-		this.name = name;
-		this.code = code;
 		this.region = region;
 		this.circle = circle;
 		this.division = division;

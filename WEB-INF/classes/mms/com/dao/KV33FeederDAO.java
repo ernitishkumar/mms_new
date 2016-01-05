@@ -17,7 +17,7 @@ public class KV33FeederDAO {
 			ps.setString(3,"DUMMY");
 			ps.setString(4,kv33Feeder.getRegion());
 			ps.setString(5,kv33Feeder.getCircle());
-			ps.setString(6,"DUMMY");
+			ps.setString(6,kv33Feeder.getDivision());
 			ps.setString(7,kv33Feeder.getEhvssID());
 			ps.executeUpdate();
 			ResultSet resultSet=ps.executeQuery("select last_insert_id() as 'id'");
@@ -35,13 +35,14 @@ public class KV33FeederDAO {
 
 	public KV33Feeder updateKV33Feeder(KV33Feeder kv33Feeder){
 		try {
-			PreparedStatement ps = connection.prepareStatement("update kv33feeder set code=?,name=?,region=?,circle=?,ehvss_id=? where id=?");
+			PreparedStatement ps = connection.prepareStatement("update kv33feeder set code=?,name=?,region=?,circle=?,division=?,ehvss_id=? where id=?");
 			ps.setString(1,kv33Feeder.getCode());
 			ps.setString(2,kv33Feeder.getName());
 			ps.setString(3,kv33Feeder.getRegion());
 			ps.setString(4,kv33Feeder.getCircle());
-			ps.setInt(5,Integer.parseInt(kv33Feeder.getEhvssID()));
-			ps.setInt(6,Integer.parseInt(kv33Feeder.getId()));
+			ps.setString(5,kv33Feeder.getDivision());
+			ps.setInt(6,Integer.parseInt(kv33Feeder.getEhvssID()));
+			ps.setInt(7,Integer.parseInt(kv33Feeder.getId()));
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -62,7 +63,7 @@ public class KV33FeederDAO {
 				ps.setString(3,"DUMMY");
 				ps.setString(4,kv33Feeder.getRegion());
 				ps.setString(5,kv33Feeder.getCircle());
-				ps.setString(6,"DUMMY");
+				ps.setString(6,kv33Feeder.getDivision());
 				ps.setString(7,kv33Feeder.getEhvssID());
 				ps.executeUpdate();
 				added=true;	
@@ -163,6 +164,21 @@ public class KV33FeederDAO {
 		return kv33Feeders;
 	}
 
+	public ArrayList<KV33Feeder> getByDivision(String division,String startIndex,String pageSize) {
+		ArrayList<KV33Feeder> kv33Feeders=null;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT kv33.id,kv33.code,kv33.name,kv33.location,kv33.region,kv33.circle,kv33.division,kv33.ehvss_id,e.name FROM kv33feeder kv33 join ehvss e on kv33.ehvss_id=e.id where kv33.division=? limit "+startIndex+","+pageSize);
+			ps.setString(1,division);
+			ResultSet rs=ps.executeQuery();
+			kv33Feeders=new ArrayList<KV33Feeder>();
+			resultSetParserForJtable(rs,kv33Feeders);
+			//System.out.println("Number of 33KV Feeders :"+kv33Feeders.size());
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getByCircle(String,String,String)]"+e);
+		}
+		return kv33Feeders;
+	}
+
 	public ArrayList<KV33Feeder> getByEhvssId(String ehvssId,String startIndex,String pageSize) {
 		ArrayList<KV33Feeder> kv33Feeders=null;
 		try {
@@ -214,6 +230,22 @@ public class KV33FeederDAO {
 		try {
 			PreparedStatement ps = connection.prepareStatement("SELECT count(*) as count FROM kv33feeder where circle=?");
 			ps.setString(1,circle);
+			ResultSet rs=ps.executeQuery();
+			while(rs.next()){
+				count=rs.getInt("count");
+			}
+			//System.out.println("Count of 33KV Feeders :"+count);
+		} catch (SQLException e) {
+			System.out.println("Exception in class : KV33FeederDAO : method : [getKV33FeederCountByCircle(String)]"+e);
+		}
+		return count;
+	}
+
+	public int getKV33FeederCountByDivision(String division) {
+		int count=0;
+		try {
+			PreparedStatement ps = connection.prepareStatement("SELECT count(*) as count FROM kv33feeder where division=?");
+			ps.setString(1,division);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()){
 				count=rs.getInt("count");

@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Setup and Load Data to jTable using Servlets and JSP</title>
+    <title>View EHVSS Records</title>
     <link href="css/metro/blue/jtable.css" rel="stylesheet" type="text/css" />
     <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
     <!-- Importing CSS file for jTable form validations-->

@@ -17,6 +17,7 @@ public class AddKV33FeederDetails extends HttpServlet{
 		System.out.println("AddKV33FeederDetails Started ");
 		KV33FeederDAO kv33Feeder = new KV33FeederDAO();
 		KV33Feeder kv33FeederBean = (KV33Feeder) httpServletRequest.getAttribute("kv33FeederBean");
+		System.out.println("33KV Division "+kv33FeederBean.getDivision());
 		ErrorBean errorBean=new ErrorBean();
 		boolean added=kv33Feeder.addKV33Feeder(kv33FeederBean,errorBean);
 		if(added!=true){

@@ -33,6 +33,21 @@
     				$('<option>').val(value).text(value).appendTo(select);
     			});
     		});
+
+    		$('#circle').change(function(event) {
+    		var circle = $("select#circle").val();
+    		$.get('GetDivisions', {
+    			circleName : circle
+    		}, function(response) {
+    			var select = $('#division');
+    			select.find('option').remove();
+    			$('<option>').val("-1").text("select division").appendTo(select);
+    			$.each(response, function(index, value) {
+    				$('<option>').val(value).text(value).appendTo(select);
+    			});
+    		});
+    	});
+
     	});
     });
     </script>
@@ -134,7 +149,22 @@
 					</select>
 				</label>
 				<br/>
-				
+				<br/>
+				<label>
+					<span>Select 33KV Feeder Circle</span>
+					<select name="circle" id="circle">
+						<option >Select circle</option>
+					</select>
+				</label>
+				<br/>
+				<br/>
+				<label>
+					<span>Select 33KV Feeder Division</span>
+					<select name="division" id="division">
+						<option>Select Division</option>
+					</select>
+				</label>
+				<br/>
 				<br/>
 				<label>
 					<span>Enter 33KV Feeder Name</span><input id="name" type="text" name="name" required="true"/>
@@ -144,22 +174,6 @@
 					<span>Enter 33KV Feeder Code</span><input id="code" type="text" name="code" required="true"/>
 				</label>
 				<br/>
-				
-				<label>
-					<span>Select 33KV Feeder Circle</span>
-					<select name="circle" id="circle">
-						<option >Select circle</option>
-					</select>
-				</label>
-				<br/>
-				<!-- <br/>
-				<label>
-					<span>Select 33KV Feeder Division</span>
-					<select name="division" id="division">
-						<option>Select Division</option>
-					</select>
-				</label>
-				<br/> -->
 				<br/>
 				<label>
 					<input type="submit" value="Add 33KV Feeder" />

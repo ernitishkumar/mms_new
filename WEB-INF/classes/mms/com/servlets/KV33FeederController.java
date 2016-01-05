@@ -21,6 +21,7 @@ public class KV33FeederController extends HttpServlet{
 		String action=(String)httpServletRequest.getParameter("action");
 		String regionName=(String)httpServletRequest.getParameter("region");
 		String circleName=(String)httpServletRequest.getParameter("circle");
+		String divisionName=(String)httpServletRequest.getParameter("division");
 		String ehvss=(String)httpServletRequest.getParameter("ehvssID");
 		//System.out.println("Action and region from request : "+action+" "+regionName+" "+circleName+" "+ehvss);
 		if(action!=null){
@@ -30,16 +31,19 @@ public class KV33FeederController extends HttpServlet{
 				////System.out.println("Start Index : "+startIndex+" Page Size : "+pageSize);
 				ArrayList<KV33Feeder> kv33FeederRecords=new ArrayList<KV33Feeder>();
 				int count=0;
-				if((regionName==null|| regionName.toLowerCase().trim().equals("all")) && circleName==null && ehvss==null){
+				if((regionName==null|| regionName.toLowerCase().trim().equals("all")) && circleName==null && divisionName==null && ehvss==null){
 					kv33FeederRecords=kv33FeederDAO.getAll(startIndex,pageSize);
 					count=kv33FeederDAO.getKV33FeederCount();	
-				}else if((regionName!=null && !regionName.toLowerCase().trim().equals("all")) && circleName==null && ehvss==null){
+				}else if((regionName!=null && !regionName.toLowerCase().trim().equals("all")) && circleName==null && divisionName==null && ehvss==null){
 					kv33FeederRecords=kv33FeederDAO.getByRegion(regionName,startIndex,pageSize);
 					count=kv33FeederDAO.getKV33FeederCountByRegion(regionName);	
-				}else if(regionName==null && circleName!=null && ehvss==null){
+				}else if(regionName==null && circleName!=null && divisionName==null && ehvss==null){
 					kv33FeederRecords=kv33FeederDAO.getByCircle(circleName,startIndex,pageSize);
 					count=kv33FeederDAO.getKV33FeederCountByCircle(circleName);	
-				}else if(regionName==null && circleName==null && ehvss!=null){
+				}else if(regionName==null && circleName==null && divisionName!=null && ehvss==null){
+					kv33FeederRecords=kv33FeederDAO.getByDivision(divisionName,startIndex,pageSize);
+					count=kv33FeederDAO.getKV33FeederCountByDivision(divisionName);	
+				}else if(regionName==null && circleName==null && divisionName==null && ehvss!=null){
 					kv33FeederRecords=kv33FeederDAO.getByEhvssId(ehvss,startIndex,pageSize);
 					count=kv33FeederDAO.getKV33FeederCountByEhvssId(ehvss);	
 				}
@@ -59,14 +63,15 @@ public class KV33FeederController extends HttpServlet{
 				String code=(String)httpServletRequest.getParameter("code");
 				String region=(String)httpServletRequest.getParameter("region");
 				String circle=(String)httpServletRequest.getParameter("circle");
+				String division=(String)httpServletRequest.getParameter("division");
 				String ehvssId=(String)httpServletRequest.getParameter("ehvssID");
-				System.out.println("EHVSS ID from request : "+ehvssId);
+				//System.out.println("EHVSS ID from request : "+ehvssId);
 				if(ehvssId.trim().indexOf("ID:")>=0){
 					ehvssId=ehvssId.substring(ehvssId.indexOf("(ID:")+4,ehvssId.lastIndexOf(")"));
 				}
-				System.out.println("EHVSS ID from request after Parsing : "+ehvssId);
+				//System.out.println("EHVSS ID from request after Parsing : "+ehvssId);
 				////System.out.println("Data for jTABLE create : "+name+" "+code+" "+region);
-				KV33Feeder kv33Feeder=new KV33Feeder(name,code,region,circle,ehvssId);
+				KV33Feeder kv33Feeder=new KV33Feeder(name,code,region,circle,division,ehvssId);
 				if(action.toLowerCase().equals("create")){
 					kv33Feeder=kv33FeederDAO.addKV33Feeder(kv33Feeder);
 					String json=gson.toJson(kv33Feeder);    
